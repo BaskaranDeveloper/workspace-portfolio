@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:workspace/app/config/app_router.dart';
+import 'config/app_router.dart';
+import 'theme/app_theme.dart';
 
 class WorkspaceApp extends StatelessWidget {
   const WorkspaceApp({super.key});
@@ -7,9 +8,9 @@ class WorkspaceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'WORKSPACE',
+      title: 'PortfolioOS',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: AppTheme.dark,
       routerConfig: AppRouter.config,
     );
   }
