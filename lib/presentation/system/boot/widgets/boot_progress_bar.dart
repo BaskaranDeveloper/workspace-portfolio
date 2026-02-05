@@ -18,7 +18,8 @@ class BootProgressBar extends StatelessWidget {
           width: 200,
           child: LinearProgressIndicator(
             value: progress,
-            backgroundColor: AppColors.terminalBlue.withOpacity(0.2),
+            backgroundColor: AppColors.terminalBlue.withValues(alpha: 0.2),
+
             valueColor: const AlwaysStoppedAnimation<Color>(
               AppColors.terminalBlue,
             ),

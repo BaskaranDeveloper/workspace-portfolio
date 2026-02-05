@@ -3,8 +3,39 @@ import 'package:workspace/app/theme/app_colors.dart';
 import 'package:workspace/presentation/system/boot/widgets/background_ripple.dart';
 import 'package:workspace/presentation/system/boot/widgets/boot_progress_bar.dart';
 
-class BootScreen extends StatelessWidget {
+class BootScreen extends StatefulWidget {
   const BootScreen({super.key});
+
+  @override
+  State<BootScreen> createState() => _BootScreenState();
+}
+
+class _BootScreenState extends State<BootScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late Animation<double> _progress;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    );
+
+    // progress animation
+    _progress = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+
+    // start animation
+    _controller.forward();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,36 +75,50 @@ class BootScreen extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                // 3. Progress Bar
-                const BootProgressBar(progress: 0.65),
+                // 3. Progress Bar & Text
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (_, __) {
+                    final percentage = (_progress.value * 100).toInt();
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        BootProgressBar(progress: _progress.value),
 
-                const SizedBox(height: 8),
+                        const SizedBox(height: 8),
 
-                // 4. "INITIALIZING... 65%" Row
-                SizedBox(
-                  width: 200, // Match progress bar width
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'INITIALIZING',
-                        style: TextStyle(
-                          color: AppColors.terminalDim,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
+                        // 4. "INITIALIZING... XX%" Row
+                        SizedBox(
+                          width: 200, // Match progress bar width
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                // Change text based on progress
+                                percentage < 100
+                                    ? 'INITIALIZING'
+                                    : 'SYSTEM READY',
+                                style: TextStyle(
+                                  color: AppColors.terminalDim,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                              Text(
+                                '$percentage%',
+                                style: TextStyle(
+                                  color: AppColors.terminalDim,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Text(
-                        '65%',
-                        style: TextStyle(
-                          color: AppColors.terminalDim,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -99,7 +144,7 @@ class BootScreen extends StatelessWidget {
                   Text(
                     'PORTFOLIOS KERNEL V1.0.4-STABLE',
                     style: TextStyle(
-                      color: AppColors.terminalDim.withOpacity(0.5),
+                      color: AppColors.terminalDim.withValues(alpha: 0.5),
                       fontSize: 10,
                       letterSpacing: 2.0,
                       fontWeight: FontWeight.w500,
