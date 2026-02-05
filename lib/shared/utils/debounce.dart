@@ -1,3 +1,0 @@
-class Debounce {
-  // Debounce implementation
-}

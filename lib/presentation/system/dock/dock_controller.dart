@@ -1,3 +1,0 @@
-class DockController {
-  // Dock logic
-}
