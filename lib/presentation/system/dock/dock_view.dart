@@ -1,8 +1,7 @@
+import 'dart:math'; // Required for the exp() function (Gaussian curve)
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:workspace/presentation/system/dock/widgets/dock_item.dart';
-import 'package:workspace/presentation/system/dock/dock_item_data.dart';
+import 'widgets/dock_item.dart';
 
 class DockView extends StatefulWidget {
   const DockView({super.key});
@@ -12,53 +11,116 @@ class DockView extends StatefulWidget {
 }
 
 class _DockViewState extends State<DockView> {
-  // Define  dock items here
-  // Define  dock items here
-  final List<DockItemData> _items = const [
-    DockItemData(icon: Icons.person, color: Colors.blue, label: 'About'),
-    DockItemData(icon: Icons.folder, color: Colors.purple, label: 'Projects'),
-    DockItemData(icon: Icons.work, color: Colors.grey, label: 'Experience'),
-    DockItemData(icon: Icons.school, color: Colors.green, label: 'Education'),
-    DockItemData(icon: Icons.mail, color: Colors.red, label: 'Contact'),
+  final List<Map<String, dynamic>> _items = [
+    {'icon': Icons.person, 'color': Colors.blue, 'label': 'About'},
+    {'icon': Icons.folder, 'color': Colors.purple, 'label': 'Projects'},
+    {'icon': Icons.work, 'color': Colors.grey, 'label': 'Experience'},
+    {'icon': Icons.school, 'color': Colors.green, 'label': 'Education'},
+    {'icon': Icons.mail, 'color': Colors.red, 'label': 'Contact'},
   ];
 
-  // Track which item is being hovered
-  int? _hoveredIndex;
+  // We track the mouse hovering over the dock to calculate the wave effect.
+  double? _mouseX;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
-                width: 1,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        child: MouseRegion(
+          onEnter: (event) => setState(() {
+            _mouseX = event.localPosition.dx;
+          }),
+          onExit: (event) => setState(() {
+            _mouseX = null;
+          }),
+          onHover: (event) => setState(() {
+            _mouseX = event.localPosition.dx;
+          }),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              // Glass background
+              Container(
+                height: 70,
+                width: (_items.length * 60.0) + 52,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.white.withOpacity(0.3),
+                            Colors.white.withOpacity(0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          width: 1.5,
+                          color: Colors.white.withOpacity(0.2),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: List.generate(_items.length, (index) {
-                final item = _items[index];
-                return DockItem(
-                  icon: item.icon,
-                  label: item.label,
-                  color: item.color,
-                  isHovered: _hoveredIndex == index,
-                  onHover: () => setState(() => _hoveredIndex = index),
-                  onExit: () => setState(() => _hoveredIndex = null),
-                );
-              }),
-            ),
+              // Dock icons
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: List.generate(_items.length, (index) {
+                    return DockItem(
+                      icon: _items[index]['icon'],
+                      color: _items[index]['color'],
+                      label: _items[index]['label'],
+                      size: _calculateSize(index),
+                      duration: _mouseX == null
+                          ? const Duration(milliseconds: 300)
+                          : Duration.zero,
+                    );
+                  }),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  double _calculateSize(int index) {
+    const double baseSize = 45.0;
+    const double maxSize = 80.0;
+    const double itemWidth = 60.0;
+    const double sigma = 40.0;
+
+    if (_mouseX == null) {
+      return baseSize;
+    }
+
+    double itemCenter = (index * itemWidth) + (itemWidth / 2);
+    double distance = (_mouseX! - itemCenter).abs();
+
+    // Gaussian curve for smooth magnification
+    double scale = exp(-(distance * distance) / (2 * sigma * sigma));
+
+    if (distance < itemWidth * 2.5) {
+      return baseSize + (maxSize - baseSize) * scale;
+    }
+
+    return baseSize;
   }
 }

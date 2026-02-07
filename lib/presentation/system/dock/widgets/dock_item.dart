@@ -1,61 +1,47 @@
 import 'package:flutter/material.dart';
 
-class DockItem extends StatefulWidget {
+class DockItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  final bool isHovered;
-  final VoidCallback onHover;
-  final VoidCallback onExit;
+  final double size; // Now receives size directly from parent
+  final Duration duration; // Animation duration
 
   const DockItem({
     super.key,
     required this.icon,
     required this.label,
     required this.color,
-    required this.isHovered,
-    required this.onHover,
-    required this.onExit,
+    required this.size,
+    required this.duration,
   });
 
   @override
-  State<DockItem> createState() => _DockItemState();
-}
-
-class _DockItemState extends State<DockItem> {
-  @override
   Widget build(BuildContext context) {
-    // 1. MouseRegion detects hover events
-
-    return MouseRegion(
-      onEnter: (_) => widget.onHover(),
-      onExit: (_) => widget.onExit(),
+    return Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Tooltip(
-        message: widget.label,
-        // 2. AnimatedContainer handles the smooth effect scalling
+        message: label,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOut,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          width: widget.isHovered ? 55 : 45,
-          height: widget.isHovered ? 55 : 45,
+          duration: duration,
+          curve: duration == Duration.zero ? Curves.linear : Curves.easeOut,
+          width: size,
+          height: size,
           decoration: BoxDecoration(
-            color: widget.color,
+            color: color,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
+                color: Colors.black.withOpacity(0.2),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
               ),
             ],
           ),
-          child: Icon(
-            widget.icon,
-            color: Colors.white,
-            // Scale the icon when hovered
-            size: widget.isHovered ? 30 : 24,
-          ),
+          child: Icon(icon, color: Colors.white, size: size * 0.5),
         ),
       ),
     );
