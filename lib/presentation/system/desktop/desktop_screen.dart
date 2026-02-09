@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:workspace/app/theme/app_colors.dart';
 import 'package:workspace/presentation/system/dock/dock_view.dart';
+import 'package:workspace/presentation/system/window/models/window_model.dart';
+import 'package:workspace/presentation/system/window/widgets/window_base.dart';
+import 'package:workspace/presentation/system/window/window_manager.dart';
 import 'widgets/system_bar.dart';
-// Import your controller and widgets
 import 'desktop_controller.dart';
 import 'widgets/desktop_icon.dart';
 
@@ -17,12 +19,15 @@ class _DesktopScreenState extends State<DesktopScreen> {
   // 1. Create the controller
   final DesktopController _controller = DesktopController();
 
+  // 2. Create the window manager
+  final WindowManager _windowManager = WindowManager();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 2. Wrap body in ListenableBuilder to rebuild when controller changes
+      // 3. Wrap body in ListenableBuilder to rebuild when controller changes
       body: ListenableBuilder(
-        listenable: _controller,
+        listenable: Listenable.merge([_controller, _windowManager]),
         builder: (context, child) {
           return Stack(
             children: [
@@ -54,15 +59,32 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   onTap: () => _controller.selectItem(item.id),
                   onDoubleTap: () {
                     // We will add window opening here later
-                    print("Open ${item.label}");
+                    _windowManager.openWindow(
+                      WindowModel(
+                        id: item.id,
+                        title: item.label,
+                        content: Center(child: Text("App: ${item.label}")),
+                      ),
+                    );
                   },
                   onDragEnd: (offset) {
                     // Valid drag ended, update model
                     _controller.updateItemPosition(item.id, offset);
                   },
                 );
-              }).toList(),
-
+              }),
+              // windows layer
+              ..._windowManager.windows.map((window) {
+                return WindowBase(
+                  window: window,
+                  onClose: () => _windowManager.closeWindow(window.id),
+                  onMinimize: () => _windowManager.closeWindow(window.id),
+                  onMaximize: () => _windowManager.closeWindow(window.id),
+                  onDrag: (offset) =>
+                      _windowManager.updateWindowPosition(window.id, offset),
+                  onFocus: () => _windowManager.bringToFront(window.id),
+                );
+              }),
               // 3. System Bar (Top)
               const Positioned(top: 0, left: 0, right: 0, child: SystemBar()),
 
