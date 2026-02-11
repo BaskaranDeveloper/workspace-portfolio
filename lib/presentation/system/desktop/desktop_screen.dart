@@ -76,6 +76,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
               // windows layer
               ..._windowManager.windows.map((window) {
                 return WindowBase(
+                  onResize: (newSize) =>
+                      _windowManager.updateWindowSize(window.id, newSize),
                   window: window,
                   onClose: () => _windowManager.closeWindow(window.id),
                   onMinimize: () => _windowManager.closeWindow(window.id),
@@ -89,7 +91,22 @@ class _DesktopScreenState extends State<DesktopScreen> {
               const Positioned(top: 0, left: 0, right: 0, child: SystemBar()),
 
               // 4. Dock (Bottom)
-              Positioned(left: 0, right: 0, bottom: 20, child: DockView()),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 20,
+                child: DockView(
+                  onAppTap: (appName) {
+                    _windowManager.openWindow(
+                      WindowModel(
+                        id: 'app_$appName',
+                        title: appName,
+                        content: Center(child: Text("$appName App")),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           );
         },

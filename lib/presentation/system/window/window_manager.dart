@@ -36,4 +36,12 @@ class WindowManager extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void updateWindowSize(String id, Size newSize) {
+    final index = windows.indexWhere((w) => w.id == id);
+    if (index != -1) {
+      windows[index].size = newSize;
+      notifyListeners();
+    }
+  }
 }

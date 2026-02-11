@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'widgets/dock_item.dart';
 
 class DockView extends StatefulWidget {
-  const DockView({super.key});
+  final Function(String appName) onAppTap;
+  const DockView({super.key, required this.onAppTap});
 
   @override
   State<DockView> createState() => _DockViewState();
@@ -41,7 +42,7 @@ class _DockViewState extends State<DockView> {
             alignment: Alignment.bottomCenter,
             children: [
               // Glass background
-              Container(
+              SizedBox(
                 height: 70,
                 width: (_items.length * 60.0) + 52,
                 child: ClipRRect(
@@ -82,14 +83,17 @@ class _DockViewState extends State<DockView> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: List.generate(_items.length, (index) {
-                    return DockItem(
-                      icon: _items[index]['icon'],
-                      color: _items[index]['color'],
-                      label: _items[index]['label'],
-                      size: _calculateSize(index),
-                      duration: _mouseX == null
-                          ? const Duration(milliseconds: 300)
-                          : Duration.zero,
+                    return GestureDetector(
+                      onTap: () => widget.onAppTap(_items[index]['label']),
+                      child: DockItem(
+                        icon: _items[index]['icon'],
+                        color: _items[index]['color'],
+                        label: _items[index]['label'],
+                        size: _calculateSize(index),
+                        duration: _mouseX == null
+                            ? const Duration(milliseconds: 300)
+                            : Duration.zero,
+                      ),
                     );
                   }),
                 ),

@@ -44,7 +44,7 @@ class DesktopController extends ChangeNotifier {
 
   void selectItem(String id) {
     for (var item in items) {
-      item.isSelected = (item == id);
+      item.isSelected = (item.id == id);
     }
     notifyListeners();
   }
