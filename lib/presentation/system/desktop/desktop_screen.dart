@@ -46,6 +46,11 @@ class _DesktopScreenState extends State<DesktopScreen> {
       body: ListenableBuilder(
         listenable: Listenable.merge([_controller, _windowManager]),
         builder: (context, child) {
+          // Check if any window is maximized
+          final bool isAnyMaximized = _windowManager.windows.any(
+            (w) => w.isMaximized,
+          );
+
           return Stack(
             children: [
               // 1. Background
@@ -100,7 +105,6 @@ class _DesktopScreenState extends State<DesktopScreen> {
               ),
 
               // 2. Desktop Icons Loop
-              // We map each item from the controller to a DesktopIcon widget
               ..._controller.items.map((item) {
                 return DesktopIcon(
                   item: item,
@@ -154,42 +158,71 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   },
                 );
               }),
-              // windows layer
-              ..._windowManager.windows.map((window) {
-                return WindowBase(
-                  onResize: (newSize) =>
-                      _windowManager.updateWindowSize(window.id, newSize),
-                  window: window,
-                  onClose: () => _windowManager.closeWindow(window.id),
-                  onMinimize: () => _windowManager.closeWindow(window.id),
-                  onMaximize: () => _windowManager.closeWindow(window.id),
-                  onDrag: (offset) =>
-                      _windowManager.updateWindowPosition(window.id, offset),
-                  onFocus: () => _windowManager.bringToFront(window.id),
-                );
-              }),
-              // 3. System Bar (Top)
+
+              // 3. Dock (Rendered BEHIND windows if maximized)
+              if (isAnyMaximized)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 20,
+                  child: DockView(
+                    onAppTap: (appName) {
+                      _windowManager.openWindow(
+                        WindowModel(
+                          id: 'app_$appName',
+                          title: appName,
+                          content: Center(child: Text("$appName App")),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+              // 4. Windows Layer (Now possibly on top of Dock)
+              ..._windowManager.windows
+                  .where((window) => !window.isMinimized)
+                  .map((window) {
+                    return WindowBase(
+                      onResize: (newSize) =>
+                          _windowManager.updateWindowSize(window.id, newSize),
+                      window: window,
+                      onClose: () => _windowManager.closeWindow(window.id),
+                      onMaximize: () =>
+                          _windowManager.toggleMaximize(window.id),
+                      onMinimize: () =>
+                          _windowManager.minimizeWindow(window.id),
+                      onDrag: (offset) => _windowManager.updateWindowPosition(
+                        window.id,
+                        offset,
+                        MediaQuery.of(context).size,
+                      ),
+                      onFocus: () => _windowManager.bringToFront(window.id),
+                    );
+                  }),
+
+              // 5. System Bar (Top)
               const Positioned(top: 0, left: 0, right: 0, child: SystemBar()),
 
-              // 4. Dock (Bottom)
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 20,
-                child: DockView(
-                  onAppTap: (appName) {
-                    _windowManager.openWindow(
-                      WindowModel(
-                        id: 'app_$appName',
-                        title: appName,
-                        content: Center(child: Text("$appName App")),
-                      ),
-                    );
-                  },
+              // 6. Dock (Rendered ON TOP of windows if NOT maximized)
+              if (!isAnyMaximized)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 20,
+                  child: DockView(
+                    onAppTap: (appName) {
+                      _windowManager.openWindow(
+                        WindowModel(
+                          id: 'app_$appName',
+                          title: appName,
+                          content: Center(child: Text("$appName App")),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
 
-              // 5. Context Menu Layer
+              // 7. Context Menu Layer
               if (_controller.menuPosition != null)
                 Positioned(
                   left: _controller.menuPosition!.dx,

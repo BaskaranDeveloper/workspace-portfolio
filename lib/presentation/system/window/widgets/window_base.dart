@@ -66,11 +66,26 @@ class _WindowBaseState extends State<WindowBase>
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isMaximized = widget.window.isMaximized;
+
+    // Calculate render properties
+    final double currentWidth = isMaximized
+        ? screenSize.width
+        : widget.window.size.width;
+
+    final double currentHeight = isMaximized
+        ? screenSize.height - 28
+        : widget.window.size.height;
+
+    final double currentTop = isMaximized ? 28 : widget.window.position.dy;
+
+    final double currentLeft = isMaximized ? 0 : widget.window.position.dx;
     return Positioned(
-      left: widget.window.position.dx,
-      top: widget.window.position.dy,
-      width: widget.window.size.width,
-      height: widget.window.size.height,
+      left: currentLeft,
+      top: currentTop,
+      width: currentWidth,
+      height: currentHeight,
       child: GestureDetector(
         onTapDown: (_) => widget.onFocus(),
         child: ScaleTransition(
