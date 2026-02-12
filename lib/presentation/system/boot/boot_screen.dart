@@ -29,6 +29,7 @@ class _BootScreenState extends State<BootScreen>
     // Listen for animation completion
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
+        // Navigate to desktop (replace current route so user can't go back)
         context.go('/desktop');
       }
     });
@@ -77,7 +78,7 @@ class _BootScreenState extends State<BootScreen>
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.5,
-                    fontFamily: 'monospace', // Or your specific font
+                    fontFamily: 'monospace',
                   ),
                 ),
 
@@ -141,15 +142,6 @@ class _BootScreenState extends State<BootScreen>
             child: Center(
               child: Column(
                 children: [
-                  // Blinking Red Dot (Status Indicator) - Optional decoration
-                  // Container(
-                  //   width: 4, height: 4,
-                  //   decoration: const BoxDecoration(
-                  //     color: AppColors.stateError,
-                  //     shape: BoxShape.circle
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 20),
                   Text(
                     'PORTFOLIOS KERNEL V1.0.4-STABLE',
                     style: TextStyle(
