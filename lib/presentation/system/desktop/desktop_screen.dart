@@ -10,6 +10,7 @@ import 'widgets/system_bar.dart';
 import 'context_menu.dart';
 import 'desktop_controller.dart';
 import 'widgets/desktop_icon.dart';
+import 'package:workspace/presentation/apps/terminal/terminal_view.dart';
 
 class DesktopScreen extends StatefulWidget {
   const DesktopScreen({super.key});
@@ -167,11 +168,21 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   bottom: 20,
                   child: DockView(
                     onAppTap: (appName) {
+                      Widget content;
+                      if (appName == 'Terminal') {
+                        content = const TerminalView();
+                      } else {
+                        content = Center(child: Text("$appName App"));
+                      }
+
                       _windowManager.openWindow(
                         WindowModel(
                           id: 'app_$appName',
                           title: appName,
-                          content: Center(child: Text("$appName App")),
+                          content: content,
+                          size: appName == 'Terminal'
+                              ? const Size(600, 400)
+                              : const Size(600, 400),
                         ),
                       );
                     },
@@ -211,11 +222,21 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   bottom: 20,
                   child: DockView(
                     onAppTap: (appName) {
+                      Widget content;
+                      if (appName == 'Terminal') {
+                        content = const TerminalView();
+                      } else {
+                        content = Center(child: Text("$appName App"));
+                      }
+
                       _windowManager.openWindow(
                         WindowModel(
                           id: 'app_$appName',
                           title: appName,
-                          content: Center(child: Text("$appName App")),
+                          content: content,
+                          size: appName == 'Terminal'
+                              ? const Size(600, 400)
+                              : const Size(600, 400),
                         ),
                       );
                     },

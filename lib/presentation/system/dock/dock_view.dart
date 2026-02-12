@@ -14,6 +14,7 @@ class DockView extends StatefulWidget {
 class _DockViewState extends State<DockView> {
   final List<Map<String, dynamic>> _items = [
     {'icon': Icons.person, 'color': Colors.blue, 'label': 'About'},
+    {'icon': Icons.terminal, 'color': Colors.black, 'label': 'Terminal'},
     {'icon': Icons.folder, 'color': Colors.purple, 'label': 'Projects'},
     {'icon': Icons.work, 'color': Colors.grey, 'label': 'Experience'},
     {'icon': Icons.school, 'color': Colors.green, 'label': 'Education'},
