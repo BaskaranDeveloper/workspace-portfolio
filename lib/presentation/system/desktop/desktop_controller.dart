@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workspace/presentation/system/desktop/models/desktop_item.dart';
+import 'package:workspace/presentation/system/desktop/models/menu_item_data.dart';
 
 class DesktopController extends ChangeNotifier {
   List<DesktopItem> items = [
@@ -25,6 +26,24 @@ class DesktopController extends ChangeNotifier {
       position: const Offset(20, 260),
     ),
   ];
+
+  // context menu list
+  Offset? menuPosition;
+  List<MenuItemData> menuItems = [];
+
+  void showMenu(Offset position, List<MenuItemData> items) {
+    menuPosition = position;
+    menuItems = items;
+    notifyListeners();
+  }
+
+  void clearMenu() {
+    if (menuPosition != null) {
+      menuPosition = null;
+      menuItems = [];
+      notifyListeners();
+    }
+  }
 
   void updateItemPosition(String id, Offset newPosition) {
     final index = items.indexWhere((item) => item.id == id);

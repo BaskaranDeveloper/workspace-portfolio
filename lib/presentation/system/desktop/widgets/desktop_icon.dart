@@ -5,6 +5,7 @@ class DesktopIcon extends StatelessWidget {
   final DesktopItem item;
   final VoidCallback onTap;
   final VoidCallback onDoubleTap;
+  final VoidCallback? onSecondaryTap;
   final Function(Offset newPosition) onDragEnd;
 
   const DesktopIcon({
@@ -12,6 +13,7 @@ class DesktopIcon extends StatelessWidget {
     required this.item,
     required this.onTap,
     required this.onDoubleTap,
+    this.onSecondaryTap,
     required this.onDragEnd,
   });
 
@@ -23,6 +25,7 @@ class DesktopIcon extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         onDoubleTap: onDoubleTap,
+        onSecondaryTap: onSecondaryTap,
         child: Draggable<DesktopItem>(
           data: item,
           feedback: Material(
