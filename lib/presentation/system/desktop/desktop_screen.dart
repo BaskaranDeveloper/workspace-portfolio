@@ -16,6 +16,7 @@ import 'package:workspace/presentation/apps/contact/contact_view.dart';
 import 'package:workspace/presentation/apps/projects/projects_view.dart';
 import 'package:workspace/presentation/apps/experience/experience_view.dart';
 import 'package:workspace/presentation/apps/education/education_view.dart';
+import 'package:workspace/presentation/apps/resume/resume_view.dart';
 
 import 'package:workspace/presentation/system/desktop/overlays/control_center.dart';
 
@@ -147,6 +148,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                     Widget content;
                     if (item.label == 'Projects') {
                       content = const ProjectsView();
+                    } else if (item.label == 'Resume') {
+                      content = const ResumeView();
                     } else {
                       content = Center(child: Text("App: ${item.label}"));
                     }
@@ -158,6 +161,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         content: content,
                         size: item.label == 'Projects'
                             ? const Size(900, 600)
+                            : item.label == 'Resume'
+                            ? const Size(820, 1100) // Approx A4 ratio + padding
                             : const Size(600, 400),
                       ),
                     );

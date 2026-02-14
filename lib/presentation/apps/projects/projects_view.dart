@@ -8,160 +8,165 @@ class ProjectsView extends StatefulWidget {
   State<ProjectsView> createState() => _ProjectsViewState();
 }
 
-class _ProjectsViewState extends State<ProjectsView> {
-  final List<Map<String, dynamic>> _allProjects = [
+class _ProjectsViewState extends State<ProjectsView>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  final List<Map<String, dynamic>> _workProjects = [
     {
       'title': 'Enterprise Lottery Platform',
-      'category': 'Full-Stack',
-      'desc':
-          'A high-scale multi-game lottery platform (PSG Lotto, Pinas Lotto, 2D/3D, 6-Digit). Features secure payment integration, real-time results, and comprehensive admin dashboards.',
-      'tech': ['Flutter', 'Node.js', 'NestJS', 'PostgreSQL', 'Redis'],
       'role': 'Lead Developer',
+      'desc':
+          'A high-scale multi-game lottery platform handling thousands of concurrent users. Built with Flutter for cross-platform availability.',
+      'tech': ['Flutter', 'Riverpod', 'WebSocket'],
+      'isWork': true,
     },
     {
       'title': 'Healthcare Management System',
-      'category': 'Mobile',
-      'desc':
-          'White-label hospital application built for Prashanth IVF. Includes appointment scheduling, electronic patient records, real-time notifications, and medicine tracking.',
-      'tech': ['Flutter', 'Firebase', 'Node.js', 'REST API'],
       'role': 'Software Engineer',
+      'desc':
+          'Comprehensive hospital management app with appointment scheduling, patient records, and real-time doctor availability.',
+      'tech': ['Flutter', 'Firebase', 'REST API'],
+      'isWork': true,
     },
     {
       'title': 'Virakesari Media App',
-      'category': 'Mobile',
-      'desc':
-          'Real-time news application for a leading media house. Features WebView integration, performance optimization for low-end devices, and push notification system.',
-      'tech': ['Flutter', 'WebView', 'PHP', 'MySQL', 'Firebase'],
       'role': 'Flutter Developer',
+      'desc':
+          'Official mobile application for a leading media house, featuring offline reading, push notifications, and optimized content delivery.',
+      'tech': ['Flutter', 'SQLite', 'Push Notifications'],
+      'isWork': true,
     },
     {
       'title': 'Kaveri Matrimony',
-      'category': 'Mobile',
-      'desc':
-          'A feature-rich matchmaking platform with profile management, advanced search algorithms, real-time chat, and subscription-based access.',
-      'tech': ['Flutter', 'Node.js', 'Express', 'MySQL', 'Socket.io'],
       'role': 'Full-Stack Developer',
+      'desc':
+          'Matchmaking platform with complex search algorithms and real-time chat functionality.',
+      'tech': ['Flutter', 'Provider', 'Socket.io'],
+      'isWork': true,
     },
     {
       'title': 'POS & Inventory System',
-      'category': 'Web/Desktop',
-      'desc':
-          'Enterprise IMS for small and medium businesses. Manages billing, inventory tracking, sales reporting, and thermal printer integration.',
-      'tech': ['Flutter', 'Node.js', 'SQLite', 'FastAPI'],
       'role': 'System Architect',
-    },
-    {
-      'title': 'PKG Astro',
-      'category': 'Mobile',
       'desc':
-          'Astrology consultation platform. Enhanced application performance and implemented scalable backend services for daily horoscope delivery.',
-      'tech': ['Flutter', 'Firebase', 'Python', 'FastAPI'],
-      'role': 'Performance Optimizer',
+          'Desktop-first Point of Sale system with thermal printer integration and offline-first architecture.',
+      'tech': ['Flutter Desktop', 'SQLite', 'Bloc'],
+      'isWork': true,
     },
   ];
 
-  late List<Map<String, dynamic>> _filteredProjects;
-  String _selectedCategory = 'All';
-  final List<String> _categories = [
-    'All',
-    'Mobile',
-    'Full-Stack',
-    'Web/Desktop',
+  final List<Map<String, dynamic>> _labProjects = [
+    {
+      'title': 'Node.js Backend Experiments',
+      'role': 'Learning Journey',
+      'desc':
+          'Exploring Node.js runtime, event loop, and building scalable RESTful APIs. Focusing on understanding the core concepts of asynchronous programming.',
+      'tech': ['Node.js', 'JavaScript', 'HTTP'],
+      'isWork': false,
+    },
+    {
+      'title': 'Express.js API Starter',
+      'role': 'Backend Beginner',
+      'desc':
+          'A boilerplate API structure with Express, featuring middleware implementation, routing, and basic authentication flows.',
+      'tech': ['Express.js', 'JWT', 'Middleware'],
+      'isWork': false,
+    },
+    {
+      'title': 'Next.js Dashboard',
+      'role': 'Frontend + Backend',
+      'desc':
+          'Experimenting with Server Side Rendering (SSR) and Static Site Generation (SSG). Building a dashboard to visualize data.',
+      'tech': ['Next.js', 'React', 'Tailwind'],
+      'isWork': false,
+    },
+    {
+      'title': 'Database Connector',
+      'role': 'Integration',
+      'desc':
+          'Writing scripts to connect and perform CRUD operations on MongoDB and PostgreSQL. Understanding ORMs and raw queries.',
+      'tech': ['MongoDB', 'PostgreSQL', 'Mongoose'],
+      'isWork': false,
+    },
   ];
 
   @override
   void initState() {
     super.initState();
-    _filteredProjects = _allProjects;
+    _tabController = TabController(length: 2, vsync: this);
   }
 
-  void _filterProjects(String category) {
-    setState(() {
-      _selectedCategory = category;
-      if (category == 'All') {
-        _filteredProjects = _allProjects;
-      } else {
-        _filteredProjects = _allProjects
-            .where((p) => p['category'] == category)
-            .toList();
-      }
-    });
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundPrimary,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Filter Bar
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: AppColors.widgetBorder)),
-            ),
-            child: Row(
-              children: _categories.map((c) => _buildFilterChip(c)).toList(),
-            ),
-          ),
-
-          // Grid
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(32),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 450,
-                mainAxisSpacing: 24,
-                crossAxisSpacing: 24,
-                mainAxisExtent: 280,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 0, // Hide default toolbar
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: TabBar(
+              controller: _tabController,
+              isScrollable: true,
+              indicatorColor: AppColors.terminalBlue,
+              labelColor: AppColors.terminalBlue,
+              unselectedLabelColor: AppColors.textPrimary.withValues(
+                alpha: 0.5,
               ),
-              itemCount: _filteredProjects.length,
-              itemBuilder: (context, index) {
-                return _buildProjectCard(_filteredProjects[index]);
-              },
+              labelStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+              tabs: const [
+                Tab(text: 'Professional Work'),
+                Tab(text: 'Personal Lab / Learning'),
+              ],
             ),
           ),
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildProjectGrid(_workProjects),
+          _buildProjectGrid(_labProjects),
         ],
       ),
     );
   }
 
-  Widget _buildFilterChip(String category) {
-    final isSelected = _selectedCategory == category;
-    return Padding(
-      padding: const EdgeInsets.only(right: 12),
-      child: InkWell(
-        onTap: () => _filterProjects(category),
-        borderRadius: BorderRadius.circular(20),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? AppColors.terminalBlue
-                : AppColors.backgroundSecondary,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isSelected
-                  ? AppColors.terminalBlue
-                  : AppColors.widgetBorder,
-            ),
-          ),
-          child: Text(
-            category,
-            style: TextStyle(
-              color: isSelected ? Colors.white : AppColors.textPrimary,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              fontSize: 13,
-            ),
-          ),
-        ),
+  Widget _buildProjectGrid(List<Map<String, dynamic>> projects) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(32),
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 450,
+        mainAxisSpacing: 24,
+        crossAxisSpacing: 24,
+        mainAxisExtent: 260,
       ),
+      itemCount: projects.length,
+      itemBuilder: (context, index) {
+        return _buildProjectCard(projects[index]);
+      },
     );
   }
 
   Widget _buildProjectCard(Map<String, dynamic> project) {
+    final bool isWork = project['isWork'];
+    final Color accentColor = isWork
+        ? AppColors.terminalBlue
+        : Colors.orangeAccent;
+
     return Container(
       decoration: BoxDecoration(
         color: AppColors.widgetBackground,
@@ -182,7 +187,7 @@ class _ProjectsViewState extends State<ProjectsView> {
           // Card Header
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            color: AppColors.backgroundTertiary.withValues(alpha: 0.5),
+            color: accentColor.withValues(alpha: 0.1),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -192,13 +197,13 @@ class _ProjectsViewState extends State<ProjectsView> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.terminalBlue.withValues(alpha: 0.1),
+                    color: accentColor.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    project['category'],
-                    style: const TextStyle(
-                      color: AppColors.terminalBlue,
+                    isWork ? 'OFFICE' : 'LAB',
+                    style: TextStyle(
+                      color: accentColor,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
@@ -227,7 +232,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                     project['title'],
                     style: const TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       letterSpacing: -0.5,
                     ),
@@ -253,8 +258,8 @@ class _ProjectsViewState extends State<ProjectsView> {
                     ) {
                       return Text(
                         '#$t',
-                        style: const TextStyle(
-                          color: AppColors.terminalBlue,
+                        style: TextStyle(
+                          color: accentColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
