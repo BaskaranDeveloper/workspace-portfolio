@@ -11,6 +11,7 @@ import 'context_menu.dart';
 import 'desktop_controller.dart';
 import 'widgets/desktop_icon.dart';
 import 'package:workspace/presentation/apps/terminal/terminal_view.dart';
+import 'package:workspace/presentation/apps/about/about_view.dart';
 
 class DesktopScreen extends StatefulWidget {
   const DesktopScreen({super.key});
@@ -171,6 +172,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                       Widget content;
                       if (appName == 'Terminal') {
                         content = const TerminalView();
+                      } else if (appName == 'About') {
+                        content = const AboutView();
                       } else {
                         content = Center(child: Text("$appName App"));
                       }
@@ -225,6 +228,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                       Widget content;
                       if (appName == 'Terminal') {
                         content = const TerminalView();
+                      } else if (appName == 'About') {
+                        content = const AboutView();
                       } else {
                         content = Center(child: Text("$appName App"));
                       }
