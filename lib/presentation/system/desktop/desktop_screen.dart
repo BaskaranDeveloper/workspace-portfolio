@@ -13,6 +13,8 @@ import 'widgets/desktop_icon.dart';
 import 'package:workspace/presentation/apps/terminal/terminal_view.dart';
 import 'package:workspace/presentation/apps/about/about_view.dart';
 
+import 'package:workspace/presentation/system/desktop/overlays/control_center.dart';
+
 class DesktopScreen extends StatefulWidget {
   const DesktopScreen({super.key});
 
@@ -27,6 +29,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
   // 2. Create the window manager
   final WindowManager _windowManager = WindowManager();
 
+  bool _isControlCenterOpen = false;
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +43,24 @@ class _DesktopScreenState extends State<DesktopScreen> {
     // Re-enable it when leaving the desktop (optional but good practice)
     BrowserContextMenu.enableContextMenu();
     super.dispose();
+  }
+
+  void _toggleControlCenter() {
+    setState(() {
+      _isControlCenterOpen = !_isControlCenterOpen;
+      // Close context menu if open
+      if (_isControlCenterOpen) {
+        _controller.clearMenu();
+      }
+    });
+  }
+
+  void _closeControlCenter() {
+    if (_isControlCenterOpen) {
+      setState(() {
+        _isControlCenterOpen = false;
+      });
+    }
   }
 
   @override
@@ -61,8 +83,10 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   onTap: () {
                     _controller.clearSelection();
                     _controller.clearMenu();
+                    _closeControlCenter();
                   },
                   onSecondaryTapUp: (details) {
+                    _closeControlCenter();
                     _controller.showMenu(details.globalPosition, [
                       MenuItemData(
                         label: 'New Folder',
@@ -110,8 +134,12 @@ class _DesktopScreenState extends State<DesktopScreen> {
               ..._controller.items.map((item) {
                 return DesktopIcon(
                   item: item,
-                  onTap: () => _controller.selectItem(item.id),
+                  onTap: () {
+                    _controller.selectItem(item.id);
+                    _closeControlCenter();
+                  },
                   onDoubleTap: () {
+                    _closeControlCenter();
                     // We will add window opening here later
                     _windowManager.openWindow(
                       WindowModel(
@@ -122,6 +150,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                     );
                   },
                   onSecondaryTap: () {
+                    _closeControlCenter();
                     _controller.showMenu(item.position + const Offset(50, 50), [
                       MenuItemData(
                         label: 'Open',
@@ -172,6 +201,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         .map((w) => w.title)
                         .toList(),
                     onAppTap: (appName) {
+                      _closeControlCenter();
                       Widget content;
                       if (appName == 'Terminal') {
                         content = const TerminalView();
@@ -213,13 +243,21 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         offset,
                         MediaQuery.of(context).size,
                       ),
-                      onFocus: () => _windowManager.bringToFront(window.id),
+                      onFocus: () {
+                        _windowManager.bringToFront(window.id);
+                        _closeControlCenter();
+                      },
                     );
                   }),
 
               // 5. System Bar (Top)
               if (!isAnyMaximized)
-                const Positioned(top: 0, left: 0, right: 0, child: SystemBar()),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: SystemBar(onControlCenterTap: _toggleControlCenter),
+                ),
 
               // 6. Dock (Rendered ON TOP of windows if NOT maximized)
               if (!isAnyMaximized)
@@ -232,6 +270,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         .map((w) => w.title)
                         .toList(),
                     onAppTap: (appName) {
+                      _closeControlCenter();
                       Widget content;
                       if (appName == 'Terminal') {
                         content = const TerminalView();
@@ -261,6 +300,30 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   left: _controller.menuPosition!.dx,
                   top: _controller.menuPosition!.dy,
                   child: ContextMenu(items: _controller.menuItems),
+                ),
+
+              // 8. Control Center Overlay
+              if (_isControlCenterOpen)
+                Positioned.fill(
+                  child: GestureDetector(
+                    onTap: _closeControlCenter,
+                    behavior: HitTestBehavior.translucent,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 38, // Below system bar
+                            right: 16,
+                            child: GestureDetector(
+                              onTap: () {}, // Prevent tap from closing
+                              child: const ControlCenter(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
             ],
           );

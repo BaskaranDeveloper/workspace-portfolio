@@ -13,7 +13,9 @@ class FullScreenManager {
         '''
         const el = document.documentElement;
         if (el.requestFullscreen) {
-          el.requestFullscreen();
+          el.requestFullscreen().catch((e) => {
+            console.log("Full screen denied:", e);
+          });
         } else if (el.webkitRequestFullscreen) {
           el.webkitRequestFullscreen();
         } else if (el.msRequestFullscreen) {
@@ -23,7 +25,7 @@ class FullScreenManager {
       ]);
       _isFullScreen = true;
     } catch (e) {
-      debugPrint('Error entering full screen: \$e');
+      debugPrint('Error entering full screen: $e');
     }
   }
 

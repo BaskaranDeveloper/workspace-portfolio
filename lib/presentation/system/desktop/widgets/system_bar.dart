@@ -3,9 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:workspace/presentation/system/utils/full_screen_manager.dart';
+import 'package:workspace/presentation/system/desktop/widgets/status_indicators/battery_indicator.dart';
+import 'package:workspace/presentation/system/desktop/widgets/status_indicators/network_indicator.dart';
+import 'package:workspace/presentation/system/desktop/widgets/system_menu.dart';
 
 class SystemBar extends StatefulWidget {
-  const SystemBar({super.key});
+  final VoidCallback? onControlCenterTap;
+
+  const SystemBar({super.key, this.onControlCenterTap});
 
   @override
   State<SystemBar> createState() => _SystemBarState();
@@ -91,12 +96,58 @@ class _SystemBarState extends State<SystemBar> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            _buildMenuText('File'),
-                            _buildMenuText('Edit'),
-                            _buildMenuText('View'),
-                            _buildMenuText('Go'),
-                            _buildMenuText('Window'),
-                            _buildMenuText('Help'),
+                            SystemMenu(
+                              label: 'File',
+                              entries: [
+                                MenuItem(label: 'New Window', onTap: () {}),
+                                MenuItem(label: 'New Folder', onTap: () {}),
+                                MenuDivider(),
+                                MenuItem(label: 'Close', onTap: () {}),
+                              ],
+                            ),
+                            SystemMenu(
+                              label: 'Edit',
+                              entries: [
+                                MenuItem(label: 'Undo', onTap: () {}),
+                                MenuItem(label: 'Redo', onTap: () {}),
+                                MenuDivider(),
+                                MenuItem(label: 'Cut', onTap: () {}),
+                                MenuItem(label: 'Copy', onTap: () {}),
+                                MenuItem(label: 'Paste', onTap: () {}),
+                              ],
+                            ),
+                            SystemMenu(
+                              label: 'View',
+                              entries: [
+                                MenuItem(
+                                  label: 'Toggle Full Screen',
+                                  onTap: _toggleFullScreen,
+                                ),
+                              ],
+                            ),
+                            SystemMenu(
+                              label: 'Go',
+                              entries: [
+                                MenuItem(label: 'Back', onTap: () {}),
+                                MenuItem(label: 'Forward', onTap: () {}),
+                              ],
+                            ),
+                            SystemMenu(
+                              label: 'Window',
+                              entries: [
+                                MenuItem(label: 'Minimize', onTap: () {}),
+                                MenuItem(label: 'Zoom', onTap: () {}),
+                              ],
+                            ),
+                            SystemMenu(
+                              label: 'Help',
+                              entries: [
+                                MenuItem(
+                                  label: 'About Workspace',
+                                  onTap: () {},
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -108,6 +159,7 @@ class _SystemBarState extends State<SystemBar> {
               // Right: Status
               Row(
                 children: [
+                  // Full Screen Toggle
                   GestureDetector(
                     onTap: _toggleFullScreen,
                     child: Icon(
@@ -119,18 +171,31 @@ class _SystemBarState extends State<SystemBar> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Icon(Icons.battery_full, color: Colors.white, size: 18),
+
+                  // Battery
+                  const BatteryIndicator(),
                   const SizedBox(width: 16),
-                  const Icon(Icons.wifi, color: Colors.white, size: 18),
+
+                  // Network
+                  const NetworkIndicator(),
                   const SizedBox(width: 16),
+
+                  // Search
                   const Icon(Icons.search, color: Colors.white, size: 18),
                   const SizedBox(width: 16),
-                  const Icon(
-                    Icons.control_camera,
-                    color: Colors.white,
-                    size: 18,
+
+                  // Control Center
+                  GestureDetector(
+                    onTap: widget.onControlCenterTap,
+                    child: const Icon(
+                      Icons.control_camera,
+                      color: Colors.white,
+                      size: 18,
+                    ),
                   ),
                   const SizedBox(width: 16),
+
+                  // Clock
                   Text(
                     _timeString,
                     style: const TextStyle(
@@ -143,20 +208,6 @@ class _SystemBarState extends State<SystemBar> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMenuText(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 13,
-          fontWeight: FontWeight.w400,
         ),
       ),
     );
