@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:workspace/app/theme/app_colors.dart';
 import 'package:workspace/presentation/system/boot/widgets/background_ripple.dart';
 import 'package:workspace/presentation/system/boot/widgets/boot_progress_bar.dart';
+import 'package:workspace/presentation/system/utils/full_screen_manager.dart';
 
 class BootScreen extends StatefulWidget {
   const BootScreen({super.key});
@@ -29,6 +30,9 @@ class _BootScreenState extends State<BootScreen>
     // Listen for animation completion
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
+        // Automatically enter full screen after boot
+        FullScreenManager.enterFullScreen();
+
         // Navigate to desktop (replace current route so user can't go back)
         context.go('/desktop');
       }

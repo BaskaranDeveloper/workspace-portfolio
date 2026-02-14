@@ -1,10 +1,8 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
-
 import 'dart:async';
-import 'dart:js' as js;
-
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:workspace/presentation/system/utils/full_screen_manager.dart';
 
 class SystemBar extends StatefulWidget {
   const SystemBar({super.key});
@@ -16,7 +14,6 @@ class SystemBar extends StatefulWidget {
 class _SystemBarState extends State<SystemBar> {
   late Timer _timer;
   late String _timeString;
-  bool _isFullScreen = false;
 
   @override
   void initState() {
@@ -48,22 +45,9 @@ class _SystemBarState extends State<SystemBar> {
   }
 
   void _toggleFullScreen() {
-    try {
-      if (_isFullScreen) {
-        js.context.callMethod('eval', [
-          'if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } else if (document.msExitFullscreen) { document.msExitFullscreen(); }',
-        ]);
-      } else {
-        js.context.callMethod('eval', [
-          'const el = document.documentElement; if (el.requestFullscreen) { el.requestFullscreen(); } else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); } else if (el.msRequestFullscreen) { el.msRequestFullscreen(); }',
-        ]);
-      }
-      setState(() {
-        _isFullScreen = !_isFullScreen;
-      });
-    } catch (e) {
-      debugPrint('Error toggling full screen: $e');
-    }
+    setState(() {
+      FullScreenManager.toggleFullScreen();
+    });
   }
 
   @override
@@ -127,7 +111,9 @@ class _SystemBarState extends State<SystemBar> {
                   GestureDetector(
                     onTap: _toggleFullScreen,
                     child: Icon(
-                      _isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                      FullScreenManager.isFullScreen
+                          ? Icons.fullscreen_exit
+                          : Icons.fullscreen,
                       color: Colors.white,
                       size: 18,
                     ),
