@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/window_model.dart';
+import 'package:workspace/app/theme/app_colors.dart';
 
 class WindowBase extends StatefulWidget {
   final WindowModel window;
@@ -112,7 +113,7 @@ class _WindowBaseState extends State<WindowBase>
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.backgroundPrimary,
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -135,7 +136,7 @@ class _WindowBaseState extends State<WindowBase>
                       child: Container(
                         height: 38,
                         decoration: const BoxDecoration(
-                          color: Color(0xFFEDECEB),
+                          color: AppColors.backgroundTertiary,
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(10),
                           ),
@@ -154,6 +155,7 @@ class _WindowBaseState extends State<WindowBase>
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
+                                  color: AppColors.textPrimary,
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                 ),

@@ -12,6 +12,7 @@ import 'desktop_controller.dart';
 import 'widgets/desktop_icon.dart';
 import 'package:workspace/presentation/apps/terminal/terminal_view.dart';
 import 'package:workspace/presentation/apps/about/about_view.dart';
+import 'package:workspace/presentation/apps/contact/contact_view.dart';
 
 import 'package:workspace/presentation/system/desktop/overlays/control_center.dart';
 
@@ -92,7 +93,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         label: 'New Folder',
                         icon: Icons.create_new_folder,
                         onTap: () {
-                          print('New Folder');
+                          // TODO: New Folder
                           _controller.clearMenu();
                         },
                       ),
@@ -100,7 +101,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         label: 'Change Wallpaper',
                         icon: Icons.wallpaper,
                         onTap: () {
-                          print('Wallpaper');
+                          // TODO: Change Wallpaper
                           _controller.clearMenu();
                         },
                       ),
@@ -108,7 +109,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         label: 'Refresh',
                         icon: Icons.refresh,
                         onTap: () {
-                          print('Refresh');
+                          // TODO: Refresh
                           _controller.clearMenu();
                         },
                       ),
@@ -207,6 +208,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         content = const TerminalView();
                       } else if (appName == 'About') {
                         content = const AboutView();
+                      } else if (appName == 'Contact') {
+                        content = const ContactView();
                       } else {
                         content = Center(child: Text("$appName App"));
                       }
@@ -276,6 +279,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         content = const TerminalView();
                       } else if (appName == 'About') {
                         content = const AboutView();
+                      } else if (appName == 'Contact') {
+                        content = const ContactView();
                       } else {
                         content = Center(child: Text("$appName App"));
                       }
