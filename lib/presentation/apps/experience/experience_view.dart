@@ -166,7 +166,8 @@ class ExperienceView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Row(
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
                         company,

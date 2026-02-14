@@ -168,6 +168,9 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   right: 0,
                   bottom: 20,
                   child: DockView(
+                    activeApps: _windowManager.windows
+                        .map((w) => w.title)
+                        .toList(),
                     onAppTap: (appName) {
                       Widget content;
                       if (appName == 'Terminal') {
@@ -215,7 +218,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   }),
 
               // 5. System Bar (Top)
-              const Positioned(top: 0, left: 0, right: 0, child: SystemBar()),
+              if (!isAnyMaximized)
+                const Positioned(top: 0, left: 0, right: 0, child: SystemBar()),
 
               // 6. Dock (Rendered ON TOP of windows if NOT maximized)
               if (!isAnyMaximized)
@@ -224,6 +228,9 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   right: 0,
                   bottom: 20,
                   child: DockView(
+                    activeApps: _windowManager.windows
+                        .map((w) => w.title)
+                        .toList(),
                     onAppTap: (appName) {
                       Widget content;
                       if (appName == 'Terminal') {

@@ -31,9 +31,12 @@ class WindowManager extends ChangeNotifier {
         screenSize.width - window.size.width,
       );
 
-      // Y: Between TopBar (30) and ScreenHeight - Dock (90)
-      // Note: We allow partial overlap with Dock, but not total disappearance
-      double clampedY = newPos.dy.clamp(30, screenSize.height - 50);
+      // Check if any window is maximized to decide top clamping
+      final isAnyMaximized = windows.any((w) => w.isMaximized);
+      double topClamp = isAnyMaximized ? 0 : 30;
+
+      // Y: Between TopBoundary and ScreenHeight - Dock
+      double clampedY = newPos.dy.clamp(topClamp, screenSize.height - 50);
 
       windows[index].position = Offset(clampedX, clampedY);
       notifyListeners();
@@ -44,6 +47,7 @@ class WindowManager extends ChangeNotifier {
     final index = windows.indexWhere((w) => w.id == id);
     if (index != -1) {
       final window = windows.removeAt(index);
+      window.isMinimized = false; // Restore if it was minimized
       windows.add(window); // move to end of list top of stack
       notifyListeners();
     }

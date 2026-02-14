@@ -5,7 +5,12 @@ import 'widgets/dock_item.dart';
 
 class DockView extends StatefulWidget {
   final Function(String appName) onAppTap;
-  const DockView({super.key, required this.onAppTap});
+  final List<String> activeApps;
+  const DockView({
+    super.key,
+    required this.onAppTap,
+    this.activeApps = const [],
+  });
 
   @override
   State<DockView> createState() => _DockViewState();
@@ -91,6 +96,9 @@ class _DockViewState extends State<DockView> {
                         color: _items[index]['color'],
                         label: _items[index]['label'],
                         size: _calculateSize(index),
+                        isActive: widget.activeApps.contains(
+                          _items[index]['label'],
+                        ),
                         duration: _mouseX == null
                             ? const Duration(milliseconds: 300)
                             : Duration.zero,

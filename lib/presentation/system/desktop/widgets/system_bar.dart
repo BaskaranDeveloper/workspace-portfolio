@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'dart:async';
+import 'dart:js' as js;
 
 import 'package:intl/intl.dart';
 
@@ -15,6 +16,7 @@ class SystemBar extends StatefulWidget {
 class _SystemBarState extends State<SystemBar> {
   late Timer _timer;
   late String _timeString;
+  bool _isFullScreen = false;
 
   @override
   void initState() {
@@ -45,6 +47,25 @@ class _SystemBarState extends State<SystemBar> {
     return DateFormat('E MMM d  HH:mm').format(dateTime);
   }
 
+  void _toggleFullScreen() {
+    try {
+      if (_isFullScreen) {
+        js.context.callMethod('eval', [
+          'if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } else if (document.msExitFullscreen) { document.msExitFullscreen(); }',
+        ]);
+      } else {
+        js.context.callMethod('eval', [
+          'const el = document.documentElement; if (el.requestFullscreen) { el.requestFullscreen(); } else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); } else if (el.msRequestFullscreen) { el.msRequestFullscreen(); }',
+        ]);
+      }
+      setState(() {
+        _isFullScreen = !_isFullScreen;
+      });
+    } catch (e) {
+      debugPrint('Error toggling full screen: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRect(
@@ -67,31 +88,51 @@ class _SystemBarState extends State<SystemBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Left: Menus
-              Row(
-                children: [
-                  const Icon(Icons.apple, color: Colors.white, size: 18),
-                  const SizedBox(width: 20),
-                  const Text(
-                    'Workspace',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+              Expanded(
+                child: Row(
+                  children: [
+                    const Icon(Icons.apple, color: Colors.white, size: 18),
+                    const SizedBox(width: 20),
+                    const Text(
+                      'Workspace',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 20),
-                  _buildMenuText('File'),
-                  _buildMenuText('Edit'),
-                  _buildMenuText('View'),
-                  _buildMenuText('Go'),
-                  _buildMenuText('Window'),
-                  _buildMenuText('Help'),
-                ],
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            _buildMenuText('File'),
+                            _buildMenuText('Edit'),
+                            _buildMenuText('View'),
+                            _buildMenuText('Go'),
+                            _buildMenuText('Window'),
+                            _buildMenuText('Help'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
 
               // Right: Status
               Row(
                 children: [
+                  GestureDetector(
+                    onTap: _toggleFullScreen,
+                    child: Icon(
+                      _isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
                   const Icon(Icons.battery_full, color: Colors.white, size: 18),
                   const SizedBox(width: 16),
                   const Icon(Icons.wifi, color: Colors.white, size: 18),

@@ -30,25 +30,33 @@ class _WindowBaseState extends State<WindowBase>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 500), // Slightly longer for flow
     );
-    //pop up
-    _scaleAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.85,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutQuint));
+
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeOutBack,
-      ), // Bouncy open
+        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+      ),
     );
-    _opacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInQuad));
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 30), // Start slightly below
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutQuint));
+
     _controller.forward();
   }
 
@@ -75,10 +83,10 @@ class _WindowBaseState extends State<WindowBase>
         : widget.window.size.width;
 
     final double currentHeight = isMaximized
-        ? screenSize.height - 28
+        ? screenSize.height
         : widget.window.size.height;
 
-    final double currentTop = isMaximized ? 28 : widget.window.position.dy;
+    final double currentTop = isMaximized ? 0 : widget.window.position.dy;
 
     final double currentLeft = isMaximized ? 0 : widget.window.position.dx;
     return Positioned(
@@ -88,100 +96,110 @@ class _WindowBaseState extends State<WindowBase>
       height: currentHeight,
       child: GestureDetector(
         onTapDown: (_) => widget.onFocus(),
-        child: ScaleTransition(
-          scale: _scaleAnimation,
-          child: FadeTransition(
-            opacity: _opacityAnimation,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.2),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return Transform.translate(
+              offset: _slideAnimation.value,
+              child: Opacity(
+                opacity: _opacityAnimation.value,
+                child: Transform.scale(
+                  scale: _scaleAnimation.value,
+                  child: child,
+                ),
               ),
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      // Title Bar
-                      GestureDetector(
-                        onPanUpdate: (details) {
-                          final newPos = widget.window.position + details.delta;
-                          widget.onDrag(newPos);
-                        },
-                        child: Container(
-                          height: 38,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFEDECEB),
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(10),
-                            ),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Row(
-                            children: [
-                              _buildBtn(Colors.red[400]!, _handleClose),
-                              const SizedBox(width: 8),
-                              _buildBtn(Colors.amber[400]!, widget.onMinimize),
-                              const SizedBox(width: 8),
-                              _buildBtn(Colors.green[400]!, widget.onMaximize),
-                              Expanded(
-                                child: Text(
-                                  widget.window.title,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 50),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Content
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            bottom: Radius.circular(10),
-                          ),
-                          child: widget.window.content,
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Resize Handle
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: GestureDetector(
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    // Title Bar
+                    GestureDetector(
                       onPanUpdate: (details) {
-                        final newWidth =
-                            widget.window.size.width + details.delta.dx;
-                        final newHeight =
-                            widget.window.size.height + details.delta.dy;
-                        widget.onResize(Size(newWidth, newHeight));
+                        final newPos = widget.window.position + details.delta;
+                        widget.onDrag(newPos);
                       },
                       child: Container(
-                        width: 20,
-                        height: 20,
-                        color: Colors.transparent,
-                        child: const Icon(
-                          Icons.north_west,
-                          size: 12,
-                          color: Colors.grey,
+                        height: 38,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFEDECEB),
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(10),
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                            _buildBtn(Colors.red[400]!, _handleClose),
+                            const SizedBox(width: 8),
+                            _buildBtn(Colors.amber[400]!, widget.onMinimize),
+                            const SizedBox(width: 8),
+                            _buildBtn(Colors.green[400]!, widget.onMaximize),
+                            Expanded(
+                              child: Text(
+                                widget.window.title,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 50),
+                          ],
                         ),
                       ),
                     ),
+                    // Content
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(10),
+                        ),
+                        child: widget.window.content,
+                      ),
+                    ),
+                  ],
+                ),
+                // Resize Handle
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: GestureDetector(
+                    onPanUpdate: (details) {
+                      final newWidth =
+                          widget.window.size.width + details.delta.dx;
+                      final newHeight =
+                          widget.window.size.height + details.delta.dy;
+                      widget.onResize(Size(newWidth, newHeight));
+                    },
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      color: Colors.transparent,
+                      child: const Icon(
+                        Icons.north_west,
+                        size: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
