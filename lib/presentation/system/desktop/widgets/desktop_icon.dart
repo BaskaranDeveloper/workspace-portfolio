@@ -53,10 +53,12 @@ class DesktopIcon extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: item.isSelected ? Colors.white.withOpacity(0.2) : null,
-              borderRadius: BorderRadius.circular(8),
+              color: item.isSelected
+                  ? Colors.white.withValues(alpha: 0.2)
+                  : null,
+              borderRadius: BorderRadius.circular(4),
               border: item.isSelected
-                  ? Border.all(color: Colors.white.withOpacity(0.3))
+                  ? Border.all(color: Colors.white.withValues(alpha: 0.3))
                   : null,
             ),
             child: Icon(item.icon, size: 40, color: item.color),

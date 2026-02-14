@@ -16,9 +16,9 @@ class ContextMenu extends StatelessWidget {
         child: Container(
           width: 200,
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.white.withOpacity(0.2)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black26,
@@ -41,7 +41,7 @@ class ContextMenu extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: item.onTap,
-        hoverColor: Colors.blueAccent.withOpacity(0.5),
+        hoverColor: Colors.blueAccent.withValues(alpha: 0.5),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(

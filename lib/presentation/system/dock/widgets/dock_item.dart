@@ -4,8 +4,8 @@ class DockItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  final double size; // Now receives size directly from parent
-  final Duration duration; // Animation duration
+  final double size;
+  final Duration duration;
 
   final bool isActive;
 
@@ -41,7 +41,7 @@ class DockItem extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -52,7 +52,6 @@ class DockItem extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 4),
-        // Active Indicator Dot
         AnimatedOpacity(
           duration: const Duration(milliseconds: 300),
           opacity: isActive ? 1.0 : 0.0,

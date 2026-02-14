@@ -20,16 +20,19 @@ class _ControlCenterState extends State<ControlCenter> {
       width: 320,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9), // Glassmorphism base
+        color: Colors.white.withValues(alpha: 0.9), // Glassmorphism base
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
         ],
-        border: Border.all(color: Colors.white.withOpacity(0.5), width: 0.5),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.5),
+          width: 0.5,
+        ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -43,7 +46,7 @@ class _ControlCenterState extends State<ControlCenter> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
@@ -119,7 +122,7 @@ class _ControlCenterState extends State<ControlCenter> {
           Container(
             height: 60,
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -217,8 +220,8 @@ class _ControlCenterState extends State<ControlCenter> {
         height: 60,
         decoration: BoxDecoration(
           color: value
-              ? Colors.white.withOpacity(0.8)
-              : Colors.black.withOpacity(0.05),
+              ? Colors.white.withValues(alpha: 0.8)
+              : Colors.black.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
@@ -251,7 +254,7 @@ class _ControlCenterState extends State<ControlCenter> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.05),
+        color: Colors.black.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

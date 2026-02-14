@@ -61,18 +61,18 @@ class _DockViewState extends State<DockView> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Colors.white.withOpacity(0.3),
-                            Colors.white.withOpacity(0.1),
+                            Colors.white.withValues(alpha: 0.3),
+                            Colors.white.withValues(alpha: 0.1),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(
                           width: 1.5,
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withValues(alpha: 0.3),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),

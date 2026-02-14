@@ -91,7 +91,7 @@ class _BootScreenState extends State<BootScreen>
                 // 3. Progress Bar & Text
                 AnimatedBuilder(
                   animation: _controller,
-                  builder: (_, __) {
+                  builder: (context, child) {
                     final percentage = (_progress.value * 100).toInt();
 
                     return Column(
