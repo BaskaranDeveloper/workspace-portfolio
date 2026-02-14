@@ -13,6 +13,9 @@ import 'widgets/desktop_icon.dart';
 import 'package:workspace/presentation/apps/terminal/terminal_view.dart';
 import 'package:workspace/presentation/apps/about/about_view.dart';
 import 'package:workspace/presentation/apps/contact/contact_view.dart';
+import 'package:workspace/presentation/apps/projects/projects_view.dart';
+import 'package:workspace/presentation/apps/experience/experience_view.dart';
+import 'package:workspace/presentation/apps/education/education_view.dart';
 
 import 'package:workspace/presentation/system/desktop/overlays/control_center.dart';
 
@@ -141,12 +144,21 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   },
                   onDoubleTap: () {
                     _closeControlCenter();
-                    // We will add window opening here later
+                    Widget content;
+                    if (item.label == 'Projects') {
+                      content = const ProjectsView();
+                    } else {
+                      content = Center(child: Text("App: ${item.label}"));
+                    }
+
                     _windowManager.openWindow(
                       WindowModel(
                         id: item.id,
                         title: item.label,
-                        content: Center(child: Text("App: ${item.label}")),
+                        content: content,
+                        size: item.label == 'Projects'
+                            ? const Size(900, 600)
+                            : const Size(600, 400),
                       ),
                     );
                   },
@@ -210,6 +222,12 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         content = const AboutView();
                       } else if (appName == 'Contact') {
                         content = const ContactView();
+                      } else if (appName == 'Projects') {
+                        content = const ProjectsView();
+                      } else if (appName == 'Experience') {
+                        content = const ExperienceView();
+                      } else if (appName == 'Education') {
+                        content = const EducationView();
                       } else {
                         content = Center(child: Text("$appName App"));
                       }
@@ -281,6 +299,12 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         content = const AboutView();
                       } else if (appName == 'Contact') {
                         content = const ContactView();
+                      } else if (appName == 'Projects') {
+                        content = const ProjectsView();
+                      } else if (appName == 'Experience') {
+                        content = const ExperienceView();
+                      } else if (appName == 'Education') {
+                        content = const EducationView();
                       } else {
                         content = Center(child: Text("$appName App"));
                       }

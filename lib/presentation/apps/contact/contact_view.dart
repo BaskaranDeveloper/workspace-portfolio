@@ -101,7 +101,7 @@ class _ContactViewState extends State<ContactView> {
                         value: 'linkedin.com/in/baskaran-m',
                         color: Colors.blueAccent,
                         onTap: () => _launchUrl(
-                          'https://www.linkedin.com/in/baskaran1428  ',
+                          'https://www.linkedin.com/in/baskaran1428',
                         ),
                       ),
                     ],
