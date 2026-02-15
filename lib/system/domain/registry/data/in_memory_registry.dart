@@ -38,7 +38,7 @@ class InMemoryRegistry implements AppRegistry {
       id: 'terminal',
       title: 'Terminal',
       icon: Icons.terminal,
-      themeColor: Colors.black,
+      themeColor: Colors.black, // Cyber Blue
       desktopBuilder: (context) => const TerminalView(),
       mobileBuilder: (context) => const MobileTerminal(),
     ),
