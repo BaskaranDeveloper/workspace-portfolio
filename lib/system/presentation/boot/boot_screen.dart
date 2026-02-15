@@ -33,8 +33,13 @@ class _BootScreenState extends State<BootScreen>
         // Automatically enter full screen after boot
         FullScreenManager.enterFullScreen();
 
-        // Navigate to desktop (replace current route so user can't go back)
-        context.go('/desktop');
+        // Navigate based on screen size
+        final double screenWidth = MediaQuery.of(context).size.width;
+        if (screenWidth > 800) {
+          context.go('/desktop');
+        } else {
+          context.go('/mobile');
+        }
       }
     });
 

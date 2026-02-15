@@ -157,54 +157,60 @@ class _SystemBarState extends State<SystemBar> {
               ),
 
               // Right: Status
-              Row(
-                children: [
-                  // Full Screen Toggle
-                  GestureDetector(
-                    onTap: _toggleFullScreen,
-                    child: Icon(
-                      FullScreenManager.isFullScreen
-                          ? Icons.fullscreen_exit
-                          : Icons.fullscreen,
-                      color: Colors.white,
-                      size: 18,
-                    ),
+              Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  reverse: true, // Scroll from right
+                  child: Row(
+                    children: [
+                      // Full Screen Toggle
+                      GestureDetector(
+                        onTap: _toggleFullScreen,
+                        child: Icon(
+                          FullScreenManager.isFullScreen
+                              ? Icons.fullscreen_exit
+                              : Icons.fullscreen,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+
+                      // Battery
+                      const BatteryIndicator(),
+                      const SizedBox(width: 16),
+
+                      // Network
+                      const NetworkIndicator(),
+                      const SizedBox(width: 16),
+
+                      // Search
+                      const Icon(Icons.search, color: Colors.white, size: 18),
+                      const SizedBox(width: 16),
+
+                      // Control Center
+                      GestureDetector(
+                        onTap: widget.onControlCenterTap,
+                        child: const Icon(
+                          Icons.control_camera,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+
+                      // Clock
+                      Text(
+                        _timeString,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 16),
-
-                  // Battery
-                  const BatteryIndicator(),
-                  const SizedBox(width: 16),
-
-                  // Network
-                  const NetworkIndicator(),
-                  const SizedBox(width: 16),
-
-                  // Search
-                  const Icon(Icons.search, color: Colors.white, size: 18),
-                  const SizedBox(width: 16),
-
-                  // Control Center
-                  GestureDetector(
-                    onTap: widget.onControlCenterTap,
-                    child: const Icon(
-                      Icons.control_camera,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-
-                  // Clock
-                  Text(
-                    _timeString,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),

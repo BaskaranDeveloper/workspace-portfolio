@@ -5,6 +5,12 @@ class AppTheme {
   static final ThemeData dark = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: AppColors.background,
     primaryColor: AppColors.primary,
-    // Add more theme config
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+      },
+    ),
   );
 }

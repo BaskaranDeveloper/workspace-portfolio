@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod
+import 'package:go_router/go_router.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
 import 'package:workspace/system/presentation/desktop/models/menu_item_data.dart';
 import 'package:workspace/system/presentation/dock/dock_view.dart';
@@ -10,24 +12,19 @@ import 'widgets/system_bar.dart';
 import 'context_menu.dart';
 import 'desktop_controller.dart';
 import 'widgets/desktop_icon.dart';
-import 'package:workspace/features/terminal/presentation/terminal_view.dart';
-import 'package:workspace/features/about/presentation/about_view.dart';
-import 'package:workspace/features/contact/presentation/contact_view.dart';
-import 'package:workspace/features/projects/presentation/projects_view.dart';
-import 'package:workspace/features/experience/presentation/experience_view.dart';
-import 'package:workspace/features/education/presentation/education_view.dart';
-import 'package:workspace/features/resume/presentation/resume_view.dart';
+import 'package:workspace/system/domain/registry/registry_provider.dart'; // Import provider
 
 import 'package:workspace/system/presentation/desktop/overlays/control_center.dart';
 
-class DesktopScreen extends StatefulWidget {
+// Convert to ConsumerStatefulWidget
+class DesktopScreen extends ConsumerStatefulWidget {
   const DesktopScreen({super.key});
 
   @override
-  State<DesktopScreen> createState() => _DesktopScreenState();
+  ConsumerState<DesktopScreen> createState() => _DesktopScreenState();
 }
 
-class _DesktopScreenState extends State<DesktopScreen> {
+class _DesktopScreenState extends ConsumerState<DesktopScreen> {
   // 1. Create the controller
   final DesktopController _controller = DesktopController();
 
@@ -70,6 +67,19 @@ class _DesktopScreenState extends State<DesktopScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // 1. Responsive Redirection
+    final double screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < 800) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go('/mobile');
+      });
+      return const SizedBox.shrink();
+    }
+
+    // 2. Fetch apps from registry
+    final appRegistry = ref.watch(appRegistryProvider);
+    final dockApps = appRegistry.apps.where((app) => app.showInDock).toList();
+
     return Scaffold(
       // 3. Wrap body in ListenableBuilder to rebuild when controller changes
       body: ListenableBuilder(
@@ -145,27 +155,38 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   },
                   onDoubleTap: () {
                     _closeControlCenter();
-                    Widget content;
-                    if (item.label == 'Projects') {
-                      content = const ProjectsView();
-                    } else if (item.label == 'Resume') {
-                      content = const ResumeView();
-                    } else {
-                      content = Center(child: Text("App: ${item.label}"));
-                    }
 
-                    _windowManager.openWindow(
-                      WindowModel(
-                        id: item.id,
-                        title: item.label,
-                        content: content,
-                        size: item.label == 'Projects'
-                            ? const Size(900, 600)
-                            : item.label == 'Resume'
-                            ? const Size(820, 1100) // Approx A4 ratio + padding
-                            : const Size(600, 400),
-                      ),
+                    // Try to find matching app in registry by label (fragile but works for migration)
+                    // Ideally DesktopItems should link by ID
+                    final app = appRegistry.apps.cast<dynamic>().firstWhere(
+                      (a) => a.title == item.label,
+                      orElse: () => null,
                     );
+
+                    if (app != null) {
+                      _windowManager.openWindow(
+                        WindowModel(
+                          id: app.id,
+                          title: app.title,
+                          content: app.desktopBuilder(context),
+                          size: app.id == 'resume'
+                              ? const Size(820, 1100)
+                              : app.id == 'projects'
+                              ? const Size(900, 600)
+                              : const Size(600, 400),
+                        ),
+                      );
+                    } else {
+                      // Files or other items
+                      _windowManager.openWindow(
+                        WindowModel(
+                          id: item.id,
+                          title: item.label,
+                          content: Center(child: Text("File: ${item.label}")),
+                          size: const Size(600, 400),
+                        ),
+                      );
+                    }
                   },
                   onSecondaryTap: () {
                     _closeControlCenter();
@@ -174,15 +195,35 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         label: 'Open',
                         icon: Icons.open_in_new,
                         onTap: () {
-                          _windowManager.openWindow(
-                            WindowModel(
-                              id: item.id,
-                              title: item.label,
-                              content: Center(
-                                child: Text("App: ${item.label}"),
+                          // Same open logic as double tap
+                          final app = appRegistry.apps
+                              .cast<dynamic>()
+                              .firstWhere(
+                                (a) => a.title == item.label,
+                                orElse: () => null,
+                              );
+
+                          if (app != null) {
+                            _windowManager.openWindow(
+                              WindowModel(
+                                id: app.id,
+                                title: app.title,
+                                content: app.desktopBuilder(context),
+                                size: const Size(600, 400),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            _windowManager.openWindow(
+                              WindowModel(
+                                id: item.id,
+                                title: item.label,
+                                content: Center(
+                                  child: Text("File: ${item.label}"),
+                                ),
+                                size: const Size(600, 400),
+                              ),
+                            );
+                          }
                           _controller.clearMenu();
                         },
                       ),
@@ -215,34 +256,18 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   right: 0,
                   bottom: 20,
                   child: DockView(
+                    dockApps: dockApps,
                     activeApps: _windowManager.windows
                         .map((w) => w.title)
                         .toList(),
-                    onAppTap: (appName) {
+                    onAppTap: (app) {
                       _closeControlCenter();
-                      Widget content;
-                      if (appName == 'Terminal') {
-                        content = const TerminalView();
-                      } else if (appName == 'About') {
-                        content = const AboutView();
-                      } else if (appName == 'Contact') {
-                        content = const ContactView();
-                      } else if (appName == 'Projects') {
-                        content = const ProjectsView();
-                      } else if (appName == 'Experience') {
-                        content = const ExperienceView();
-                      } else if (appName == 'Education') {
-                        content = const EducationView();
-                      } else {
-                        content = Center(child: Text("$appName App"));
-                      }
-
                       _windowManager.openWindow(
                         WindowModel(
-                          id: 'app_$appName',
-                          title: appName,
-                          content: content,
-                          size: appName == 'Terminal'
+                          id: 'app_${app.id}',
+                          title: app.title,
+                          content: app.desktopBuilder(context),
+                          size: app.id == 'terminal'
                               ? const Size(600, 400)
                               : const Size(600, 400),
                         ),
@@ -292,36 +317,25 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   right: 0,
                   bottom: 20,
                   child: DockView(
+                    dockApps: dockApps,
                     activeApps: _windowManager.windows
                         .map((w) => w.title)
                         .toList(),
-                    onAppTap: (appName) {
+                    onAppTap: (app) {
                       _closeControlCenter();
-                      Widget content;
-                      if (appName == 'Terminal') {
-                        content = const TerminalView();
-                      } else if (appName == 'About') {
-                        content = const AboutView();
-                      } else if (appName == 'Contact') {
-                        content = const ContactView();
-                      } else if (appName == 'Projects') {
-                        content = const ProjectsView();
-                      } else if (appName == 'Experience') {
-                        content = const ExperienceView();
-                      } else if (appName == 'Education') {
-                        content = const EducationView();
-                      } else {
-                        content = Center(child: Text("$appName App"));
-                      }
-
                       _windowManager.openWindow(
                         WindowModel(
-                          id: 'app_$appName',
-                          title: appName,
-                          content: content,
-                          size: appName == 'Terminal'
+                          id: 'app_${app.id}',
+                          title: app.title,
+                          content: app.desktopBuilder(context),
+                          size: app.id == 'terminal' || app.id == 'settings'
                               ? const Size(600, 400)
-                              : const Size(600, 400),
+                              : app.id == 'resume'
+                              ? const Size(820, 1100)
+                              : const Size(
+                                  900,
+                                  600,
+                                ), // Default large size for projects/etc
                         ),
                       );
                     },
