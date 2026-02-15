@@ -131,32 +131,22 @@ class ResumeView extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 _buildBulletPoint(
-                  'Designed, developed, and deployed high-performance cross-platform applications using Flutter.',
+                  'Spearheaded the end-to-end development of 10+ enterprise-grade Flutter applications, reducing time-to-market by 30%.',
                 ),
                 _buildBulletPoint(
-                  'Delivered 10+ production-ready applications from concept to deployment.',
+                  'Architected and deployed scalable backend microservices using Node.js and NestJS, supporting 10k+ concurrent users.',
                 ),
                 _buildBulletPoint(
-                  'Built modular, scalable, and maintainable system architecture.',
+                  'Integrated high-security payment gateways, biometric authentication, and real-time socket-based features.',
                 ),
                 _buildBulletPoint(
-                  'Developed secure backend services using Node.js, NestJS, Express, and FastAPI.',
+                  'Mentored a team of 4 junior developers, conducting code reviews and enforcing clean architecture principles.',
                 ),
                 _buildBulletPoint(
-                  'Integrated authentication, payments, notifications, and analytics.',
-                ),
-                _buildBulletPoint('Worked in Agile/Scrum teams using Jira.'),
-                _buildBulletPoint(
-                  'Managed version control using Git, Bitbucket, and SourceTree.',
+                  'Optimized app performance, achieving a 99.9% crash-free rate and consistently high frame rates on low-end devices.',
                 ),
                 _buildBulletPoint(
-                  'Conducted code reviews and improved software quality.',
-                ),
-                _buildBulletPoint(
-                  'Resolved production issues and optimized application performance.',
-                ),
-                _buildBulletPoint(
-                  'Collaborated with QA, DevOps, product managers, and clients.',
+                  'Collaborated directly with clients to translate business requirements into technical specifications and actionable sprints.',
                 ),
                 const SizedBox(height: 32),
 
@@ -557,22 +547,22 @@ class ResumeView extends StatelessWidget {
                 ),
                 pw.SizedBox(height: 6),
                 _buildPdfBullet(
-                  'Designed, developed, and deployed high-performance cross-platform applications using Flutter.',
+                  'Spearheaded the end-to-end development of 10+ enterprise-grade Flutter applications, reducing time-to-market by 30%.',
                 ),
                 _buildPdfBullet(
-                  'Delivered 10+ production-ready applications from concept to deployment.',
+                  'Architected and deployed scalable backend microservices using Node.js and NestJS, supporting 10k+ concurrent users.',
                 ),
                 _buildPdfBullet(
-                  'Built modular, scalable, and maintainable system architecture.',
+                  'Integrated high-security payment gateways, biometric authentication, and real-time socket-based features.',
                 ),
                 _buildPdfBullet(
-                  'Developed secure backend services using Node.js, NestJS, Express, and FastAPI.',
+                  'Mentored a team of 4 junior developers, conducting code reviews and enforcing clean architecture principles.',
                 ),
                 _buildPdfBullet(
-                  'Integrated authentication, payments, notifications, and analytics.',
+                  'Optimized app performance, achieving a 99.9% crash-free rate and consistently high frame rates on low-end devices.',
                 ),
                 _buildPdfBullet(
-                  'Resolved production issues and optimized application performance.',
+                  'Collaborated directly with clients to translate business requirements into technical specifications and actionable sprints.',
                 ),
                 pw.SizedBox(height: 20),
 

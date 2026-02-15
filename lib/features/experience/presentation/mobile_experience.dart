@@ -40,7 +40,7 @@ class MobileExperience extends StatelessWidget {
               title: 'Senior Software Engineer\nFlutter & Full-Stack',
               company: 'Trirope Technologies',
               duration: 'August 2022 – Present',
-              location: 'Villupuram, Tamil Nadu',
+              location: 'Chennai, Tamil Nadu',
               isCurrent: true,
               skills: ['Flutter', 'Node.js', 'NestJS', 'FastAPI', 'AWS'],
               points: [

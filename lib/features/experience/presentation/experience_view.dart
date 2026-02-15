@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
+import 'package:workspace/shared_ui/widgets/fun_fact_card.dart';
 import 'package:workspace/shared_ui/widgets/glass_container.dart';
 
 class ExperienceView extends StatefulWidget {
@@ -54,7 +55,7 @@ class _ExperienceViewState extends State<ExperienceView>
             _buildAnimatedItem(
               1,
               Text(
-                'A timeline of my professional growth and technical contributions.',
+                'A timeline of my professional growth, technical contributions, and impact.',
                 style: TextStyle(
                   color: AppColors.textPrimary.withValues(alpha: 0.6),
                   fontSize: 16,
@@ -69,7 +70,7 @@ class _ExperienceViewState extends State<ExperienceView>
                     'Senior Software Engineer | Flutter & Full-Stack Developer',
                 company: 'Trirope Technologies Pvt. Ltd.',
                 duration: 'August 2022 – Present',
-                location: 'Villupuram, Tamil Nadu (On-site)',
+                location: 'Chennai, Tamil Nadu (On-site)',
                 isCurrent: true,
                 skills: [
                   'Flutter',
@@ -79,41 +80,21 @@ class _ExperienceViewState extends State<ExperienceView>
                   'FastAPI',
                   'Firebase',
                   'AWS',
+                  'Docker',
                 ],
                 points: [
-                  'Lead the design and development of 10+ high-performance cross-platform applications using Flutter.',
-                  'Architected scalable and maintainable system architectures across mobile and web platforms.',
-                  'Developed secure and robust backend services using Node.js, NestJS, and FastAPI.',
-                  'Built and integrated complex features: secure payments, real-time notifications, and advanced analytics.',
-                  'Driving Agile/Scrum processes and managing version control with Git and Bitbucket.',
-                  'Mentoring junior developers through code reviews and technical guidance.',
-                  'Optimizing production performance and resolving critical issues for enterprise clients.',
+                  'Spearheaded the end-to-end development of 10+ enterprise-grade Flutter applications, reducing time-to-market by 30% through reusable component libraries.',
+                  'Architected and deployed scalable backend microservices using Node.js and NestJS, supporting 10k+ concurrent users.',
+                  'Integrated high-security payment gateways, biometric authentication, and real-time socket-based features.',
+                  'Mentored a team of 4 junior developers, conducting code reviews and enforcing clean architecture principles.',
+                  'Optimized app performance, achieving a 99.9% crash-free rate and consistently high frame rates on low-end devices.',
+                  'Collaborated directly with clients to translate business requirements into technical specifications and actionable sprints.',
                 ],
               ),
             ),
-            const SizedBox(height: 32),
-            _buildAnimatedItem(
-              3,
-              _buildTimelineItem(
-                title: 'B.E. Computer Science Engineering',
-                company: 'Anna University',
-                duration: '2017 – 2021',
-                location: 'Tamil Nadu, India',
-                isCurrent: false,
-                skills: [
-                  'Data Structures',
-                  'Algorithms',
-                  'C++',
-                  'Java',
-                  'Cyber Security',
-                ],
-                points: [
-                  'Foundational training in data structures, algorithms, and software engineering principles.',
-                  'Specialized in mobile application development and system security.',
-                  'Completed various technical certifications including Ethical Hacking.',
-                ],
-              ),
-            ),
+            const SizedBox(height: 48),
+            _buildAnimatedItem(3, const FunFactCard()),
+            const SizedBox(height: 24),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
+import 'package:workspace/shared_ui/widgets/fun_fact_card.dart';
 import 'package:workspace/shared_ui/widgets/glass_container.dart';
 
 class EducationView extends StatefulWidget {
@@ -87,6 +88,9 @@ class _EducationViewState extends State<EducationView>
                     'The foundational years. Learned that Mitochondria is the powerhouse of the cell (still waiting to use that info). Scored 808/1200 - enough to make my parents slightly proud but mostly relieved.',
               ),
             ),
+            const SizedBox(height: 48),
+            _buildAnimatedItem(4, const FunFactCard()),
+            const SizedBox(height: 24),
           ],
         ),
       ),
