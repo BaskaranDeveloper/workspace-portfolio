@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../system/presentation/boot/boot_screen.dart';
 import '../../system/presentation/desktop/desktop_screen.dart';
@@ -19,13 +20,37 @@ class AppRouter {
         routes: [
           GoRoute(
             path: '/mobile',
-            builder: (context, state) => const MobileHomeScreen(),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: MobileHomeScreen()),
           ),
           GoRoute(
             path: '/mobile/apps/:appId',
-            builder: (context, state) {
+            pageBuilder: (context, state) {
               final appId = state.pathParameters['appId']!;
-              return MobileAppWrapper(appId: appId);
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: MobileAppWrapper(appId: appId),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                      const begin = 0.95;
+                      const end = 1.0;
+                      const curve = Curves.easeOutExpo;
+
+                      var scaleAnimation = Tween(
+                        begin: begin,
+                        end: end,
+                      ).chain(CurveTween(curve: curve)).animate(animation);
+
+                      return FadeTransition(
+                        opacity: animation,
+                        child: ScaleTransition(
+                          scale: scaleAnimation,
+                          child: child,
+                        ),
+                      );
+                    },
+                transitionDuration: const Duration(milliseconds: 300),
+              );
             },
           ),
         ],
