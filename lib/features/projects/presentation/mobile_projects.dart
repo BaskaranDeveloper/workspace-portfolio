@@ -158,7 +158,7 @@ class _MobileProjectsState extends State<MobileProjects>
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -171,7 +171,7 @@ class _MobileProjectsState extends State<MobileProjects>
           // Header
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            color: accentColor.withOpacity(0.1),
+            color: accentColor.withValues(alpha: 0.1),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -186,7 +186,7 @@ class _MobileProjectsState extends State<MobileProjects>
                 Text(
                   project['role'],
                   style: TextStyle(
-                    color: AppColors.textPrimary.withOpacity(0.6),
+                    color: AppColors.textPrimary.withValues(alpha: 0.6),
                     fontSize: 11,
                     fontStyle: FontStyle.italic,
                   ),
@@ -213,7 +213,7 @@ class _MobileProjectsState extends State<MobileProjects>
                 Text(
                   project['desc'],
                   style: TextStyle(
-                    color: AppColors.textPrimary.withOpacity(0.7),
+                    color: AppColors.textPrimary.withValues(alpha: 0.7),
                     fontSize: 13,
                     height: 1.4,
                   ),
@@ -229,7 +229,7 @@ class _MobileProjectsState extends State<MobileProjects>
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: accentColor.withOpacity(0.1),
+                        color: accentColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
