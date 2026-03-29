@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:workspace/shared_ui/theme/app_colors.dart';
 
 class BootProgressBar extends StatelessWidget {
   final double progress;
@@ -7,13 +6,22 @@ class BootProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200,
-      child: LinearProgressIndicator(
-        value: progress,
-        backgroundColor: AppColors.terminalDim.withValues(alpha: 0.2),
-        valueColor: const AlwaysStoppedAnimation<Color>(AppColors.terminalBlue),
-        minHeight: 2,
+    return Container(
+      width: 160, // Fixed width for macOS style
+      height: 4,  // Slightly thicker for visibility on black
+      decoration: BoxDecoration(
+        color: const Color(0xFF333333), // Dark grey background
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: FractionallySizedBox(
+        alignment: Alignment.centerLeft,
+        widthFactor: progress,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white, // White progress
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
       ),
     );
   }

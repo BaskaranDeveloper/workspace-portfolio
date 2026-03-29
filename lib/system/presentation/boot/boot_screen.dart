@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:workspace/shared_ui/theme/app_colors.dart';
-import 'package:workspace/system/presentation/boot/widgets/background_ripple.dart';
 import 'package:workspace/system/presentation/boot/widgets/boot_progress_bar.dart';
+import 'package:workspace/system/presentation/boot/widgets/mac_logo.dart';
 import 'package:workspace/system/presentation/utils/full_screen_manager.dart';
 
 class BootScreen extends StatefulWidget {
@@ -16,16 +15,30 @@ class _BootScreenState extends State<BootScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late Animation<double> _progress;
+  late Animation<double> _opacity;
 
   @override
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 4),
+    );
+
+    // Fade-in animation for the logo
+    _opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.3, curve: Curves.easeIn),
+      ),
     );
 
     // progress animation
-    _progress = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _progress = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.1, 1.0, curve: Curves.linear),
+      ),
+    );
 
     // Listen for animation completion
     _controller.addStatusListener((status) {
@@ -58,155 +71,28 @@ class _BootScreenState extends State<BootScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Background Ripple
-          const BackgroundRipple(),
-
-          // Center Content
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // 1. Terminal Icon
-                const Icon(
-                  Icons.terminal,
-                  size: 48,
-                  color: AppColors.terminalBlue,
-                ),
-
-                const SizedBox(height: 32),
-
-                // 2. "Starting system..." Text
-                const Text(
-                  'Starting system...',
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
-                    fontFamily: 'monospace',
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // 3. Progress Bar & Text
-                AnimatedBuilder(
-                  animation: _controller,
-                  builder: (context, child) {
-                    final percentage = (_progress.value * 100).toInt();
-
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        BootProgressBar(progress: _progress.value),
-
-                        const SizedBox(height: 8),
-
-                        // 4. "INITIALIZING... XX%" Row
-                        SizedBox(
-                          width: 200, // Match progress bar width
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                // Change text based on progress
-                                percentage < 100
-                                    ? 'INITIALIZING'
-                                    : 'SYSTEM READY',
-                                style: TextStyle(
-                                  color: AppColors.terminalDim,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.5,
-                                ),
-                              ),
-                              Text(
-                                '$percentage%',
-                                style: TextStyle(
-                                  color: AppColors.terminalDim,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-
-          // Footer Info (Kernel version etc.)
-          Positioned(
-            bottom: 40,
-            left: 0,
-            right: 0,
-            child: Center(
+      backgroundColor: Colors.black, // macOS pure black background
+      body: Center(
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return FadeTransition(
+              opacity: _opacity,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'PORTFOLIOS KERNEL V1.0.4-STABLE',
-                    style: TextStyle(
-                      color: AppColors.terminalDim.withValues(alpha: 0.5),
-                      fontSize: 10,
-                      letterSpacing: 2.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  // macOS Apple Logo
+                  const MacLogo(size: 80, color: Colors.white),
+
+                  const SizedBox(height: 60), // Spacing between logo and bar
+
+                  // Minimal Progress Bar
+                  BootProgressBar(progress: _progress.value),
                 ],
               ),
-            ),
-          ),
-
-          // Bottom Right System Checks
-          Positioned(
-            bottom: 40,
-            right: 40,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                _buildStatusLine('MEM_CHECK', 'OK'),
-                _buildStatusLine('SEC_BOOT', 'ENABLED'),
-                _buildStatusLine('UI_ENGINE', 'READY'),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatusLine(String label, String status) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            '$label: ',
-            style: TextStyle(
-              color: AppColors.terminalDim.withValues(alpha: 0.4),
-              fontSize: 9,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
-            ),
-          ),
-          Text(
-            status,
-            style: TextStyle(
-              color: AppColors.terminalDim.withValues(alpha: 0.6),
-              fontSize: 9,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }

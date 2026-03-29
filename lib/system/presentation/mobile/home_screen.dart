@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workspace/system/domain/registry/registry_provider.dart';
 import 'package:workspace/system/presentation/mobile/widgets/mobile_dock.dart';
-import 'package:workspace/system/presentation/mobile/widgets/mobile_page_indicators.dart';
 
 class MobileHomeScreen extends ConsumerWidget {
   const MobileHomeScreen({super.key});
