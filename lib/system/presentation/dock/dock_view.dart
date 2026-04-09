@@ -26,15 +26,17 @@ class _DockViewState extends State<DockView> {
 
   @override
   Widget build(BuildContext context) {
-    // If no apps, show empty or default?
-    // In practice, we should always have apps.
     if (widget.dockApps.isEmpty) return const SizedBox.shrink();
+
+    // Find index for divider (e.g., after the first 3 apps or static)
+    // For now, let's put it before the last app (Settings) or after specific ones
+    final int dividerIndex = widget.dockApps.length - 2;
 
     return Center(
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 2),
           child: MouseRegion(
             onEnter: (event) => setState(() {
               _mouseX = event.localPosition.dx;
@@ -50,31 +52,30 @@ class _DockViewState extends State<DockView> {
               children: [
                 // Glass background
                 SizedBox(
-                  height: 70,
-                  width: (widget.dockApps.length * 60.0) + 52,
+                  height: 66,
+                  width: (widget.dockApps.length * 62.0) + 60,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(22),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                      filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.white.withValues(alpha: 0.3),
-                              Colors.white.withValues(alpha: 0.1),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(24),
+                          color: Colors.black.withValues(alpha: 0.25),
+                          borderRadius: BorderRadius.circular(22),
                           border: Border.all(
-                            width: 1.5,
-                            color: Colors.white.withValues(alpha: 0.2),
+                            color: Colors.white.withValues(alpha: 0.1),
+                            width: 0.5,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.3),
-                              blurRadius: 20,
+                              color: Colors.white.withValues(alpha: 0.05),
+                              blurRadius: 0,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 0),
+                            ),
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.4),
+                              blurRadius: 30,
                               offset: const Offset(0, 10),
                             ),
                           ],
@@ -85,28 +86,54 @@ class _DockViewState extends State<DockView> {
                 ),
                 // Dock icons
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: List.generate(widget.dockApps.length, (index) {
-                      final app = widget.dockApps[index];
-                      return GestureDetector(
-                        onTap: () => widget.onAppTap(app),
-                        child: DockItem(
-                          icon: app.icon, // Use SystemApp icon
-                          color: app.themeColor, // Use SystemApp color
-                          label: app.title, // Use SystemApp title
-                          size: _calculateSize(index),
-                          isActive: widget.activeApps.contains(
-                            app.title,
-                          ), // Or match by ID? Title for now to match activeApps
-                          duration: _mouseX == null
-                              ? const Duration(milliseconds: 300)
-                              : Duration.zero,
-                        ),
-                      );
-                    }),
+                    children: [
+                      ...List.generate(widget.dockApps.length, (index) {
+                        final app = widget.dockApps[index];
+                        final List<Widget> items = [];
+
+                        items.add(
+                          GestureDetector(
+                            onTap: () => widget.onAppTap(app),
+                            child: DockItem(
+                              icon: app.icon,
+                              iconPath: app.iconPath,
+                              color: app.themeColor,
+                              label: app.title,
+                              size: _calculateSize(index),
+                              isActive: widget.activeApps.contains(app.title),
+                              duration: _mouseX == null
+                                  ? const Duration(milliseconds: 300)
+                                  : Duration.zero,
+                            ),
+                          ),
+                        );
+
+                        // Add divider
+                        if (index == dividerIndex) {
+                          items.add(
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 15,
+                              ),
+                              width: 0.5,
+                              height: 40,
+                              color: Colors.white.withValues(alpha: 0.3),
+                            ),
+                          );
+                        }
+
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: items,
+                        );
+                      }),
+                    ],
                   ),
                 ),
               ],
@@ -118,22 +145,21 @@ class _DockViewState extends State<DockView> {
   }
 
   double _calculateSize(int index) {
-    const double baseSize = 45.0;
-    const double maxSize = 80.0;
-    const double itemWidth = 60.0;
-    const double sigma = 40.0;
+    const double baseSize = 44.0;
+    const double maxSize = 78.0;
+    const double itemWidth = 62.0;
+    const double sigma = 45.0;
 
     if (_mouseX == null) {
       return baseSize;
     }
 
-    double itemCenter = (index * itemWidth) + (itemWidth / 2);
+    double itemCenter = (index * itemWidth) + (itemWidth / 2) + 16; // Added padding offset
     double distance = (_mouseX! - itemCenter).abs();
 
-    // Gaussian curve for smooth magnification
     double scale = exp(-(distance * distance) / (2 * sigma * sigma));
 
-    if (distance < itemWidth * 2.5) {
+    if (distance < itemWidth * 3) {
       return baseSize + (maxSize - baseSize) * scale;
     }
 

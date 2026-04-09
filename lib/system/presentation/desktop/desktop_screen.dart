@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod
 import 'package:go_router/go_router.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
@@ -15,6 +16,7 @@ import 'widgets/desktop_icon.dart';
 import 'package:workspace/system/domain/registry/registry_provider.dart'; // Import provider
 
 import 'package:workspace/system/presentation/desktop/overlays/control_center.dart';
+import 'package:workspace/system/presentation/desktop/overlays/launchpad_overlay.dart';
 
 // Convert to ConsumerStatefulWidget
 class DesktopScreen extends ConsumerStatefulWidget {
@@ -32,6 +34,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
   final WindowManager _windowManager = WindowManager();
 
   bool _isControlCenterOpen = false;
+  bool _isLaunchpadOpen = false;
 
   @override
   void initState() {
@@ -61,6 +64,24 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
     if (_isControlCenterOpen) {
       setState(() {
         _isControlCenterOpen = false;
+      });
+    }
+  }
+
+  void _toggleLaunchpad() {
+    setState(() {
+      _isLaunchpadOpen = !_isLaunchpadOpen;
+      if (_isLaunchpadOpen) {
+        _closeControlCenter();
+        _controller.clearMenu();
+      }
+    });
+  }
+
+  void _closeLaunchpad() {
+    if (_isLaunchpadOpen) {
+      setState(() {
+        _isLaunchpadOpen = false;
       });
     }
   }
@@ -105,7 +126,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                     _controller.showMenu(details.globalPosition, [
                       MenuItemData(
                         label: 'New Folder',
-                        icon: Icons.create_new_folder,
+                        icon: CupertinoIcons.folder_badge_plus,
                         onTap: () {
                           // TODO: New Folder
                           _controller.clearMenu();
@@ -113,7 +134,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                       ),
                       MenuItemData(
                         label: 'Change Wallpaper',
-                        icon: Icons.wallpaper,
+                        icon: CupertinoIcons.photo,
                         onTap: () {
                           // TODO: Change Wallpaper
                           _controller.clearMenu();
@@ -121,7 +142,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                       ),
                       MenuItemData(
                         label: 'Refresh',
-                        icon: Icons.refresh,
+                        icon: CupertinoIcons.refresh,
                         onTap: () {
                           // TODO: Refresh
                           _controller.clearMenu();
@@ -193,7 +214,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                     _controller.showMenu(item.position + const Offset(50, 50), [
                       MenuItemData(
                         label: 'Open',
-                        icon: Icons.open_in_new,
+                        icon: CupertinoIcons.arrow_up_right_square,
                         onTap: () {
                           // Same open logic as double tap
                           final app = appRegistry.apps
@@ -229,7 +250,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                       ),
                       MenuItemData(
                         label: 'Delete',
-                        icon: Icons.delete,
+                        icon: CupertinoIcons.trash,
                         onTap: () {
                           // TODO: Implement delete
                           _controller.clearMenu();
@@ -237,7 +258,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                       ),
                       MenuItemData(
                         label: 'Properties',
-                        icon: Icons.info_outline,
+                        icon: CupertinoIcons.info,
                         onTap: () => _controller.clearMenu(),
                       ),
                     ]);
@@ -254,7 +275,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                 Positioned(
                   left: 0,
                   right: 0,
-                  bottom: 20,
+                  bottom: 0,
                   child: DockView(
                     dockApps: dockApps,
                     activeApps: _windowManager.windows
@@ -262,6 +283,11 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                         .toList(),
                     onAppTap: (app) {
                       _closeControlCenter();
+                      if (app.id == 'launchpad') {
+                        _toggleLaunchpad();
+                        return;
+                      }
+                      _closeLaunchpad();
                       _windowManager.openWindow(
                         WindowModel(
                           id: 'app_${app.id}',
@@ -315,7 +341,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                 Positioned(
                   left: 0,
                   right: 0,
-                  bottom: 20,
+                  bottom: 0,
                   child: DockView(
                     dockApps: dockApps,
                     activeApps: _windowManager.windows
@@ -323,6 +349,11 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                         .toList(),
                     onAppTap: (app) {
                       _closeControlCenter();
+                      if (app.id == 'launchpad') {
+                        _toggleLaunchpad();
+                        return;
+                      }
+                      _closeLaunchpad();
                       _windowManager.openWindow(
                         WindowModel(
                           id: 'app_${app.id}',
@@ -371,6 +402,25 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                         ],
                       ),
                     ),
+                  ),
+                ),
+
+              // 9. Launchpad Overlay
+              if (_isLaunchpadOpen)
+                Positioned.fill(
+                  child: LaunchpadOverlay(
+                    apps: appRegistry.apps,
+                    onClose: _closeLaunchpad,
+                    onAppTap: (app) {
+                      _windowManager.openWindow(
+                        WindowModel(
+                          id: 'app_${app.id}',
+                          title: app.title,
+                          content: app.desktopBuilder(context),
+                          size: const Size(600, 400),
+                        ),
+                      );
+                    },
                   ),
                 ),
             ],

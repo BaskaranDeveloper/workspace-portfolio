@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show Colors, Icons, Text, Center;
 import '../../entities/system_app.dart';
 import '../domain/app_registry.dart';
 import 'package:workspace/features/about/presentation/about_view.dart';
@@ -29,7 +31,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'about',
       title: 'About',
-      icon: Icons.person,
+      icon: CupertinoIcons.person_fill,
+      iconPath: 'asset/icons/finder.png',
       themeColor: Colors.blue,
       desktopBuilder: (context) => const AboutView(),
       mobileBuilder: (context) => const MobileAboutView(),
@@ -37,7 +40,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'terminal',
       title: 'Terminal',
-      icon: Icons.terminal,
+      icon: CupertinoIcons.command,
+      iconPath: 'asset/icons/terminal.png',
       themeColor: Colors.black, // Cyber Blue
       desktopBuilder: (context) => const TerminalView(),
       mobileBuilder: (context) => const MobileTerminal(),
@@ -45,7 +49,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'projects',
       title: 'Projects',
-      icon: Icons.folder,
+      icon: CupertinoIcons.folder_fill,
+      iconPath: 'asset/icons/folder.png',
       themeColor: Colors.purple,
       desktopBuilder: (context) => const ProjectsView(),
       mobileBuilder: (context) => const MobileProjects(),
@@ -53,7 +58,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'experience',
       title: 'Experience',
-      icon: Icons.work,
+      icon: CupertinoIcons.briefcase_fill,
+      iconPath: 'asset/icons/experience.png',
       themeColor: Colors.grey,
       desktopBuilder: (context) => const ExperienceView(),
       mobileBuilder: (context) => const MobileExperience(),
@@ -61,7 +67,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'education',
       title: 'Education',
-      icon: Icons.school,
+      icon: CupertinoIcons.book_fill,
+      iconPath: 'asset/icons/education.png',
       themeColor: Colors.green,
       desktopBuilder: (context) => const EducationView(),
       mobileBuilder: (context) => const MobileEducation(),
@@ -69,7 +76,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'contact',
       title: 'Contact',
-      icon: Icons.mail,
+      icon: CupertinoIcons.mail,
+      iconPath: 'asset/icons/contact.png',
       themeColor: Colors.red,
       desktopBuilder: (context) => const ContactView(),
       mobileBuilder: (context) => const MobileContact(),
@@ -77,15 +85,89 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'resume',
       title: 'Resume',
-      icon: Icons.assignment,
+      icon: CupertinoIcons.doc_text_fill,
+      iconPath: 'asset/icons/resume.png',
       themeColor: Colors.orange,
       desktopBuilder: (context) => const ResumeView(),
       mobileBuilder: (context) => const MobileResume(),
     ),
     SystemApp(
+      id: 'launchpad',
+      title: 'Applications',
+      icon: CupertinoIcons.square_grid_2x2,
+      iconPath: 'asset/icons/launchpad.png',
+      themeColor: Colors.grey.shade800,
+      desktopBuilder: (context) => const SizedBox.shrink(), // Will be handled as overlay
+      mobileBuilder: (context) => const SizedBox.shrink(),
+    ),
+    SystemApp(
+      id: 'calculator',
+      title: 'Calculator',
+      icon: CupertinoIcons.divide,
+      themeColor: Colors.orange,
+      showInDock: false,
+      desktopBuilder: (context) => const Center(child: Text("Calculator Coming Soon")),
+      mobileBuilder: (context) => const Center(child: Text("Calculator Coming Soon")),
+    ),
+    SystemApp(
+      id: 'notes',
+      title: 'Notes',
+      icon: CupertinoIcons.doc_text,
+      themeColor: Colors.yellow.shade700,
+      showInDock: false,
+      desktopBuilder: (context) => const Center(child: Text("Notes Coming Soon")),
+      mobileBuilder: (context) => const Center(child: Text("Notes Coming Soon")),
+    ),
+    SystemApp(
+      id: 'photos',
+      title: 'Photos',
+      icon: CupertinoIcons.photo,
+      themeColor: Colors.deepPurple, // Vibrant background
+      showInDock: false,
+      desktopBuilder: (context) => const Center(child: Text("Photos Coming Soon")),
+      mobileBuilder: (context) => const Center(child: Text("Photos Coming Soon")),
+    ),
+    SystemApp(
+      id: 'calendar',
+      title: 'Calendar',
+      icon: CupertinoIcons.calendar,
+      themeColor: Colors.red, // Classic red top style
+      showInDock: false,
+      desktopBuilder: (context) => const Center(child: Text("Calendar Coming Soon")),
+      mobileBuilder: (context) => const Center(child: Text("Calendar Coming Soon")),
+    ),
+    SystemApp(
+      id: 'maps',
+      title: 'Maps',
+      icon: CupertinoIcons.location_solid,
+      themeColor: Colors.green,
+      showInDock: false,
+      desktopBuilder: (context) => const Center(child: Text("Maps Coming Soon")),
+      mobileBuilder: (context) => const Center(child: Text("Maps Coming Soon")),
+    ),
+    SystemApp(
+      id: 'music',
+      title: 'Music',
+      icon: CupertinoIcons.music_note_2,
+      themeColor: Colors.pink,
+      showInDock: false,
+      desktopBuilder: (context) => const Center(child: Text("Music Coming Soon")),
+      mobileBuilder: (context) => const Center(child: Text("Music Coming Soon")),
+    ),
+    SystemApp(
+      id: 'safari',
+      title: 'Safari',
+      icon: CupertinoIcons.compass,
+      themeColor: Colors.blue,
+      showInDock: false,
+      desktopBuilder: (context) => const Center(child: Text("Safari Coming Soon")),
+      mobileBuilder: (context) => const Center(child: Text("Safari Coming Soon")),
+    ),
+    SystemApp(
       id: 'settings',
       title: 'Settings',
-      icon: Icons.settings,
+      icon: CupertinoIcons.settings,
+      iconPath: 'asset/icons/settings.png',
       themeColor: Colors.grey,
       desktopBuilder: (context) => const SettingsView(),
       mobileBuilder: (context) => const SettingsView(),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Colors, Icons, Text, Center, Row, Expanded, SizedBox, SingleChildScrollView, Flexible, ClipRect, BackdropFilter, BoxDecoration, Border, BorderSide;
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:workspace/system/presentation/utils/full_screen_manager.dart';
 import 'package:workspace/system/presentation/desktop/widgets/status_indicators/battery_indicator.dart';
@@ -59,7 +60,7 @@ class _SystemBarState extends State<SystemBar> {
   Widget build(BuildContext context) {
     return ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
         child: Container(
           height: 28,
           width: double.infinity,
@@ -80,7 +81,7 @@ class _SystemBarState extends State<SystemBar> {
               Expanded(
                 child: Row(
                   children: [
-                    const Icon(Icons.apple, color: Colors.white, size: 18),
+                    Icon(CupertinoIcons.search, color: Colors.white, size: 18), // Temporary safe icon
                     const SizedBox(width: 20),
                     const Text(
                       'Workspace',
@@ -168,8 +169,8 @@ class _SystemBarState extends State<SystemBar> {
                         onTap: _toggleFullScreen,
                         child: Icon(
                           FullScreenManager.isFullScreen
-                              ? Icons.fullscreen_exit
-                              : Icons.fullscreen,
+                              ? CupertinoIcons.fullscreen_exit
+                              : CupertinoIcons.fullscreen,
                           color: Colors.white,
                           size: 18,
                         ),
@@ -185,14 +186,14 @@ class _SystemBarState extends State<SystemBar> {
                       const SizedBox(width: 16),
 
                       // Search
-                      const Icon(Icons.search, color: Colors.white, size: 18),
+                      const Icon(CupertinoIcons.search, color: Colors.white, size: 18),
                       const SizedBox(width: 16),
 
                       // Control Center
                       GestureDetector(
                         onTap: widget.onControlCenterTap,
                         child: const Icon(
-                          Icons.control_camera,
+                          CupertinoIcons.slider_horizontal_3,
                           color: Colors.white,
                           size: 18,
                         ),

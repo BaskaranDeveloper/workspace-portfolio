@@ -8,6 +8,7 @@ class SystemApp {
   final String id;
   final String title;
   final IconData icon;
+  final String? iconPath; // Optional image path for the icon
   final Color themeColor;
 
   /// Builder for the Desktop Window content
@@ -23,6 +24,7 @@ class SystemApp {
     required this.id,
     required this.title,
     required this.icon,
+    this.iconPath,
     required this.themeColor,
     required this.desktopBuilder,
     required this.mobileBuilder,
