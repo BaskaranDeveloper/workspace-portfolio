@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:flutter/cupertino.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:workspace/system/domain/entities/system_app.dart';
 import 'package:workspace/system/presentation/dock/widgets/dock_item.dart';
@@ -81,7 +81,7 @@ class _LaunchpadOverlayState extends State<LaunchpadOverlay> with SingleTickerPr
                           hintText: 'Search',
                           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.2)),
                           prefixIcon: Icon(
-                            CupertinoIcons.search,
+                            LucideIcons.search,
                             color: Colors.white.withValues(alpha: 0.3),
                             size: 16,
                           ),
@@ -95,69 +95,78 @@ class _LaunchpadOverlayState extends State<LaunchpadOverlay> with SingleTickerPr
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50),
-                  // Grid (Paged Horizontal)
-                  Expanded(
-                    child: PageView.builder(
-                      itemCount: (filteredApps.length / 28).ceil(),
-                      itemBuilder: (context, pageIndex) {
-                        final start = pageIndex * 28;
-                        final end = (start + 28) > filteredApps.length
-                            ? filteredApps.length
-                            : start + 28;
-                        final pageApps = filteredApps.sublist(start, end);
+                    const SizedBox(height: 30),
+                    // Grid (Paged Horizontal) - Centered and Constrained
+                    Expanded(
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 900),
+                          child: PageView.builder(
+                            itemCount: (filteredApps.length / 28).ceil(),
+                            itemBuilder: (context, pageIndex) {
+                              final start = pageIndex * 28;
+                              final end = (start + 28) > filteredApps.length
+                                  ? filteredApps.length
+                                  : start + 28;
+                              final pageApps = filteredApps.sublist(start, end);
 
-                        return GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 7,
-                            mainAxisSpacing: 30,
-                            crossAxisSpacing: 30,
-                            childAspectRatio: 0.85,
-                          ),
-                          itemCount: pageApps.length,
-                          itemBuilder: (context, index) {
-                            final app = pageApps[index];
-                            return GestureDetector(
-                              onTap: () {
-                                widget.onAppTap(app);
-                                widget.onClose();
-                              },
-                              child: Column(
-                                children: [
-                                  DockItem(
-                                    icon: app.icon,
-                                    iconPath: app.iconPath,
-                                    label: app.title,
-                                    color: app.themeColor,
-                                    size: 60, // Reduced size
-                                    duration: const Duration(milliseconds: 200),
-                                    isActive: false,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    app.title,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12, // Slightly smaller font
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 10,
-                                          color: Colors.black,
-                                          offset: Offset(0, 2),
+                              return GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 7,
+                                  mainAxisSpacing: 10,  // Tight row spacing
+                                  crossAxisSpacing: 10, // Tight column spacing
+                                  childAspectRatio: 0.9, // Balanced proportions
+                                ),
+                                itemCount: pageApps.length,
+                                itemBuilder: (context, index) {
+                                  final app = pageApps[index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      widget.onAppTap(app);
+                                      widget.onClose();
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center, // Center icons vertically in cell
+                                      children: [
+                                        DockItem(
+                                          icon: app.icon,
+                                          iconPath: app.iconPath,
+                                          label: app.title,
+                                          color: app.themeColor,
+                                          size: 60,
+                                          duration: const Duration(milliseconds: 200),
+                                          isActive: false,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          app.title,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w400,
+                                            shadows: [
+                                              Shadow(
+                                                blurRadius: 8,
+                                                color: Colors.black54,
+                                                offset: Offset(0, 1),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
                   // Page Indicator (Simple Dots)
                   if (filteredApps.length > 28)
                     Padding(

@@ -38,25 +38,39 @@ class DockItem extends StatelessWidget {
               curve: duration == Duration.zero ? Curves.linear : Curves.easeOut,
               width: size,
               height: size,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.9), // Always use theme color for tile
-                borderRadius: BorderRadius.circular(size * 0.22),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.3),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                  BoxShadow(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    blurRadius: 1,
-                    spreadRadius: -1,
-                    offset: const Offset(0, 1), // Inner light
-                  ),
-                ],
+              decoration: ShapeDecoration(
+                shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.circular(size * 0.45),
+                ),
+                color: iconPath != null ? Colors.transparent : Colors.white.withValues(alpha: 0.1),
+                shadows: iconPath != null 
+                    ? [
+                        BoxShadow( // Native drop shadow for image assets
+                          color: Colors.black.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        )
+                      ]
+                    : [
+                        BoxShadow(
+                          color: color.withValues(alpha: 0.4), // Theme color glow shadow
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                        BoxShadow(
+                          color: Colors.white.withValues(alpha: 0.25),
+                          blurRadius: 1,
+                          spreadRadius: -1,
+                          offset: const Offset(0, 1), // Inner light
+                        ),
+                      ],
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(size * 0.22),
+              child: ClipPath(
+                clipper: ShapeBorderClipper(
+                  shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(size * 0.45),
+                  ),
+                ),
                 child: iconPath != null
                     ? Image.asset(
                         iconPath!,
@@ -77,12 +91,13 @@ class DockItem extends StatelessWidget {
             width: 4,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.8),
+              color: Colors.white,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.white.withValues(alpha: 0.4),
-                  blurRadius: 4,
+                  color: Colors.white.withValues(alpha: 0.8),
+                  blurRadius: 6,
+                  spreadRadius: 2,
                 ),
               ],
             ),

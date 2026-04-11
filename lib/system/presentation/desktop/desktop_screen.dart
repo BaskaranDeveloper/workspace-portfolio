@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod
 import 'package:go_router/go_router.dart';
-import 'package:workspace/shared_ui/theme/app_colors.dart';
 import 'package:workspace/system/presentation/desktop/models/menu_item_data.dart';
 import 'package:workspace/system/presentation/dock/dock_view.dart';
 import 'package:workspace/system/presentation/window/models/window_model.dart';
@@ -17,6 +16,7 @@ import 'package:workspace/system/domain/registry/registry_provider.dart'; // Imp
 
 import 'package:workspace/system/presentation/desktop/overlays/control_center.dart';
 import 'package:workspace/system/presentation/desktop/overlays/launchpad_overlay.dart';
+import 'package:workspace/system/presentation/desktop/widgets/parallax_background.dart';
 
 // Convert to ConsumerStatefulWidget
 class DesktopScreen extends ConsumerStatefulWidget {
@@ -126,7 +126,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                     _controller.showMenu(details.globalPosition, [
                       MenuItemData(
                         label: 'New Folder',
-                        icon: CupertinoIcons.folder_badge_plus,
+                        icon: LucideIcons.folderPlus,
                         onTap: () {
                           // TODO: New Folder
                           _controller.clearMenu();
@@ -134,7 +134,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                       ),
                       MenuItemData(
                         label: 'Change Wallpaper',
-                        icon: CupertinoIcons.photo,
+                        icon: LucideIcons.sparkles,
                         onTap: () {
                           // TODO: Change Wallpaper
                           _controller.clearMenu();
@@ -142,7 +142,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                       ),
                       MenuItemData(
                         label: 'Refresh',
-                        icon: CupertinoIcons.refresh,
+                        icon: LucideIcons.refreshCcw,
                         onTap: () {
                           // TODO: Refresh
                           _controller.clearMenu();
@@ -151,17 +151,8 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                     ]);
                   },
 
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColors.backgroundDark,
-                          AppColors.backgroundSecondary,
-                        ],
-                      ),
-                    ),
+                  child: const ParallaxBackground(
+                    child: SizedBox.expand(),
                   ),
                 ),
               ),
@@ -214,7 +205,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                     _controller.showMenu(item.position + const Offset(50, 50), [
                       MenuItemData(
                         label: 'Open',
-                        icon: CupertinoIcons.arrow_up_right_square,
+                        icon: LucideIcons.externalLink,
                         onTap: () {
                           // Same open logic as double tap
                           final app = appRegistry.apps
@@ -250,7 +241,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                       ),
                       MenuItemData(
                         label: 'Delete',
-                        icon: CupertinoIcons.trash,
+                        icon: LucideIcons.trash,
                         onTap: () {
                           // TODO: Implement delete
                           _controller.clearMenu();
@@ -258,7 +249,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                       ),
                       MenuItemData(
                         label: 'Properties',
-                        icon: CupertinoIcons.info,
+                        icon: LucideIcons.info,
                         onTap: () => _controller.clearMenu(),
                       ),
                     ]);

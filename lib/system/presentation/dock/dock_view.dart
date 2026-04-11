@@ -1,6 +1,6 @@
 import 'dart:math'; // Required for the exp() function (Gaussian curve)
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
 import 'widgets/dock_item.dart';
 import 'package:workspace/system/domain/entities/system_app.dart';
 
@@ -51,38 +51,11 @@ class _DockViewState extends State<DockView> {
               alignment: Alignment.bottomCenter,
               children: [
                 // Glass background
-                SizedBox(
-                  height: 66,
+                LiquidGlass(
+                  borderRadius: 22,
                   width: (widget.dockApps.length * 62.0) + 60,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(22),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.25),
-                          borderRadius: BorderRadius.circular(22),
-                          border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.1),
-                            width: 0.5,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withValues(alpha: 0.05),
-                              blurRadius: 0,
-                              spreadRadius: 1,
-                              offset: const Offset(0, 0),
-                            ),
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.4),
-                              blurRadius: 30,
-                              offset: const Offset(0, 10),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  height: 66,
+                  child: const SizedBox.shrink(),
                 ),
                 // Dock icons
                 Padding(
@@ -160,7 +133,7 @@ class _DockViewState extends State<DockView> {
     double scale = exp(-(distance * distance) / (2 * sigma * sigma));
 
     if (distance < itemWidth * 3) {
-      return baseSize + (maxSize - baseSize) * scale;
+      return baseSize + (maxSize - baseSize) * scale * 1.1; // Add 1.1x boost to spring feel
     }
 
     return baseSize;

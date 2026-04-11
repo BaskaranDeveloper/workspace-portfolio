@@ -1,6 +1,6 @@
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow, Border;
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter/material.dart';
+import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
 import '../models/window_model.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
 
@@ -40,13 +40,13 @@ class _WindowBaseState extends State<WindowBase>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300), // Snappier for Mac feel
+      duration: const Duration(milliseconds: 500), // Spring physics duration
     );
 
     _scaleAnimation = Tween<double>(
       begin: 0.95,
       end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutExpo));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
     _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -58,7 +58,7 @@ class _WindowBaseState extends State<WindowBase>
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 10),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutExpo));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
     _controller.forward();
   }
@@ -113,111 +113,99 @@ class _WindowBaseState extends State<WindowBase>
               ),
             );
           },
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.backgroundPrimary.withValues(alpha: 0.95), // Slight transparency
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.1),
-                width: 0.5,
+          child: LiquidGlass(
+            borderRadius: 24,
+            shadows: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.4),
+                blurRadius: 40,
+                spreadRadius: -5,
+                offset: const Offset(0, 20),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.3),
-                  blurRadius: 30,
-                  spreadRadius: -5,
-                  offset: const Offset(0, 15),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      // Glassy Title Bar
-                      GestureDetector(
-                        onPanUpdate: (details) {
-                          final newPos = widget.window.position + details.delta;
-                          widget.onDrag(newPos);
-                        },
-                        onDoubleTap: widget.onMaximize,
-                        child: ClipRect(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                            child: Container(
-                              height: 38,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.05),
-                                border: const Border(
-                                  bottom: BorderSide(
-                                    color: Colors.white10,
-                                    width: 0.5,
-                                  ),
-                                ),
-                              ),
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              child: Row(
-                                children: [
-                                  // Mac Controls
-                                  _buildBtn(const Color(0xFFFF5F56), _handleClose),
-                                  const SizedBox(width: 8),
-                                  _buildBtn(const Color(0xFFFFBD2E), widget.onMinimize),
-                                  const SizedBox(width: 8),
-                                  _buildBtn(const Color(0xFF27C93F), widget.onMaximize),
-                                  Expanded(
-                                    child: Text(
-                                      widget.window.title,
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: Colors.white.withValues(alpha: 0.8),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: -0.2,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 60), // Balance
-                                ],
-                              ),
+            ],
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    // Unified Title Bar Layer (Using the outer glass blur)
+                    GestureDetector(
+                      onPanUpdate: (details) {
+                        final newPos = widget.window.position + details.delta;
+                        widget.onDrag(newPos);
+                      },
+                      onDoubleTap: widget.onMaximize,
+                      child: Container(
+                        height: 38,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.05),
+                          border: const Border(
+                            bottom: BorderSide(
+                              color: Colors.white10,
+                              width: 0.5,
                             ),
                           ),
                         ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                            // Mac Controls
+                            _buildBtn(const Color(0xFFFF5F56), _handleClose),
+                            const SizedBox(width: 8),
+                            _buildBtn(const Color(0xFFFFBD2E), widget.onMinimize),
+                            const SizedBox(width: 8),
+                            _buildBtn(const Color(0xFF27C93F), widget.onMaximize),
+                            Expanded(
+                              child: Text(
+                                widget.window.title,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.8),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.2,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 60), // Balance
+                          ],
+                        ),
                       ),
-                      // Content
-                      Expanded(
+                    ),
+                    // Content
+                    Expanded(
+                      child: Container(
+                        color: AppColors.backgroundPrimary.withValues(alpha: 0.4), // Slight tint for content area
                         child: widget.window.content,
                       ),
-                    ],
-                  ),
-                  // Resize Handle
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: GestureDetector(
-                      onPanUpdate: (details) {
-                        final newWidth = widget.window.size.width + details.delta.dx;
-                        final newHeight = widget.window.size.height + details.delta.dy;
-                        widget.onResize(Size(newWidth.clamp(200.0, 2000.0), newHeight.clamp(100.0, 2000.0)));
-                      },
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        color: Colors.transparent,
-                        child: Center(
-                          child: Icon(
-                            CupertinoIcons.arrow_up_left_arrow_down_right,
-                            size: 10,
-                            color: Colors.white.withValues(alpha: 0.3),
-                          ),
+                    ),
+                  ],
+                ),
+                // Resize Handle
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: GestureDetector(
+                    onPanUpdate: (details) {
+                      final newWidth = widget.window.size.width + details.delta.dx;
+                      final newHeight = widget.window.size.height + details.delta.dy;
+                      widget.onResize(Size(newWidth.clamp(200.0, 2000.0), newHeight.clamp(100.0, 2000.0)));
+                    },
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      color: Colors.transparent,
+                      child: Center(
+                        child: Icon(
+                          LucideIcons.expand,
+                          size: 10,
+                          color: Colors.white.withValues(alpha: 0.3),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

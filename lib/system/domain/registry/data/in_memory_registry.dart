@@ -1,6 +1,5 @@
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Colors, Icons, Text, Center;
+import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../entities/system_app.dart';
 import '../domain/app_registry.dart';
 import 'package:workspace/features/about/presentation/about_view.dart';
@@ -31,8 +30,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'about',
       title: 'About',
-      icon: CupertinoIcons.person_fill,
       iconPath: 'asset/icons/finder.png',
+      icon: LucideIcons.user,
       themeColor: Colors.blue,
       desktopBuilder: (context) => const AboutView(),
       mobileBuilder: (context) => const MobileAboutView(),
@@ -40,17 +39,17 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'terminal',
       title: 'Terminal',
-      icon: CupertinoIcons.command,
       iconPath: 'asset/icons/terminal.png',
-      themeColor: Colors.black, // Cyber Blue
+      icon: LucideIcons.terminal,
+      themeColor: Colors.black,
       desktopBuilder: (context) => const TerminalView(),
       mobileBuilder: (context) => const MobileTerminal(),
     ),
     SystemApp(
       id: 'projects',
       title: 'Projects',
-      icon: CupertinoIcons.folder_fill,
-      iconPath: 'asset/icons/folder.png',
+      iconPath: 'asset/icons/project.png',
+      icon: LucideIcons.folder,
       themeColor: Colors.purple,
       desktopBuilder: (context) => const ProjectsView(),
       mobileBuilder: (context) => const MobileProjects(),
@@ -58,8 +57,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'experience',
       title: 'Experience',
-      icon: CupertinoIcons.briefcase_fill,
-      iconPath: 'asset/icons/experience.png',
+      iconPath: 'asset/icons/skill.png',
+      icon: LucideIcons.briefcase,
       themeColor: Colors.grey,
       desktopBuilder: (context) => const ExperienceView(),
       mobileBuilder: (context) => const MobileExperience(),
@@ -67,8 +66,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'education',
       title: 'Education',
-      icon: CupertinoIcons.book_fill,
       iconPath: 'asset/icons/education.png',
+      icon: LucideIcons.book,
       themeColor: Colors.green,
       desktopBuilder: (context) => const EducationView(),
       mobileBuilder: (context) => const MobileEducation(),
@@ -76,8 +75,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'contact',
       title: 'Contact',
-      icon: CupertinoIcons.mail,
       iconPath: 'asset/icons/contact.png',
+      icon: LucideIcons.send,
       themeColor: Colors.red,
       desktopBuilder: (context) => const ContactView(),
       mobileBuilder: (context) => const MobileContact(),
@@ -85,44 +84,36 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'resume',
       title: 'Resume',
-      icon: CupertinoIcons.doc_text_fill,
-      iconPath: 'asset/icons/resume.png',
+      iconPath: 'asset/icons/notes.png', // Using notes icon as fallback for resume doc
+      icon: LucideIcons.fileText,
       themeColor: Colors.orange,
       desktopBuilder: (context) => const ResumeView(),
       mobileBuilder: (context) => const MobileResume(),
     ),
     SystemApp(
-      id: 'launchpad',
-      title: 'Applications',
-      icon: CupertinoIcons.square_grid_2x2,
-      iconPath: 'asset/icons/launchpad.png',
-      themeColor: Colors.grey.shade800,
-      desktopBuilder: (context) => const SizedBox.shrink(), // Will be handled as overlay
-      mobileBuilder: (context) => const SizedBox.shrink(),
-    ),
-    SystemApp(
-      id: 'calculator',
-      title: 'Calculator',
-      icon: CupertinoIcons.divide,
-      themeColor: Colors.orange,
-      showInDock: false,
-      desktopBuilder: (context) => const Center(child: Text("Calculator Coming Soon")),
-      mobileBuilder: (context) => const Center(child: Text("Calculator Coming Soon")),
-    ),
-    SystemApp(
       id: 'notes',
       title: 'Notes',
-      icon: CupertinoIcons.doc_text,
+      iconPath: 'asset/icons/notes.png',
+      icon: LucideIcons.fileEdit,
       themeColor: Colors.yellow.shade700,
       showInDock: false,
       desktopBuilder: (context) => const Center(child: Text("Notes Coming Soon")),
       mobileBuilder: (context) => const Center(child: Text("Notes Coming Soon")),
     ),
     SystemApp(
+      id: 'calculator',
+      title: 'Calculator',
+      icon: LucideIcons.calculator,
+      themeColor: Colors.orange,
+      showInDock: false,
+      desktopBuilder: (context) => const Center(child: Text("Calculator Coming Soon")),
+      mobileBuilder: (context) => const Center(child: Text("Calculator Coming Soon")),
+    ),
+    SystemApp(
       id: 'photos',
       title: 'Photos',
-      icon: CupertinoIcons.photo,
-      themeColor: Colors.deepPurple, // Vibrant background
+      icon: LucideIcons.image,
+      themeColor: Colors.deepPurple,
       showInDock: false,
       desktopBuilder: (context) => const Center(child: Text("Photos Coming Soon")),
       mobileBuilder: (context) => const Center(child: Text("Photos Coming Soon")),
@@ -130,8 +121,8 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'calendar',
       title: 'Calendar',
-      icon: CupertinoIcons.calendar,
-      themeColor: Colors.red, // Classic red top style
+      icon: LucideIcons.calendar,
+      themeColor: Colors.red,
       showInDock: false,
       desktopBuilder: (context) => const Center(child: Text("Calendar Coming Soon")),
       mobileBuilder: (context) => const Center(child: Text("Calendar Coming Soon")),
@@ -139,7 +130,7 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'maps',
       title: 'Maps',
-      icon: CupertinoIcons.location_solid,
+      icon: LucideIcons.map,
       themeColor: Colors.green,
       showInDock: false,
       desktopBuilder: (context) => const Center(child: Text("Maps Coming Soon")),
@@ -148,7 +139,7 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'music',
       title: 'Music',
-      icon: CupertinoIcons.music_note_2,
+      icon: LucideIcons.music,
       themeColor: Colors.pink,
       showInDock: false,
       desktopBuilder: (context) => const Center(child: Text("Music Coming Soon")),
@@ -157,7 +148,7 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'safari',
       title: 'Safari',
-      icon: CupertinoIcons.compass,
+      icon: LucideIcons.compass,
       themeColor: Colors.blue,
       showInDock: false,
       desktopBuilder: (context) => const Center(child: Text("Safari Coming Soon")),
@@ -166,11 +157,19 @@ class InMemoryRegistry implements AppRegistry {
     SystemApp(
       id: 'settings',
       title: 'Settings',
-      icon: CupertinoIcons.settings,
-      iconPath: 'asset/icons/settings.png',
+      icon: LucideIcons.settings,
       themeColor: Colors.grey,
+      showInDock: false,
       desktopBuilder: (context) => const SettingsView(),
       mobileBuilder: (context) => const SettingsView(),
+    ),
+    SystemApp(
+      id: 'launchpad',
+      title: 'Applications',
+      icon: LucideIcons.layoutGrid,
+      themeColor: Colors.grey.shade800,
+      desktopBuilder: (context) => const SizedBox.shrink(),
+      mobileBuilder: (context) => const SizedBox.shrink(),
     ),
   ];
 

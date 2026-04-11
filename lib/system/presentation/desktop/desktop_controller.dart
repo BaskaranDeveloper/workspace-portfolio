@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:workspace/system/presentation/desktop/models/desktop_item.dart';
 import 'package:workspace/system/presentation/desktop/models/menu_item_data.dart';
 
@@ -7,21 +8,24 @@ class DesktopController extends ChangeNotifier {
     DesktopItem(
       id: '1',
       label: 'Projects',
-      icon: Icons.folder,
+      icon: LucideIcons.folder,
+      iconPath: 'asset/icons/project.png',
       color: Colors.blue,
       position: const Offset(20, 60),
     ),
     DesktopItem(
       id: '2',
       label: 'Resume',
-      icon: Icons.description,
+      icon: LucideIcons.fileText,
+      iconPath: 'asset/icons/resume.png',
       color: Colors.white,
       position: const Offset(20, 160),
     ),
     DesktopItem(
       id: '3',
       label: 'Photo.jpg',
-      icon: Icons.image,
+      icon: LucideIcons.image,
+      iconPath: 'asset/icons/skill.png', // Assuming skills is photos related or use image icon
       color: Colors.green,
       position: const Offset(20, 260),
     ),

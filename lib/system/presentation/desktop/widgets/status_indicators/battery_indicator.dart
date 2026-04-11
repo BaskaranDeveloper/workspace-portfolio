@@ -1,5 +1,6 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class BatteryIndicator extends StatefulWidget {
   const BatteryIndicator({super.key});
@@ -25,8 +26,6 @@ class _BatteryIndicatorState extends State<BatteryIndicator> {
       }
     });
 
-    // Check level periodically if stream doesn't update it directly
-    // (BatteryPlus stream is for state, level is separate)
     _getBatteryLevel();
   }
 
@@ -63,30 +62,28 @@ class _BatteryIndicatorState extends State<BatteryIndicator> {
 
     switch (_batteryState) {
       case BatteryState.charging:
-        icon = Icons.battery_charging_full;
+        icon = LucideIcons.batteryCharging;
         color = Colors.greenAccent;
         break;
       case BatteryState.full:
-        icon = Icons.battery_full;
+        icon = LucideIcons.batteryFull;
         break;
       case BatteryState.discharging:
       case BatteryState.unknown:
-        if (_batteryLevel >= 90) {
-          icon = Icons.battery_full;
-        } else if (_batteryLevel >= 60) {
-          icon = Icons.battery_6_bar;
+        if (_batteryLevel >= 80) {
+          icon = LucideIcons.batteryFull;
         } else if (_batteryLevel >= 40) {
-          icon = Icons.battery_4_bar;
+          icon = LucideIcons.batteryMedium;
         } else if (_batteryLevel >= 20) {
-          icon = Icons.battery_3_bar;
+          icon = LucideIcons.batteryLow;
           color = Colors.orangeAccent;
         } else {
-          icon = Icons.battery_alert;
+          icon = LucideIcons.battery;
           color = Colors.redAccent;
         }
         break;
       case BatteryState.connectedNotCharging:
-        icon = Icons.battery_full;
+        icon = LucideIcons.batteryFull;
         break;
     }
 
@@ -98,14 +95,14 @@ class _BatteryIndicatorState extends State<BatteryIndicator> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: color, size: 18),
-            const SizedBox(width: 4),
+            Icon(icon, color: color, size: 16),
+            const SizedBox(width: 6),
             Text(
               '$_batteryLevel%',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],

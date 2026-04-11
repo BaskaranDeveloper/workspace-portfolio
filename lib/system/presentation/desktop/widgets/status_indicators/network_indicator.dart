@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class NetworkIndicator extends StatefulWidget {
   const NetworkIndicator({super.key});
@@ -57,22 +58,22 @@ class _NetworkIndicatorState extends State<NetworkIndicator> {
     String statusText;
 
     if (_connectionStatus.contains(ConnectivityResult.mobile)) {
-      icon = Icons.signal_cellular_4_bar;
+      icon = LucideIcons.signal;
       statusText = 'Mobile Data';
     } else if (_connectionStatus.contains(ConnectivityResult.wifi)) {
-      icon = Icons.wifi;
+      icon = LucideIcons.wifi;
       statusText = 'Wi-Fi';
     } else if (_connectionStatus.contains(ConnectivityResult.ethernet)) {
-      icon = Icons.settings_ethernet;
+      icon = LucideIcons.globe;
       statusText = 'Ethernet';
     } else if (_connectionStatus.contains(ConnectivityResult.vpn)) {
-      icon = Icons.vpn_key;
+      icon = LucideIcons.shieldCheck;
       statusText = 'VPN Connected';
     } else if (_connectionStatus.contains(ConnectivityResult.none)) {
-      icon = Icons.signal_wifi_off;
+      icon = LucideIcons.wifiOff;
       statusText = 'No Connection';
     } else {
-      icon = Icons.wifi_off;
+      icon = LucideIcons.wifiOff;
       statusText = 'Unknown';
     }
 
@@ -82,7 +83,7 @@ class _NetworkIndicatorState extends State<NetworkIndicator> {
         onTap: () {
           // Open Wi-Fi settings or toggle
         },
-        child: Icon(icon, color: Colors.white, size: 18),
+        child: Icon(icon, color: Colors.white, size: 16),
       ),
     );
   }

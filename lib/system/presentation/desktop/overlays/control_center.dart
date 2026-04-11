@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class ControlCenter extends StatefulWidget {
   const ControlCenter({super.key});
@@ -12,158 +14,145 @@ class _ControlCenterState extends State<ControlCenter> {
   double _volume = 0.5;
   bool _wifiEnabled = true;
   bool _bluetoothEnabled = true;
-  bool _airdropEnabled = false;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return LiquidGlass(
+      borderRadius: 24,
       width: 320,
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.9), // Glassmorphism base
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.5),
-          width: 0.5,
+      shadows: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.3),
+          blurRadius: 40,
+          offset: const Offset(0, 20),
         ),
-      ),
+      ],
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Connectivity Grid
+          // Connectivity Grid (Liquid blocks)
           Row(
             children: [
-              // Left Block (Wifi, BT, Airdrop)
               Expanded(
-                flex: 1,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                child: _buildSquircleBlock(
                   child: Column(
                     children: [
                       _buildToggleRow(
-                        Icons.wifi,
+                        LucideIcons.wifi,
                         'Wi-Fi',
                         _wifiEnabled,
                         (v) => setState(() => _wifiEnabled = v),
-                        Colors.blue,
+                        Colors.blueAccent,
                       ),
                       const SizedBox(height: 12),
                       _buildToggleRow(
-                        Icons.bluetooth,
+                        LucideIcons.bluetooth,
                         'Bluetooth',
                         _bluetoothEnabled,
                         (v) => setState(() => _bluetoothEnabled = v),
-                        Colors.blue,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildToggleRow(
-                        Icons.airplanemode_active,
-                        'AirDrop',
-                        _airdropEnabled,
-                        (v) => setState(() => _airdropEnabled = v),
-                        Colors.blue,
+                        Colors.indigoAccent,
                       ),
                     ],
                   ),
                 ),
               ),
               const SizedBox(width: 12),
-              // Right Block (Do Not Disturb, etc - Placeholder)
               Expanded(
-                flex: 1,
                 child: Column(
                   children: [
-                    _buildSquareToggle(
-                      Icons.dark_mode,
-                      'Dark Mode',
-                      true,
-                      () {},
+                    _buildSquircleBlock(
+                      child: Row(
+                        children: [
+                          Icon(LucideIcons.airplay, color: Colors.white, size: 16),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'AirDrop',
+                            style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 12),
-                    _buildSquareToggle(
-                      Icons.keyboard,
-                      'Keyboard',
-                      false,
-                      () {},
+                    _buildSquircleBlock(
+                      child: Row(
+                        children: [
+                          Icon(LucideIcons.layers, color: Colors.white, size: 16),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Stage',
+                            style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          // Sliders
-          _buildSliderBlock(
-            Icons.wb_sunny,
-            'Display',
-            _brightness,
-            (v) => setState(() => _brightness = v),
+          const SizedBox(height: 12),
+
+          // Sliders Area
+          _buildSquircleBlock(
+            child: Column(
+              children: [
+                _buildSliderRow(LucideIcons.sun, 'Display', _brightness, (v) => setState(() => _brightness = v)),
+                const SizedBox(height: 16),
+                _buildSliderRow(LucideIcons.volume2, 'Sound', _volume, (v) => setState(() => _volume = v)),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
-          _buildSliderBlock(
-            Icons.volume_up,
-            'Sound',
-            _volume,
-            (v) => setState(() => _volume = v),
-          ),
-          const SizedBox(height: 16),
-          // Media Player (Placeholder)
-          Container(
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+
+          // Media Control Area
+          _buildSquircleBlock(
             child: Row(
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: Colors.white10,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.music_note, color: Colors.grey),
+                  child: const Icon(LucideIcons.music, color: Colors.white54),
                 ),
                 const SizedBox(width: 12),
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Not Playing',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Not Playing',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13),
                       ),
-                    ),
-                    Text(
-                      'Music',
-                      style: TextStyle(color: Colors.grey, fontSize: 11),
-                    ),
-                  ],
+                      Text(
+                        'Spotify',
+                        style: TextStyle(color: Colors.white54, fontSize: 11),
+                      ),
+                    ],
+                  ),
                 ),
-                const Spacer(),
-                const Icon(Icons.play_arrow, size: 28),
-                const SizedBox(width: 8),
-                const Icon(Icons.skip_next, size: 24),
+                const Icon(LucideIcons.play, color: Colors.white, size: 20),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSquircleBlock({required Widget child}) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: ShapeDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        shape: ContinuousRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+      ),
+      child: child,
     );
   }
 
@@ -181,112 +170,60 @@ class _ControlCenterState extends State<ControlCenter> {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: value ? activeColor : Colors.grey[400],
+              color: value ? activeColor : Colors.white.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: Colors.white, size: 16),
+            child: Icon(icon, color: Colors.white, size: 14),
           ),
           const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 13,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
                 ),
-              ),
-              Text(
-                value ? 'On' : 'Off',
-                style: const TextStyle(color: Colors.grey, fontSize: 11),
-              ),
-            ],
+                Text(
+                  value ? 'On' : 'Off',
+                  style: const TextStyle(color: Colors.white54, fontSize: 10),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSquareToggle(
-    IconData icon,
-    String label,
-    bool value,
-    VoidCallback onTap,
-  ) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: value
-              ? Colors.white.withValues(alpha: 0.8)
-              : Colors.black.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: value ? Colors.blue : Colors.black87, size: 20),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                  color: value ? Colors.blue : Colors.black87,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSliderBlock(
+  Widget _buildSliderRow(
     IconData icon,
     String label,
     double value,
     Function(double) onChanged,
   ) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: Colors.white70),
+        const SizedBox(width: 12),
+        Expanded(
+          child: SliderTheme(
+            data: SliderThemeData(
+              trackHeight: 18,
+              thumbShape: SliderComponentShape.noThumb,
+              overlayShape: SliderComponentShape.noOverlay,
+              activeTrackColor: Colors.white.withValues(alpha: 0.3),
+              inactiveTrackColor: Colors.white.withValues(alpha: 0.05),
+              trackShape: const RoundedRectSliderTrackShape(),
+            ),
+            child: Slider(value: value, onChanged: onChanged),
           ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(icon, size: 16, color: Colors.grey),
-              Expanded(
-                child: SliderTheme(
-                  data: SliderThemeData(
-                    trackHeight: 20,
-                    thumbShape: const RoundSliderThumbShape(
-                      enabledThumbRadius: 10,
-                    ),
-                    overlayShape: SliderComponentShape.noOverlay,
-                    activeTrackColor: Colors.white,
-                    inactiveTrackColor: Colors.grey[400],
-                    thumbColor: Colors.white,
-                  ),
-                  child: Slider(value: value, onChanged: onChanged),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

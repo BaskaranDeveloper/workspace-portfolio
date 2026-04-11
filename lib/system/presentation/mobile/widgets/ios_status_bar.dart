@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'dart:async';
 
 class IOSStatusBar extends StatefulWidget {
@@ -74,14 +74,14 @@ class _IOSStatusBarState extends State<IOSStatusBar> {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(CupertinoIcons.bars, color: Colors.white, size: 18),
-                const SizedBox(width: 6),
-                const Icon(CupertinoIcons.wifi, color: Colors.white, size: 18),
+                const Icon(LucideIcons.menu, color: Colors.white, size: 18),
+                const SizedBox(width: 8),
+                const Icon(LucideIcons.wifi, color: Colors.white, size: 18),
                 const SizedBox(width: 8),
                 const Icon(
-                  CupertinoIcons.battery_100,
+                  LucideIcons.batteryFull,
                   color: Colors.white,
-                  size: 24,
+                  size: 20,
                 ),
               ],
             ),
