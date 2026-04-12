@@ -102,13 +102,18 @@ class _WindowBaseState extends State<WindowBase>
         child: AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
-            return Transform.translate(
-              offset: _slideAnimation.value,
-              child: Opacity(
-                opacity: _opacityAnimation.value,
-                child: Transform.scale(
-                  scale: _scaleAnimation.value,
-                  child: child,
+            final double animValue = _controller.value;
+            return IgnorePointer(
+              // Completely remove from hit-test tree until layout is stable
+              ignoring: animValue < 0.9,
+              child: Transform.translate(
+                offset: _slideAnimation.value,
+                child: Opacity(
+                  opacity: _opacityAnimation.value,
+                  child: Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: child,
+                  ),
                 ),
               ),
             );

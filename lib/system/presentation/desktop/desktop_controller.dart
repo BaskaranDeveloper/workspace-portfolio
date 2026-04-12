@@ -17,7 +17,7 @@ class DesktopController extends ChangeNotifier {
       id: '2',
       label: 'Resume',
       icon: LucideIcons.fileText,
-      iconPath: 'asset/icons/resume.png',
+      iconPath: 'asset/icons/notes.png',
       color: Colors.white,
       position: const Offset(20, 160),
     ),

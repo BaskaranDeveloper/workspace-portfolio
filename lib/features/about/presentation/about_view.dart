@@ -1,492 +1,460 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:workspace/shared_ui/theme/app_colors.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
 
-class AboutView extends StatelessWidget {
+class AboutView extends StatefulWidget {
   const AboutView({super.key});
+
+  @override
+  State<AboutView> createState() => _AboutViewState();
+}
+
+class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMixin {
+  late AnimationController _entranceController;
+
+  @override
+  void initState() {
+    super.initState();
+    _entranceController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _entranceController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(32),
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          // Subdued Background Orbs
+          const Positioned.fill(child: RepaintBoundary(child: _FloatingOrbs())),
+          
+          Positioned.fill(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 40),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    children: [
+                      _buildModernHero(),
+                      const SizedBox(height: 80),
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          bool isMobile = constraints.maxWidth < 950;
+                          return isMobile 
+                            ? Column(children: _buildSections(isMobile))
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(flex: 3, child: Column(children: _buildPrimarySections())),
+                                  const SizedBox(width: 60),
+                                  Expanded(flex: 2, child: Column(children: _buildSideSections())),
+                                ],
+                              );
+                        },
+                      ),
+                      const SizedBox(height: 100),
+                      _buildModernFooter(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- MODERN HERO SECTION ---
+  Widget _buildModernHero() {
+    return Column(
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            _buildOrb(220, 220, Colors.blueAccent.withValues(alpha: 0.1), 0),
+            Container(
+              width: 140,
+              height: 140,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white.withValues(alpha: 0.1), width: 3),
+                image: const DecorationImage(
+                  image: NetworkImage('https://api.dicebear.com/7.x/bottts/png?seed=Baskaran&backgroundColor=060606'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        const Text(
+          'BASKARAN M',
+          style: TextStyle(fontSize: 64, fontWeight: FontWeight.w900, letterSpacing: -3, height: 1.0),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          'SENIOR SOFTWARE ENGINEER • FLUTTER & FULL-STACK SPECIALIST',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 4, color: Colors.blueAccent.withValues(alpha: 0.8)),
+        ),
+        const SizedBox(height: 48),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 750),
+          child: Text(
+            'highly motivated Software Engineer with 3+ years of experience in designing, developing, and delivering enterprise-grade cross-platform applications. I specialize in building scalable, secure, and maintainable systems that bridge the gap between complex engineering and elegant user experiences.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18, color: Colors.white.withValues(alpha: 0.5), height: 1.6, fontWeight: FontWeight.w300),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // --- CONTENT SECTIONS ---
+  List<Widget> _buildSections(bool isMobile) {
+    return [
+      ..._buildPrimarySections(),
+      const SizedBox(height: 40),
+      ..._buildSideSections(),
+    ];
+  }
+
+  List<Widget> _buildPrimarySections() {
+    return [
+      _buildExperienceSection(),
+      const SizedBox(height: 60),
+      _buildFeaturedProjectsSection(),
+    ];
+  }
+
+  Widget _buildExperienceSection() {
+    return _NeatGlassCard(
+      title: 'PROFESSIONAL EXPERIENCE',
+      icon: LucideIcons.briefcase,
+      child: Column(
+        children: [
+          _buildTimelineItem(
+            'AUG 2022 - PRESENT',
+            'Software Engineer | Flutter & Full-Stack',
+            'Trirope Technologies Pvt. Ltd.',
+            [
+              'Spearheaded development of 10+ enterprise-grade Flutter apps, reducing time-to-market by 30%.',
+              'Architected and deployed scalable backend microservices using Node.js/NestJS for 10k+ concurrent users.',
+              'Integrated high-security payment gateways, biometrics, and real-time socket-based features.',
+              'Mentored a team of 4 junior developers, enforcing clean architecture and code review standards.',
+              'Optimized app performance to maintain a 99.9% crash-free rate and high frame rates.',
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeaturedProjectsSection() {
+    return _NeatGlassCard(
+      title: 'FEATURED PROJECTS',
+      icon: LucideIcons.rocket,
+      child: Column(
+        children: [
+          _buildProjectDetail('Enterprise Lottery Platform', 'PSG Lotto, Pinas Lotto, 2D/3D - Scalable multi-game platform with secure payments.'),
+          _buildProjectDetail('Healthcare Management', 'Prashanth IVF (White Label) - Hospital application for records, appointments, and notifications.'),
+          _buildProjectDetail('Media & News Platform', 'Virakesari App - Real-time news application with high-performance WebView integration.'),
+          _buildProjectDetail('Matrimony Platform', 'Kaveri Matrimony - Profile management, matchmaking, real-time chat, and subscriptions.'),
+          _buildProjectDetail('POS & Inventory', 'IMS - Designing billing, inventory tracking, and reporting modules for retail.'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProjectDetail(String title, String desc) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: Colors.blueAccent.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+            child: const Icon(LucideIcons.checkCircle2, size: 14, color: Colors.blueAccent),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(desc, style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.4), height: 1.5)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildSideSections() {
+    return [
+      _buildSkillSection(),
+      const SizedBox(height: 60),
+      _buildEducationSection(),
+    ];
+  }
+
+  Widget _buildSkillSection() {
+    return _NeatGlassCard(
+      title: 'TECHNICAL SKILLS',
+      icon: LucideIcons.layers,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSkillGroup('PROGRAMMING', ['Dart (Strong)', 'JavaScript', 'TypeScript', 'Python', 'Java', 'C']),
+          const SizedBox(height: 24),
+          _buildSkillGroup('MOBILE & FRONTEND', ['Flutter', 'React.js', 'Next.js', 'HTML5/CSS3']),
+          const SizedBox(height: 24),
+          _buildSkillGroup('BACKEND & APIS', ['Node.js', 'NestJS', 'Express.js', 'FastAPI', 'REST APIs', 'JWT']),
+          const SizedBox(height: 24),
+          _buildSkillGroup('DATABASES', ['Firebase', 'MySQL', 'PostgreSQL']),
+          const SizedBox(height: 24),
+          _buildSkillGroup('PLATFORMS & TOOLS', ['Android', 'iOS', 'Web', 'Git', 'Figma', 'Blender']),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSkillGroup(String category, List<String> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(category, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2, color: Colors.white.withValues(alpha: 0.3))),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: items.map((i) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+              color: Colors.white.withValues(alpha: 0.03),
+            ),
+            child: Text(i, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500)),
+          )).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEducationSection() {
+    return _NeatGlassCard(
+      title: 'EDUCATION',
+      icon: LucideIcons.graduationCap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('B.E. Computer Science Engineering', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 6),
+          Text('Dhanalakshmi Srinivasan Institute of Technology', style: TextStyle(fontSize: 13, color: Colors.blueAccent.withValues(alpha: 0.7), fontStyle: FontStyle.italic)),
+          Text('Anna University • 2017 – 2021', style: const TextStyle(fontSize: 13, color: Colors.white38)),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(color: Colors.greenAccent.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.2))),
+            child: const Text('CGPA: 7.69', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent)),
+          ),
+          const SizedBox(height: 24),
+          const Text('Higher Secondary Education', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          Text('State Board • 2015 – 2017', style: const TextStyle(fontSize: 13, color: Colors.white38)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimelineItem(String date, String role, String company, List<String> points, {bool isLast = false}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            Container(width: 10, height: 10, decoration: const BoxDecoration(color: Colors.blueAccent, shape: BoxShape.circle)),
+            if (!isLast) Container(width: 1, height: 280, color: Colors.white.withValues(alpha: 0.1)),
+          ],
+        ),
+        const SizedBox(width: 24),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(date, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white38, letterSpacing: 1.5)),
+              const SizedBox(height: 4),
+              Text(role, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(company, style: TextStyle(fontSize: 14, color: Colors.blueAccent.withValues(alpha: 0.8), fontWeight: FontWeight.w500)),
+              const SizedBox(height: 20),
+              ...points.map((p) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(padding: const EdgeInsets.only(top: 6), child: Container(width: 4, height: 4, decoration: const BoxDecoration(color: Colors.blueAccent, shape: BoxShape.circle))),
+                    const SizedBox(width: 14),
+                    Expanded(child: Text(p, style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 13, height: 1.6))),
+                  ],
+                ),
+              )),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildModernFooter() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildSocialLink(LucideIcons.github, 'GITHUB'),
+            const SizedBox(width: 40),
+            _buildSocialLink(LucideIcons.linkedin, 'LINKEDIN'),
+            const SizedBox(width: 40),
+            _buildSocialLink(LucideIcons.mail, 'EMAIL'),
+          ],
+        ),
+        const SizedBox(height: 40),
+        Text('Villupuram, Tamil Nadu, India', style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.2), letterSpacing: 2)),
+      ],
+    );
+  }
+
+  Widget _buildSocialLink(IconData icon, String label) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Row(
+        children: [
+          Icon(icon, size: 14, color: Colors.white.withValues(alpha: 0.3)),
+          const SizedBox(width: 8),
+          Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2, color: Colors.white.withValues(alpha: 0.3))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOrb(double w, double h, Color color, double offsetFactor) {
+    return Container(
+      width: w,
+      height: h,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: [color.withValues(alpha: 0.15), color.withValues(alpha: 0.03), Colors.transparent],
+          stops: const [0.0, 0.4, 1.0],
+        ),
+      ),
+    );
+  }
+}
+
+class _NeatGlassCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Widget child;
+
+  const _NeatGlassCard({required this.title, required this.icon, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return LiquidGlass(
+      intensity: 0.65,
+      showGrain: true,
+      padding: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Section
-            _buildHeader(),
-            const SizedBox(height: 32),
-
-            // Contact Info Section
-            _buildContactInfo(),
-            const SizedBox(height: 48),
-
-            // Professional Summary
-            _buildSectionTitle('PROFESSIONAL SUMMARY'),
-            const SizedBox(height: 16),
-            const Text(
-              'Highly motivated Software Engineer with 3+ years of experience in designing, developing, and delivering enterprise-grade cross-platform applications for Android, iOS, Windows, macOS, and Web. Specialized in Flutter and full-stack development with strong expertise in building scalable, secure, and maintainable systems. Proven ability to manage complete product lifecycles in Agile environments and collaborate effectively with cross-functional teams.',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 16,
-                height: 1.6,
-              ),
-            ),
-            const SizedBox(height: 48),
-
-            // Experience Section
-            _buildSectionTitle('PROFESSIONAL EXPERIENCE'),
-            const SizedBox(height: 24),
-            _buildExperienceItem(
-              role: 'Software Engineer | Flutter & Full-Stack Developer',
-              company: 'Trirope Technologies Pvt. Ltd.',
-              duration: 'August 2022 – Present',
-              points: [
-                'Designed, developed, and deployed high-performance cross-platform applications using Flutter.',
-                'Delivered 10+ production-ready applications from concept to deployment.',
-                'Built modular, scalable, and maintainable system architecture.',
-                'Developed secure backend services using Node.js, NestJS, Express, and FastAPI.',
-                'Integrated authentication, payments, notifications, and analytics.',
-                'Worked in Agile/Scrum teams using Jira.',
-                'Managed version control using Git, Bitbucket, and SourceTree.',
-                'Conducted code reviews and improved software quality.',
-                'Resolved production issues and optimized application performance.',
-                'Collaborated with QA, DevOps, product managers, and clients.',
-              ],
-            ),
-            const SizedBox(height: 48),
-
-            // Key Projects Section
-            _buildSectionTitle('KEY PROJECTS'),
-            const SizedBox(height: 24),
-            _buildProjectGrid(),
-            const SizedBox(height: 48),
-
-            // Technical Skills Section
-            _buildSectionTitle('TECHNICAL SKILLS'),
-            const SizedBox(height: 24),
-            _buildSkillSection('Programming', [
-              'Dart (Strong)',
-              'JavaScript',
-              'TypeScript',
-              'Python',
-              'Java (Core)',
-              'C',
-            ]),
-            _buildSkillSection('Mobile & Frontend', [
-              'Flutter',
-              'React.js',
-              'Next.js',
-              'HTML',
-              'CSS',
-            ]),
-            _buildSkillSection('Backend & APIs', [
-              'Node.js',
-              'Express.js',
-              'NestJS',
-              'FastAPI',
-              'REST APIs',
-              'JWT',
-            ]),
-            _buildSkillSection('Databases', [
-              'Firebase',
-              'MySQL',
-              'PostgreSQL',
-            ]),
-            _buildSkillSection('Platforms', [
-              'Android',
-              'iOS',
-              'Windows',
-              'macOS',
-              'Web',
-            ]),
-            _buildSkillSection('Tools', [
-              'Git',
-              'GitHub',
-              'Bitbucket',
-              'Jira',
-              'SourceTree',
-              'Figma',
-              'Photoshop',
-              'Blender',
-              'DaVinci Resolve',
-            ]),
-            const SizedBox(height: 48),
-
-            // Education & Certifications
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSectionTitle('EDUCATION'),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'B.E. Computer Science Engineering',
-                        style: TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Text(
-                        'Anna University | 2017 – 2021',
-                        style: TextStyle(
-                          color: AppColors.terminalBlue,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 32),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSectionTitle('CERTIFICATIONS'),
-                      const SizedBox(height: 16),
-                      _buildBulletPoint('Ethical Hacking Certification – 2022'),
-                      _buildBulletPoint('Flutter Development Certification'),
-                    ],
-                  ),
-                ),
+                Icon(icon, size: 16, color: Colors.blueAccent),
+                const SizedBox(width: 14),
+                Text(title, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 3, color: Colors.white38)),
               ],
             ),
-            const SizedBox(height: 48),
-
-            // Strengths Section
-            _buildSectionTitle('PROFESSIONAL STRENGTHS'),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                'Strong Problem-Solving Skills',
-                'Enterprise Application Development',
-                'Agile Practices',
-                'Client Communication',
-                'Ownership & Accountability',
-                'Continuous Learning',
-              ].map((s) => _buildSkillChip(s)).toList(),
-            ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 40),
+            child,
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildHeader() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'BASKARAN M',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 42,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -1,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'Senior Software Engineer | Flutter & Full-Stack Developer',
-          style: TextStyle(
-            color: AppColors.terminalBlue,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.5,
-          ),
-        ),
-      ],
-    );
+class _FloatingOrbs extends StatefulWidget {
+  const _FloatingOrbs();
+
+  @override
+  State<_FloatingOrbs> createState() => _FloatingOrbsState();
+}
+
+class _FloatingOrbsState extends State<_FloatingOrbs> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 20))..repeat();
   }
 
-  Widget _buildContactInfo() {
-    return Wrap(
-      spacing: 24,
-      runSpacing: 12,
-      children: [
-        _buildContactItem(
-          Icons.location_on_outlined,
-          'Villupuram, Tamil Nadu, India',
-        ),
-        _buildContactItem(Icons.phone_outlined, '8778831267'),
-        _buildContactItem(
-          Icons.email_outlined,
-          'baskarandeveloper1423@gmail.com',
-        ),
-        _buildContactItem(Icons.link_outlined, 'linkedin.com/in/baskaran-m'),
-      ],
-    );
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
-  Widget _buildContactItem(IconData icon, String text) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: AppColors.terminalDim, size: 18),
-        const SizedBox(width: 8),
-        Text(
-          text,
-          style: TextStyle(
-            color: AppColors.textPrimary.withValues(alpha: 0.8),
-            fontSize: 14,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            color: AppColors.terminalDim,
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: 40,
-          height: 2,
-          color: AppColors.terminalBlue.withValues(alpha: 0.5),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildExperienceItem({
-    required String role,
-    required String company,
-    required String duration,
-    required List<String> points,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          role,
-          style: const TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Row(
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Stack(
           children: [
-            Text(
-              company,
-              style: const TextStyle(
-                color: AppColors.terminalBlue,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Text(
-              '|  $duration',
-              style: TextStyle(
-                color: AppColors.textPrimary.withValues(alpha: 0.5),
-                fontSize: 14,
-              ),
-            ),
+            _buildOrb(600, 600, Colors.blueAccent.withValues(alpha: 0.04), 0),
+            _buildOrb(500, 500, Colors.purpleAccent.withValues(alpha: 0.04), 0.5),
           ],
-        ),
-        const SizedBox(height: 16),
-        ...points.map(
-          (p) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: _buildBulletPoint(p),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 
-  Widget _buildBulletPoint(String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 6),
-          child: Container(
-            width: 6,
-            height: 6,
-            decoration: const BoxDecoration(
-              color: AppColors.terminalBlue,
-              shape: BoxShape.circle,
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            text,
-            style: TextStyle(
-              color: AppColors.textPrimary.withValues(alpha: 0.9),
-              fontSize: 14,
-              height: 1.5,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProjectGrid() {
-    final projects = [
-      {
-        'title': 'Enterprise Lottery Platform',
-        'desc':
-            'Scalable multi-game platform with secure payments and admin dashboards.',
-        'tags': ['PSG Lotto', 'Pinas Lotto'],
-      },
-      {
-        'title': 'Healthcare Management System',
-        'desc':
-            'Hospital application for appointments, patient records, and notifications.',
-        'tags': ['Prashanth IVF', 'White Label'],
-      },
-      {
-        'title': 'Media & News Platform',
-        'desc':
-            'Real-time news application with WebView and performance optimization.',
-        'tags': ['Virakesari App'],
-      },
-      {
-        'title': 'Matrimony Platform',
-        'desc':
-            'Implemented profile management, matchmaking, chat, and subscriptions.',
-        'tags': ['Kaveri Matrimony'],
-      },
-      {
-        'title': 'POS & Inventory System',
-        'desc': 'Designed billing, inventory tracking, and reporting modules.',
-        'tags': ['IMS'],
-      },
-      {
-        'title': 'Astrology Application',
-        'desc': 'Enhanced application performance and improved scalability.',
-        'tags': ['PKG Astro'],
-      },
-    ];
-
-    return Wrap(
-      spacing: 16,
-      runSpacing: 16,
-      children: projects.map((p) => _buildProjectCard(p)).toList(),
-    );
-  }
-
-  Widget _buildProjectCard(Map<String, dynamic> project) {
-    return Container(
-      width: 340,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.widgetBackground,
-        border: Border.all(color: AppColors.widgetBorder),
-        borderRadius: BorderRadius.circular(12),
+  Widget _buildOrb(double w, double h, Color color, double offsetFactor) {
+    final value = (_controller.value + offsetFactor) % 1.0;
+    return Transform.translate(
+      offset: Offset(
+        400 * math.sin(value * 2 * math.pi),
+        200 * math.cos(value * 2 * math.pi),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            project['title'],
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+      child: Center(
+        child: Container(
+          width: w,
+          height: h,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              colors: [color.withValues(alpha: 0.12), color.withValues(alpha: 0.03), Colors.transparent],
+              stops: const [0.0, 0.4, 1.0],
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            project['desc'],
-            style: TextStyle(
-              color: AppColors.textPrimary.withValues(alpha: 0.7),
-              fontSize: 13,
-              height: 1.4,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            children: (project['tags'] as List<String>)
-                .map(
-                  (t) => Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.terminalBlue.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      t,
-                      style: const TextStyle(
-                        color: AppColors.terminalBlue,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSkillSection(String category, List<String> skills) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            category,
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: skills.map((s) => _buildSkillChip(s)).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSkillChip(String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundTertiary,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: AppColors.widgetBorder.withValues(alpha: 0.5),
         ),
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(color: AppColors.textPrimary, fontSize: 12),
       ),
     );
   }
