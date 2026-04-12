@@ -121,9 +121,20 @@
 
   <script src="flutter_bootstrap.js" async></script>
   <script>
-    // Optional: Add logic to remove loader if Flutter doesn't handle it automatically
-    // Currently, Flutter's bootstrap handles the entrypoint.
-    // The Flutter app will cover this loader when it paints.
+    window._removePreloader = function() {
+      const loader = document.getElementById('loading');
+      if (loader) {
+        console.log('Removing preloader...');
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.remove();
+          console.log('Preloader removed from DOM.');
+        }, 500);
+      }
+    };
+
+    // Auto-remove fallback after 10 seconds in case Flutter fails
+    setTimeout(window._removePreloader, 10000);
   </script>
 </body>
 

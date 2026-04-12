@@ -1,3 +1,5 @@
+import 'dart:js' as js;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workspace/system/presentation/boot/widgets/boot_progress_bar.dart';
@@ -58,6 +60,15 @@ class _BootScreenState extends State<BootScreen>
 
     // start animation
     _controller.forward();
+
+    // Second redundant check to remove preloader (Web only)
+    if (kIsWeb) {
+      try {
+        js.context.callMethod('_removePreloader');
+      } catch (e) {
+        debugPrint('Failed to remove preloader in BootScreen: $e');
+      }
+    }
 
     super.initState();
   }

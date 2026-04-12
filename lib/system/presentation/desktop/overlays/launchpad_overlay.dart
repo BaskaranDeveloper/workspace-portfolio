@@ -58,9 +58,9 @@ class _LaunchpadOverlayState extends State<LaunchpadOverlay> with SingleTickerPr
       child: Material(
         color: Colors.transparent,
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+          filter: ImageFilter.blur(sigmaX: 70, sigmaY: 70),
           child: Container(
-            color: Colors.black.withValues(alpha: 0.5), // Reduced visibility of background
+            color: Colors.black.withValues(alpha: 0.4),
             padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 40), // Tighter padding
             child: ScaleTransition(
               scale: _animation,
@@ -114,9 +114,9 @@ class _LaunchpadOverlayState extends State<LaunchpadOverlay> with SingleTickerPr
                                 physics: const NeverScrollableScrollPhysics(),
                                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 7,
-                                  mainAxisSpacing: 10,  // Tight row spacing
-                                  crossAxisSpacing: 10, // Tight column spacing
-                                  childAspectRatio: 0.9, // Balanced proportions
+                                  mainAxisSpacing: 25,  // Increased spacing for glass effects
+                                  crossAxisSpacing: 20, // Increased spacing for glass effects
+                                  childAspectRatio: 0.85, // More vertical room for labels
                                 ),
                                 itemCount: pageApps.length,
                                 itemBuilder: (context, index) {

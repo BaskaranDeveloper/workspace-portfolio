@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
 
 class DockItem extends StatelessWidget {
   final IconData icon;
@@ -38,14 +39,16 @@ class DockItem extends StatelessWidget {
               curve: duration == Duration.zero ? Curves.linear : Curves.easeOut,
               width: size,
               height: size,
-              decoration: ShapeDecoration(
+              child: LiquidGlass(
+                intensity: 0.8,
+                blurSigma: iconPath != null ? 5.0 : 30.0,
+                tintColor: iconPath != null ? null : color,
                 shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(size * 0.45),
                 ),
-                color: iconPath != null ? Colors.transparent : Colors.white.withValues(alpha: 0.1),
                 shadows: iconPath != null 
                     ? [
-                        BoxShadow( // Native drop shadow for image assets
+                        BoxShadow(
                           color: Colors.black.withValues(alpha: 0.3),
                           blurRadius: 12,
                           offset: const Offset(0, 6),
@@ -53,32 +56,30 @@ class DockItem extends StatelessWidget {
                       ]
                     : [
                         BoxShadow(
-                          color: color.withValues(alpha: 0.4), // Theme color glow shadow
+                          color: color.withValues(alpha: 0.45),
                           blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),
                         BoxShadow(
-                          color: Colors.white.withValues(alpha: 0.25),
+                          color: Colors.white.withValues(alpha: 0.3),
                           blurRadius: 1,
                           spreadRadius: -1,
-                          offset: const Offset(0, 1), // Inner light
+                          offset: const Offset(0, 1),
                         ),
                       ],
-              ),
-              child: ClipPath(
-                clipper: ShapeBorderClipper(
-                  shape: ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.circular(size * 0.45),
-                  ),
+                child: Center(
+                  child: iconPath != null
+                      ? Padding(
+                          padding: EdgeInsets.all(size * 0.05), // Subtle padding for the image inside glass
+                          child: Image.asset(
+                            iconPath!,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Icon(icon, color: Colors.white, size: size * 0.5),
+                          ),
+                        )
+                      : Icon(icon, color: Colors.white, size: size * 0.5),
                 ),
-                child: iconPath != null
-                    ? Image.asset(
-                        iconPath!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Icon(icon, color: Colors.white, size: size * 0.5),
-                      )
-                    : Icon(icon, color: Colors.white, size: size * 0.5),
               ),
             ),
           ),
