@@ -28,8 +28,7 @@ class WindowBase extends StatefulWidget {
   State<WindowBase> createState() => _WindowBaseState();
 }
 
-class _WindowBaseState extends State<WindowBase>
-    with SingleTickerProviderStateMixin {
+class _WindowBaseState extends State<WindowBase> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
@@ -40,30 +39,16 @@ class _WindowBaseState extends State<WindowBase>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500), // Spring physics duration
+      duration: const Duration(milliseconds: 500),
     );
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.95,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
-
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.0, 1.0, curve: Curves.easeOut),
-      ),
-    );
-
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 10),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+    _scaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 1.0, curve: Curves.easeOut)));
+    _slideAnimation = Tween<Offset>(begin: const Offset(0, 10), end: Offset.zero).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
     _controller.forward();
   }
 
-  //  Handle the closing animation
   void _handleClose() async {
     await _controller.reverse();
     widget.onClose();
@@ -80,18 +65,11 @@ class _WindowBaseState extends State<WindowBase>
     final screenSize = MediaQuery.of(context).size;
     final isMaximized = widget.window.isMaximized;
 
-    // Calculate render properties
-    final double currentWidth = isMaximized
-        ? screenSize.width
-        : widget.window.size.width;
-
-    final double currentHeight = isMaximized
-        ? screenSize.height
-        : widget.window.size.height;
-
+    final double currentWidth = isMaximized ? screenSize.width : widget.window.size.width;
+    final double currentHeight = isMaximized ? screenSize.height : widget.window.size.height;
     final double currentTop = isMaximized ? 0 : widget.window.position.dy;
-
     final double currentLeft = isMaximized ? 0 : widget.window.position.dx;
+
     return Positioned(
       left: currentLeft,
       top: currentTop,
@@ -104,7 +82,6 @@ class _WindowBaseState extends State<WindowBase>
           builder: (context, child) {
             final double animValue = _controller.value;
             return IgnorePointer(
-              // Completely remove from hit-test tree until layout is stable
               ignoring: animValue < 0.9,
               child: Transform.translate(
                 offset: _slideAnimation.value,
@@ -120,6 +97,7 @@ class _WindowBaseState extends State<WindowBase>
           },
           child: LiquidGlass(
             borderRadius: 24,
+            intensity: 0.9,
             shadows: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.4),
@@ -132,28 +110,23 @@ class _WindowBaseState extends State<WindowBase>
               children: [
                 Column(
                   children: [
-                    // Unified Title Bar Layer (Using the outer glass blur)
+                    // macOS Style Title Bar
                     GestureDetector(
                       onPanUpdate: (details) {
-                        final newPos = widget.window.position + details.delta;
-                        widget.onDrag(newPos);
+                        if (!isMaximized) {
+                          widget.onDrag(widget.window.position + details.delta);
+                        }
                       },
                       onDoubleTap: widget.onMaximize,
                       child: Container(
                         height: 38,
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.05),
-                          border: const Border(
-                            bottom: BorderSide(
-                              color: Colors.white10,
-                              width: 0.5,
-                            ),
-                          ),
+                          border: const Border(bottom: BorderSide(color: Colors.white10, width: 0.5)),
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Row(
                           children: [
-                            // Mac Controls
                             _buildBtn(const Color(0xFFFF5F56), _handleClose),
                             const SizedBox(width: 8),
                             _buildBtn(const Color(0xFFFFBD2E), widget.onMinimize),
@@ -168,25 +141,22 @@ class _WindowBaseState extends State<WindowBase>
                                   color: Colors.white.withValues(alpha: 0.8),
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
-                                  letterSpacing: -0.2,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 60), // Balance
+                            const SizedBox(width: 60),
                           ],
                         ),
                       ),
                     ),
-                    // Content
                     Expanded(
                       child: Container(
-                        color: AppColors.backgroundPrimary.withValues(alpha: 0.4), // Slight tint for content area
+                        color: AppColors.backgroundPrimary.withValues(alpha: 0.4),
                         child: widget.window.content,
                       ),
                     ),
                   ],
                 ),
-                // Resize Handle
                 Positioned(
                   right: 0,
                   bottom: 0,
@@ -200,13 +170,7 @@ class _WindowBaseState extends State<WindowBase>
                       width: 24,
                       height: 24,
                       color: Colors.transparent,
-                      child: Center(
-                        child: Icon(
-                          LucideIcons.expand,
-                          size: 10,
-                          color: Colors.white.withValues(alpha: 0.3),
-                        ),
-                      ),
+                      child: Center(child: Icon(LucideIcons.expand, size: 10, color: Colors.white.withValues(alpha: 0.3))),
                     ),
                   ),
                 ),
@@ -229,10 +193,7 @@ class _WindowBaseState extends State<WindowBase>
           decoration: BoxDecoration(
             color: color,
             shape: BoxShape.circle,
-            border: Border.all(
-              color: Colors.black.withValues(alpha: 0.1),
-              width: 0.5,
-            ),
+            border: Border.all(color: Colors.black.withValues(alpha: 0.1), width: 0.5),
           ),
         ),
       ),

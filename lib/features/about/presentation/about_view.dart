@@ -18,7 +18,7 @@ class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMix
     super.initState();
     _entranceController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1500),
     )..forward();
   }
 
@@ -34,40 +34,52 @@ class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMix
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // Subdued Background Orbs
           const Positioned.fill(child: RepaintBoundary(child: _FloatingOrbs())),
-          
           Positioned.fill(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 40),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1200),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final h = constraints.maxHeight;
+                final w = constraints.maxWidth;
+                final scale = (h / 900).clamp(0.7, 1.2);
+                final isCompact = w < 1000;
+                
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: w * 0.05,
+                    vertical: h * 0.05,
+                  ),
                   child: Column(
                     children: [
-                      _buildModernHero(),
-                      const SizedBox(height: 80),
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          bool isMobile = constraints.maxWidth < 950;
-                          return isMobile 
-                            ? Column(children: _buildSections(isMobile))
-                            : Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(flex: 3, child: Column(children: _buildPrimarySections())),
-                                  const SizedBox(width: 60),
-                                  Expanded(flex: 2, child: Column(children: _buildSideSections())),
-                                ],
-                              );
-                        },
+                      // TOP EDITORIAL HERO
+                      Expanded(
+                        flex: 3,
+                        child: AnimatedBuilder(
+                          animation: _entranceController,
+                          builder: (context, child) {
+                            final anim = CurvedAnimation(parent: _entranceController, curve: const Interval(0.0, 0.4, curve: Curves.easeOutCubic)).value;
+                            return Opacity(
+                              opacity: anim,
+                              child: Transform.translate(
+                                offset: Offset(0, 30 * (1 - anim)),
+                                child: _buildEditorialHero(h, w, scale),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      const SizedBox(height: 100),
-                      _buildModernFooter(),
+                      const SizedBox(height: 32),
+                      
+                      // MAIN HUD DASHBOARD
+                      Expanded(
+                        flex: 7,
+                        child: isCompact 
+                          ? _buildCompactScrollSections() 
+                          : _buildHUDDashboard(h, w, scale),
+                      ),
                     ],
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ],
@@ -75,278 +87,275 @@ class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMix
     );
   }
 
-  // --- MODERN HERO SECTION ---
-  Widget _buildModernHero() {
+  Widget _buildEditorialHero(double h, double w, double scale) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Stack(
           alignment: Alignment.center,
           children: [
-            _buildOrb(220, 220, Colors.blueAccent.withValues(alpha: 0.1), 0),
+            _buildOrb(220 * scale, 220 * scale, Colors.blueAccent.withValues(alpha: 0.1), 0),
             Container(
-              width: 140,
-              height: 140,
+              width: 110 * scale,
+              height: 110 * scale,
+              padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withValues(alpha: 0.1), width: 3),
-                image: const DecorationImage(
-                  image: NetworkImage('https://api.dicebear.com/7.x/bottts/png?seed=Baskaran&backgroundColor=060606'),
+                border: Border.all(color: Colors.blueAccent.withValues(alpha: 0.2), width: 1),
+              ),
+              child: ClipOval(
+                child: Image.network(
+                  'https://api.dicebear.com/7.x/bottts/png?seed=Baskaran&backgroundColor=060606',
                   fit: BoxFit.cover,
                 ),
               ),
             ),
+            // Floating Meta Tag
+            Positioned(
+              right: -20,
+              top: 20,
+              child: _buildMetaLabel('[UID: BASK-0314]', Colors.blueAccent),
+            ),
           ],
         ),
-        const SizedBox(height: 32),
-        const Text(
-          'BASKARAN M',
-          style: TextStyle(fontSize: 64, fontWeight: FontWeight.w900, letterSpacing: -3, height: 1.0),
-        ),
-        const SizedBox(height: 12),
+        SizedBox(height: 24 * scale),
         Text(
-          'SENIOR SOFTWARE ENGINEER • FLUTTER & FULL-STACK SPECIALIST',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 4, color: Colors.blueAccent.withValues(alpha: 0.8)),
+          'BASKARAN M',
+          style: TextStyle(
+            fontSize: 72 * scale,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -4,
+            height: 0.8,
+            foreground: Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 1
+              ..color = Colors.white.withValues(alpha: 0.1),
+          ),
         ),
-        const SizedBox(height: 48),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 750),
+        Transform.translate(
+          offset: const Offset(0, -20),
           child: Text(
-            'highly motivated Software Engineer with 3+ years of experience in designing, developing, and delivering enterprise-grade cross-platform applications. I specialize in building scalable, secure, and maintainable systems that bridge the gap between complex engineering and elegant user experiences.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, color: Colors.white.withValues(alpha: 0.5), height: 1.6, fontWeight: FontWeight.w300),
+            'BASKARAN M',
+            style: TextStyle(
+              fontSize: 72 * scale,
+              fontWeight: FontWeight.w900,
+              letterSpacing: -4,
+              height: 0.8,
+              color: Colors.white.withValues(alpha: 0.9),
+            ),
+          ),
+        ),
+        Text(
+          'FULL-STACK ARCHITECT • FLUTTER SPEC-01',
+          style: TextStyle(
+            fontSize: 10 * scale,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 6 * scale,
+            color: Colors.blueAccent.withValues(alpha: 0.8),
           ),
         ),
       ],
     );
   }
 
-  // --- CONTENT SECTIONS ---
-  List<Widget> _buildSections(bool isMobile) {
-    return [
-      ..._buildPrimarySections(),
-      const SizedBox(height: 40),
-      ..._buildSideSections(),
-    ];
-  }
-
-  List<Widget> _buildPrimarySections() {
-    return [
-      _buildExperienceSection(),
-      const SizedBox(height: 60),
-      _buildFeaturedProjectsSection(),
-    ];
-  }
-
-  Widget _buildExperienceSection() {
-    return _NeatGlassCard(
-      title: 'PROFESSIONAL EXPERIENCE',
-      icon: LucideIcons.briefcase,
-      child: Column(
-        children: [
-          _buildTimelineItem(
-            'AUG 2022 - PRESENT',
-            'Software Engineer | Flutter & Full-Stack',
-            'Trirope Technologies Pvt. Ltd.',
-            [
-              'Spearheaded development of 10+ enterprise-grade Flutter apps, reducing time-to-market by 30%.',
-              'Architected and deployed scalable backend microservices using Node.js/NestJS for 10k+ concurrent users.',
-              'Integrated high-security payment gateways, biometrics, and real-time socket-based features.',
-              'Mentored a team of 4 junior developers, enforcing clean architecture and code review standards.',
-              'Optimized app performance to maintain a 99.9% crash-free rate and high frame rates.',
+  Widget _buildHUDDashboard(double h, double w, double scale) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // 01: EXPERIENCE BOARD
+        Expanded(
+          flex: 4,
+          child: _StaggeredReveal(
+            controller: _entranceController,
+            interval: const Interval(0.3, 0.7, curve: Curves.easeOut),
+            child: _HUDTile(
+              index: '01',
+              title: 'OPERATIONAL LOGS',
+              icon: LucideIcons.terminal,
+              holographic: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHUDTimelineItem('2022-NOW', 'SR. SOFTWARE ENGINEER', 'TRIROPE TECHNOLOGIES', 'Scale: 10k+ / Uptime: 99.9%'),
+                  const SizedBox(height: 24),
+                  _buildHUDTimelineItem('2021-22', 'JUNIOR DEVELOPER', 'STARTUP ECO-SYSTEM', 'Core: Dart/Node.js Integration'),
+                  const Spacer(),
+                  _buildMetaLabel('[SECURITY: LEVEL-04]', Colors.white24),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 24),
+        
+        // 02: CORE STACK (Center Column)
+        Expanded(
+          flex: 5,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 4,
+                child: _StaggeredReveal(
+                  controller: _entranceController,
+                  interval: const Interval(0.4, 0.8, curve: Curves.easeOut),
+                  child: _HUDTile(
+                    index: '02',
+                    title: 'SYSTEM CAPABILITIES',
+                    icon: LucideIcons.cpu,
+                    child: Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        'FLUTTER_3.x', 'NODE_JS', 'NEST_JS', 'DART', 'TYPE_SCRIPT', 
+                        'REDIS', 'POSTGRE_SQL', 'DOCKER', 'AWS_CLD'
+                      ].map((s) => _buildHUDChip(s)).toList(),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Expanded(
+                flex: 6,
+                child: _StaggeredReveal(
+                  controller: _entranceController,
+                  interval: const Interval(0.5, 0.9, curve: Curves.easeOut),
+                  child: _HUDTile(
+                    index: '03',
+                    title: 'ACTIVE DEPLOYMENTS',
+                    icon: LucideIcons.activity,
+                    holographic: true,
+                    child: Column(
+                      children: [
+                        _buildDeploymentRow('PSG_LOTTO', 'ARCHITECT', 'ACTIVE'),
+                        _buildDeploymentRow('VIRAKESARI', 'SR_DEV', 'STABLE'),
+                        _buildDeploymentRow('IMS_POS', 'LEAD', 'DEPLO'),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
-        ],
-      ),
+        ),
+        const SizedBox(width: 24),
+        
+        // 03: ACADEMIC & COMMS
+        Expanded(
+          flex: 3,
+          child: _StaggeredReveal(
+            controller: _entranceController,
+            interval: const Interval(0.6, 1.0, curve: Curves.easeOut),
+            child: _HUDTile(
+              index: '04',
+              title: 'BIOMETRIC DATA',
+              icon: LucideIcons.fingerprint,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('B.E. COMPUTER SCIENCE', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 1)),
+                  const Text('Anna Univ. DSIT-17-21', style: TextStyle(color: Colors.blueAccent, fontSize: 11, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  _buildMetaLabel('CGPA: 7.69', Colors.greenAccent),
+                  const Spacer(),
+                  const Divider(color: Colors.white10),
+                  const SizedBox(height: 16),
+                  _buildHUDContact(LucideIcons.mail, 'baskarandeveloper1423@gmail.com'),
+                  const SizedBox(height: 12),
+                  _buildHUDContact(LucideIcons.mapPin, 'TAMIL NADU, IND'),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildFeaturedProjectsSection() {
-    return _NeatGlassCard(
-      title: 'FEATURED PROJECTS',
-      icon: LucideIcons.rocket,
+  Widget _buildCompactScrollSections() {
+    return SingleChildScrollView(
       child: Column(
         children: [
-          _buildProjectDetail('Enterprise Lottery Platform', 'PSG Lotto, Pinas Lotto, 2D/3D - Scalable multi-game platform with secure payments.'),
-          _buildProjectDetail('Healthcare Management', 'Prashanth IVF (White Label) - Hospital application for records, appointments, and notifications.'),
-          _buildProjectDetail('Media & News Platform', 'Virakesari App - Real-time news application with high-performance WebView integration.'),
-          _buildProjectDetail('Matrimony Platform', 'Kaveri Matrimony - Profile management, matchmaking, real-time chat, and subscriptions.'),
-          _buildProjectDetail('POS & Inventory', 'IMS - Designing billing, inventory tracking, and reporting modules for retail.'),
+          _HUDTile(index: '01', title: 'LOGS', icon: LucideIcons.terminal, height: 350, child: Container()),
+          const SizedBox(height: 16),
+          _HUDTile(index: '02', title: 'SYSTEM', icon: LucideIcons.cpu, height: 250, child: Container()),
         ],
       ),
     );
   }
 
-  Widget _buildProjectDetail(String title, String desc) {
+  Widget _buildHUDTimelineItem(String date, String role, String company, String stats) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(width: 6, height: 6, decoration: const BoxDecoration(color: Colors.blueAccent, shape: BoxShape.circle)),
+            const SizedBox(width: 10),
+            Text(date, style: const TextStyle(fontSize: 10, color: Colors.white38, fontWeight: FontWeight.bold, letterSpacing: 1)),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(role, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: -0.5)),
+        Text(company, style: TextStyle(fontSize: 12, color: Colors.blueAccent.withValues(alpha: 0.8), fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
+        Text(stats, style: const TextStyle(fontSize: 10, color: Colors.white24, letterSpacing: 0.5)),
+      ],
+    );
+  }
+
+  Widget _buildHUDChip(String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.03),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+      ),
+      child: Text(label, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: Colors.white54, letterSpacing: 1)),
+    );
+  }
+
+  Widget _buildDeploymentRow(String name, String role, String status) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: Colors.blueAccent.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
-            child: const Icon(LucideIcons.checkCircle2, size: 14, color: Colors.blueAccent),
-          ),
-          const SizedBox(width: 16),
+          Container(width: 2, height: 20, color: Colors.blueAccent.withValues(alpha: 0.3)),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 4),
-                Text(desc, style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.4), height: 1.5)),
+                Text(name, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                Text(role, style: const TextStyle(fontSize: 9, color: Colors.white24)),
               ],
             ),
           ),
+          _buildMetaLabel(status, status == 'ACTIVE' ? Colors.greenAccent : Colors.blueAccent),
         ],
       ),
     );
   }
 
-  List<Widget> _buildSideSections() {
-    return [
-      _buildSkillSection(),
-      const SizedBox(height: 60),
-      _buildEducationSection(),
-    ];
-  }
-
-  Widget _buildSkillSection() {
-    return _NeatGlassCard(
-      title: 'TECHNICAL SKILLS',
-      icon: LucideIcons.layers,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSkillGroup('PROGRAMMING', ['Dart (Strong)', 'JavaScript', 'TypeScript', 'Python', 'Java', 'C']),
-          const SizedBox(height: 24),
-          _buildSkillGroup('MOBILE & FRONTEND', ['Flutter', 'React.js', 'Next.js', 'HTML5/CSS3']),
-          const SizedBox(height: 24),
-          _buildSkillGroup('BACKEND & APIS', ['Node.js', 'NestJS', 'Express.js', 'FastAPI', 'REST APIs', 'JWT']),
-          const SizedBox(height: 24),
-          _buildSkillGroup('DATABASES', ['Firebase', 'MySQL', 'PostgreSQL']),
-          const SizedBox(height: 24),
-          _buildSkillGroup('PLATFORMS & TOOLS', ['Android', 'iOS', 'Web', 'Git', 'Figma', 'Blender']),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSkillGroup(String category, List<String> items) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(category, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2, color: Colors.white.withValues(alpha: 0.3))),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: items.map((i) => Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-              color: Colors.white.withValues(alpha: 0.03),
-            ),
-            child: Text(i, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500)),
-          )).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEducationSection() {
-    return _NeatGlassCard(
-      title: 'EDUCATION',
-      icon: LucideIcons.graduationCap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('B.E. Computer Science Engineering', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 6),
-          Text('Dhanalakshmi Srinivasan Institute of Technology', style: TextStyle(fontSize: 13, color: Colors.blueAccent.withValues(alpha: 0.7), fontStyle: FontStyle.italic)),
-          Text('Anna University • 2017 – 2021', style: const TextStyle(fontSize: 13, color: Colors.white38)),
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(color: Colors.greenAccent.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.2))),
-            child: const Text('CGPA: 7.69', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent)),
-          ),
-          const SizedBox(height: 24),
-          const Text('Higher Secondary Education', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-          Text('State Board • 2015 – 2017', style: const TextStyle(fontSize: 13, color: Colors.white38)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTimelineItem(String date, String role, String company, List<String> points, {bool isLast = false}) {
+  Widget _buildHUDContact(IconData icon, String label) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          children: [
-            Container(width: 10, height: 10, decoration: const BoxDecoration(color: Colors.blueAccent, shape: BoxShape.circle)),
-            if (!isLast) Container(width: 1, height: 280, color: Colors.white.withValues(alpha: 0.1)),
-          ],
-        ),
-        const SizedBox(width: 24),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(date, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white38, letterSpacing: 1.5)),
-              const SizedBox(height: 4),
-              Text(role, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text(company, style: TextStyle(fontSize: 14, color: Colors.blueAccent.withValues(alpha: 0.8), fontWeight: FontWeight.w500)),
-              const SizedBox(height: 20),
-              ...points.map((p) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(padding: const EdgeInsets.only(top: 6), child: Container(width: 4, height: 4, decoration: const BoxDecoration(color: Colors.blueAccent, shape: BoxShape.circle))),
-                    const SizedBox(width: 14),
-                    Expanded(child: Text(p, style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 13, height: 1.6))),
-                  ],
-                ),
-              )),
-            ],
-          ),
-        ),
+        Icon(icon, size: 12, color: Colors.blueAccent.withValues(alpha: 0.5)),
+        const SizedBox(width: 12),
+        Expanded(child: Text(label.toUpperCase(), style: const TextStyle(fontSize: 9, color: Colors.white38, fontWeight: FontWeight.bold, letterSpacing: 1))),
       ],
     );
   }
 
-  Widget _buildModernFooter() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildSocialLink(LucideIcons.github, 'GITHUB'),
-            const SizedBox(width: 40),
-            _buildSocialLink(LucideIcons.linkedin, 'LINKEDIN'),
-            const SizedBox(width: 40),
-            _buildSocialLink(LucideIcons.mail, 'EMAIL'),
-          ],
-        ),
-        const SizedBox(height: 40),
-        Text('Villupuram, Tamil Nadu, India', style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.2), letterSpacing: 2)),
-      ],
-    );
-  }
-
-  Widget _buildSocialLink(IconData icon, String label) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: Row(
-        children: [
-          Icon(icon, size: 14, color: Colors.white.withValues(alpha: 0.3)),
-          const SizedBox(width: 8),
-          Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 2, color: Colors.white.withValues(alpha: 0.3))),
-        ],
+  Widget _buildMetaLabel(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
+        borderRadius: BorderRadius.circular(2),
       ),
+      child: Text(text, style: TextStyle(fontSize: 8, fontWeight: FontWeight.w900, color: color, letterSpacing: 1)),
     );
   }
 
@@ -357,7 +366,11 @@ class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMix
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(
-          colors: [color.withValues(alpha: 0.15), color.withValues(alpha: 0.03), Colors.transparent],
+          colors: [
+            Colors.blueAccent.withValues(alpha: 0.15),
+            Colors.blueAccent.withValues(alpha: 0.03),
+            Colors.transparent,
+          ],
           stops: const [0.0, 0.4, 1.0],
         ),
       ),
@@ -365,33 +378,76 @@ class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMix
   }
 }
 
-class _NeatGlassCard extends StatelessWidget {
+class _StaggeredReveal extends StatelessWidget {
+  final AnimationController controller;
+  final Interval interval;
+  final Widget child;
+
+  const _StaggeredReveal({required this.controller, required this.interval, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        final anim = CurvedAnimation(parent: controller, curve: interval).value;
+        return Opacity(
+          opacity: anim,
+          child: Transform.translate(
+            offset: Offset(0, 40 * (1 - anim)),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+class _HUDTile extends StatelessWidget {
+  final String index;
   final String title;
   final IconData icon;
   final Widget child;
+  final double? height;
+  final bool holographic;
 
-  const _NeatGlassCard({required this.title, required this.icon, required this.child});
+  const _HUDTile({required this.index, required this.title, required this.icon, required this.child, this.height, this.holographic = false});
 
   @override
   Widget build(BuildContext context) {
     return LiquidGlass(
-      intensity: 0.65,
+      intensity: 0.8,
       showGrain: true,
+      holographic: holographic,
+      accentColor: Colors.blueAccent,
       padding: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 40),
+      child: Container(
+        height: height,
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05), width: 0.5),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(icon, size: 16, color: Colors.blueAccent),
-                const SizedBox(width: 14),
-                Text(title, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 3, color: Colors.white38)),
+                Row(
+                  children: [
+                    Icon(icon, size: 14, color: Colors.blueAccent),
+                    const SizedBox(width: 12),
+                    Text(title, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 3, color: Colors.white54)),
+                  ],
+                ),
+                Text(index, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: Colors.white.withValues(alpha: 0.1), letterSpacing: 1)),
               ],
             ),
-            const SizedBox(height: 40),
-            child,
+            const SizedBox(height: 12),
+            const Divider(color: Colors.white10),
+            const SizedBox(height: 24),
+            Expanded(child: child),
           ],
         ),
       ),
@@ -429,7 +485,7 @@ class _FloatingOrbsState extends State<_FloatingOrbs> with SingleTickerProviderS
         return Stack(
           children: [
             _buildOrb(600, 600, Colors.blueAccent.withValues(alpha: 0.04), 0),
-            _buildOrb(500, 500, Colors.purpleAccent.withValues(alpha: 0.04), 0.5),
+            _buildOrb(500, 500, Colors.lightBlueAccent.withValues(alpha: 0.04), 0.5),
           ],
         );
       },
@@ -450,7 +506,11 @@ class _FloatingOrbsState extends State<_FloatingOrbs> with SingleTickerProviderS
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
-              colors: [color.withValues(alpha: 0.12), color.withValues(alpha: 0.03), Colors.transparent],
+              colors: [
+                Colors.blueAccent.withValues(alpha: 0.12),
+                Colors.blueAccent.withValues(alpha: 0.03),
+                Colors.transparent,
+              ],
               stops: const [0.0, 0.4, 1.0],
             ),
           ),

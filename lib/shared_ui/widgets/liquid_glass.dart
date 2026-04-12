@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
@@ -17,6 +17,7 @@ class LiquidGlass extends StatelessWidget {
   final bool holographic; // Adds an iridescent sheen layer
   final bool showGrain;   // Adds physical noise texture
   final bool animatedRim; // Enables a circulating light path
+  final Color? accentColor; // The signature theme color for the topic
 
   const LiquidGlass({
     super.key,
@@ -34,6 +35,7 @@ class LiquidGlass extends StatelessWidget {
     this.holographic = false,
     this.showGrain = true,
     this.animatedRim = false,
+    this.accentColor,
   });
 
   @override
@@ -58,19 +60,19 @@ class LiquidGlass extends StatelessWidget {
             decoration: ShapeDecoration(
               shape: effectiveShape,
               gradient: RadialGradient(
-                center: Alignment.topLeft,
+                center: const Alignment(-0.8, -0.8),
                 radius: 1.5,
                 colors: [
-                  Colors.white.withValues(alpha: 0.1 * intensity),
+                  Colors.white.withValues(alpha: 0.12 * intensity),
                   Colors.transparent,
-                  Colors.black.withValues(alpha: 0.05 * intensity),
+                  Colors.black.withValues(alpha: 0.08 * intensity),
                 ],
-                stops: const [0.0, 0.5, 1.0],
+                stops: const [0.0, 0.4, 1.0],
               ),
             ),
           ),
         ),
-        // Layer 2: Core Refraction & Ambient Rim (Base layer for Stack sizing)
+        // Layer 2: Core Refraction & Ambient Rim
         Container(
           padding: padding,
           alignment: alignment,
@@ -80,40 +82,41 @@ class LiquidGlass extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Colors.white.withValues(alpha: 0.22 * intensity), // Top specular light
-                Colors.white.withValues(alpha: 0.04 * intensity), // Natural transparency
-                Colors.black.withValues(alpha: 0.04 * intensity), // Dark core depth
-                Colors.white.withValues(alpha: 0.15 * intensity), // Bottom specular rim
+                Colors.white.withValues(alpha: 0.20 * intensity), 
+                Colors.white.withValues(alpha: 0.04 * intensity), 
+                Colors.black.withValues(alpha: 0.04 * intensity), 
+                Colors.white.withValues(alpha: 0.12 * intensity), 
               ],
               stops: const [0.0, 0.35, 0.75, 1.0],
             ),
           ),
           child: child,
         ),
-        // Layer 4: Prismatic Rim (Chromatic Aberration simulation)
+        // Layer 4: Prismatic Rim (Subtle chromatic aberration)
         Positioned.fill(
           child: IgnorePointer(
             child: CustomPaint(
               painter: _PrismaticRimPainter(
                 shape: effectiveShape,
                 intensity: intensity,
+                accentColor: accentColor ?? Colors.white54,
               ),
             ),
           ),
         ),
-        // Layer 5: Multi-Layer Specular Bevel Highlights
+        // Layer 5: Specular Bevel Highlights
         Positioned.fill(
           child: IgnorePointer(
             child: CustomPaint(
               painter: _SpecularBevelPainter(
                 shape: effectiveShape,
-                color: Colors.white.withValues(alpha: 0.3 * intensity),
-                bloomIntensity: 0.5 * intensity,
+                color: (accentColor ?? Colors.white).withValues(alpha: 0.25 * intensity),
+                bloomIntensity: 0.4 * intensity,
               ),
             ),
           ),
         ),
-        // Layer 6: Polished Inner Rim (Subtle physical border)
+        // Layer 6: Polished Inner Rim
         Positioned.fill(
           child: IgnorePointer(
             child: Container(
@@ -121,8 +124,8 @@ class LiquidGlass extends StatelessWidget {
                 shape: (effectiveShape is OutlinedBorder)
                     ? (effectiveShape as OutlinedBorder).copyWith(
                         side: BorderSide(
-                          color: Colors.white.withValues(alpha: 0.2 * intensity),
-                          width: 0.75,
+                          color: Colors.white.withValues(alpha: 0.15 * intensity),
+                          width: 0.5,
                         ),
                       )
                     : effectiveShape,
@@ -130,31 +133,34 @@ class LiquidGlass extends StatelessWidget {
             ),
           ),
         ),
-        // Layer 7: Holographic Iridescence
-        if (holographic)
+        // Layer 7: Subtle Iridescence (Holographic v3.1 Native)
+        if (holographic == true)
           Positioned.fill(
             child: IgnorePointer(
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 6),
                 decoration: ShapeDecoration(
                   shape: effectiveShape,
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Colors.cyan.withValues(alpha: 0.03 * intensity),
+                      Colors.cyan.withValues(alpha: 0.05 * intensity),
                       Colors.transparent,
-                      Colors.purpleAccent.withValues(alpha: 0.03 * intensity),
+                      Colors.purpleAccent.withValues(alpha: 0.05 * intensity),
                       Colors.transparent,
-                      Colors.yellow.withValues(alpha: 0.03 * intensity),
+                      Colors.white.withValues(alpha: 0.03 * intensity),
+                      Colors.transparent,
+                      Colors.blueAccent.withValues(alpha: 0.05 * intensity),
                     ],
-                    stops: const [0.0, 0.2, 0.5, 0.8, 1.0],
+                    stops: const [0.0, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0],
                   ),
                 ),
               ),
             ),
           ),
-        // Layer 8: Physical Grain Texture
-        if (showGrain)
+        // Layer 8: Physical Grain (Native Texture)
+        if (showGrain == true)
           Positioned.fill(
             child: IgnorePointer(
               child: CustomPaint(
@@ -162,7 +168,7 @@ class LiquidGlass extends StatelessWidget {
               ),
             ),
           ),
-        if (animatedRim)
+        if (animatedRim == true)
           Positioned.fill(
             child: IgnorePointer(
               child: _AnimatedSpecularRim(
@@ -182,9 +188,9 @@ class LiquidGlass extends StatelessWidget {
         shadows: shadows ??
             [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
-                blurRadius: 40,
-                offset: const Offset(0, 20),
+                color: Colors.black.withValues(alpha: 0.15),
+                blurRadius: 30,
+                offset: const Offset(0, 15),
               ),
             ],
       ),
@@ -200,7 +206,6 @@ class LiquidGlass extends StatelessWidget {
     );
   }
 
-  /// High-performance clipping strategy to avoid hit-test errors on Web.
   Widget _buildClipper({required ShapeBorder shape, required Widget child}) {
     if (shape is RoundedRectangleBorder) {
       return ClipRRect(
@@ -215,7 +220,6 @@ class LiquidGlass extends StatelessWidget {
   }
 }
 
-/// Paints a multi-layered specular highlight that accents the curved edges/corners with bloom.
 class _SpecularBevelPainter extends CustomPainter {
   final ShapeBorder shape;
   final Color color;
@@ -232,36 +236,22 @@ class _SpecularBevelPainter extends CustomPainter {
     final rect = Rect.fromLTWH(1, 1, size.width - 2, size.height - 2);
     final path = shape.getOuterPath(rect);
 
-    // Pass 1: Core Sharp Highlight
     final paintSharp = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.2
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 0.5);
+      ..strokeWidth = 0.8;
 
-    // Pass 2: Soft Bloom Highlight
     final paintBloom = Paint()
       ..color = color.withValues(alpha: color.a * bloomIntensity)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.5
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2.5);
+      ..strokeWidth = 2.5
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2.0);
 
-    // Clip to show only top-left and bottom-right specular areas
     canvas.save();
     canvas.clipPath(Path()
       ..moveTo(0, 0)
-      ..lineTo(size.width * 0.45, 0)
-      ..lineTo(0, size.height * 0.45)
-      ..close());
-    canvas.drawPath(path, paintBloom);
-    canvas.drawPath(path, paintSharp);
-    canvas.restore();
-
-    canvas.save();
-    canvas.clipPath(Path()
-      ..moveTo(size.width, size.height)
-      ..lineTo(size.width * 0.55, size.height)
-      ..lineTo(size.width, size.height * 0.55)
+      ..lineTo(size.width * 0.4, 0)
+      ..lineTo(0, size.height * 0.4)
       ..close());
     canvas.drawPath(path, paintBloom);
     canvas.drawPath(path, paintSharp);
@@ -270,31 +260,27 @@ class _SpecularBevelPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _SpecularBevelPainter oldDelegate) =>
-      oldDelegate.shape != shape ||
-      oldDelegate.color != color ||
-      oldDelegate.bloomIntensity != bloomIntensity;
+      oldDelegate.shape != shape || oldDelegate.color != color;
 }
 
-/// Paints a subtle prismatic rim (chromatic aberration) at the edges.
 class _PrismaticRimPainter extends CustomPainter {
   final ShapeBorder shape;
   final double intensity;
+  final Color accentColor;
 
-  _PrismaticRimPainter({required this.shape, required this.intensity});
+  _PrismaticRimPainter({required this.shape, required this.intensity, required this.accentColor});
 
   @override
   void paint(Canvas canvas, Size size) {
     if (intensity < 0.1) return;
-
     final rect = Rect.fromLTWH(0.5, 0.5, size.width - 1, size.height - 1);
     final path = shape.getOuterPath(rect);
 
     void drawLayer(Color color, Offset offset) {
       final paint = Paint()
-        ..color = color.withValues(alpha: 0.15 * intensity)
+        ..color = color.withValues(alpha: 0.1 * intensity)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.0
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 0.5);
+        ..strokeWidth = 0.5;
 
       canvas.save();
       canvas.translate(offset.dx, offset.dy);
@@ -302,85 +288,64 @@ class _PrismaticRimPainter extends CustomPainter {
       canvas.restore();
     }
 
-    // Cyan/Red shift for chromatic aberration
-    drawLayer(Colors.cyan, const Offset(-0.3, -0.3));
-    drawLayer(Colors.redAccent, const Offset(0.3, 0.3));
+    drawLayer(accentColor, const Offset(-0.2, -0.2));
   }
 
   @override
-  bool shouldRepaint(covariant _PrismaticRimPainter oldDelegate) =>
-      oldDelegate.shape != shape || oldDelegate.intensity != intensity;
+  bool shouldRepaint(covariant _PrismaticRimPainter oldDelegate) => false;
 }
 
-/// A high-performance grain/noise painter that simulates physical glass texture.
 class _GrainPainter extends CustomPainter {
   final double intensity;
-  final Random _random = Random(42);
+  final math.Random _random = math.Random(42);
 
   _GrainPainter({required this.intensity});
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (intensity < 0.05) return;
-
     final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.04 * intensity)
-      ..strokeWidth = 0.8
-      ..strokeCap = StrokeCap.round;
+      ..color = Colors.white.withValues(alpha: 0.03 * intensity)
+      ..strokeWidth = 0.5;
 
-    // High-performance point drawing (Fixed count for stability)
     final List<Offset> points = [];
-    const int count = 1200; // Fixed count is much faster than area-based loops on Web
+    const int count = 800;
     for (int i = 0; i < count; i++) {
-      points.add(Offset(_random.nextDouble() * size.width, _random.nextDouble() * size.height));
+        points.add(Offset(_random.nextDouble() * size.width, _random.nextDouble() * size.height));
     }
-
     canvas.drawPoints(PointMode.points, points, paint);
   }
 
   @override
-  bool shouldRepaint(covariant _GrainPainter oldDelegate) => oldDelegate.intensity != intensity;
+  bool shouldRepaint(covariant _GrainPainter oldDelegate) => false;
 }
 
-/// A stateful component that sweeps a specular highlight around the rim of a shape.
 class _AnimatedSpecularRim extends StatefulWidget {
   final ShapeBorder shape;
   final double intensity;
-
   const _AnimatedSpecularRim({required this.shape, required this.intensity});
-
   @override
   State<_AnimatedSpecularRim> createState() => _AnimatedSpecularRimState();
 }
 
 class _AnimatedSpecularRimState extends State<_AnimatedSpecularRim> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 4))..repeat();
+    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 5))..repeat();
   }
-
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: _RimSweepPainter(
-            shape: widget.shape,
-            intensity: widget.intensity,
-            progress: _controller.value,
-          ),
-        );
-      },
+      builder: (context, child) => CustomPaint(
+        painter: _RimSweepPainter(shape: widget.shape, intensity: widget.intensity, progress: _controller.value),
+      ),
     );
   }
 }
@@ -389,41 +354,23 @@ class _RimSweepPainter extends CustomPainter {
   final ShapeBorder shape;
   final double intensity;
   final double progress;
-
   _RimSweepPainter({required this.shape, required this.intensity, required this.progress});
-
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Rect.fromLTWH(0.5, 0.5, size.width - 1, size.height - 1);
     final path = shape.getOuterPath(rect);
-
-    final p0 = (progress - 0.1).clamp(0.0, 0.98);
-    final p1 = progress.clamp(0.01, 0.99);
-    final p2 = (progress + 0.1).clamp(0.02, 1.0);
-
     final gradient = SweepGradient(
       center: Alignment.center,
-      startAngle: 0,
-      endAngle: 2 * pi,
-      colors: [
-        Colors.transparent,
-        Colors.white.withValues(alpha: 0.15 * intensity),
-        Colors.transparent,
-      ],
-      stops: [p0, p1, p2],
-      transform: GradientRotation(progress * 2 * pi),
+      colors: [Colors.transparent, Colors.white.withValues(alpha: 0.1 * intensity), Colors.transparent],
+      stops: [0.0, 0.5, 1.0],
+      transform: GradientRotation(progress * 2 * math.pi),
     );
-
     final paint = Paint()
       ..shader = gradient.createShader(rect)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.2
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.0);
-
+      ..strokeWidth = 0.8;
     canvas.drawPath(path, paint);
   }
-
   @override
-  bool shouldRepaint(covariant _RimSweepPainter oldDelegate) =>
-      oldDelegate.progress != progress || oldDelegate.intensity != intensity;
+  bool shouldRepaint(covariant _RimSweepPainter oldDelegate) => true;
 }

@@ -16,7 +16,7 @@ import 'package:workspace/system/domain/registry/registry_provider.dart'; // Imp
 
 import 'package:workspace/system/presentation/desktop/overlays/control_center.dart';
 import 'package:workspace/system/presentation/desktop/overlays/launchpad_overlay.dart';
-import 'package:workspace/system/presentation/desktop/widgets/parallax_background.dart';
+import 'widgets/parallax_background.dart';
 
 // Convert to ConsumerStatefulWidget
 class DesktopScreen extends ConsumerStatefulWidget {
@@ -151,9 +151,7 @@ class _DesktopScreenState extends ConsumerState<DesktopScreen> {
                     ]);
                   },
 
-                  child: const ParallaxBackground(
-                    child: SizedBox.expand(),
-                  ),
+                  child: const ParallaxBackground(),
                 ),
               ),
 
