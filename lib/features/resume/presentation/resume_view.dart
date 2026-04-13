@@ -85,7 +85,7 @@ class ResumeView extends StatelessWidget {
                 _buildSectionHeader('PROFESSIONAL SUMMARY'),
                 const SizedBox(height: 16),
                 SelectableText(
-                  'Highly motivated Software Engineer with 3+ years of experience in designing, developing, and delivering enterprise-grade cross-platform applications for Android, iOS, Windows, macOS, and Web. Specialized in Flutter and full-stack development with strong expertise in building scalable, secure, and maintainable systems. Proven ability to manage complete product lifecycles in Agile environments and collaborate effectively with cross-functional teams.',
+                  'Expert Software Engineer with 3+ years of experience specializing in high-fidelity Flutter development and End-to-End AI-Agentic Architecture. I redefine the software lifecycle by orchestrating autonomous workflows—leveraging Antigravity, Cursor, and Firebase Studio for rapid development, while steering product strategy with Claude 3.5 and OpenAI o1. Proven ability to build high-impact, enterprise-ready applications with extreme technical precision and modern automation.',
                   style: TextStyle(
                     fontSize: 15,
                     height: 1.6,
@@ -121,6 +121,27 @@ class ResumeView extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
 
+                // AI Product Lifecycle
+                _buildSectionHeader('END-TO-END AI PRODUCT LIFECYCLE'),
+                const SizedBox(height: 16),
+                _buildSkillRow(
+                  'Strategy & Reasoning',
+                  'Claude 3.5 Sonnet (Logic/PRD), OpenAI o1 (Architecture), Perplexity (Research)',
+                ),
+                _buildSkillRow(
+                  'Generative UI',
+                  'v0.dev (Web UI), Stitch (Flutter/Mobile UI), Midjourney (Gen-Assets)',
+                ),
+                _buildSkillRow(
+                  'Autonomous Dev',
+                  'Antigravity (Agentic Orchestration), Cursor (AI IDE), Firebase Studio',
+                ),
+                _buildSkillRow(
+                  'Automation & Ops',
+                  'n8n (Workflows), Custom MCP Servers (Context Sync)',
+                ),
+                const SizedBox(height: 32),
+
                 // Professional Experience
                 _buildSectionHeader('PROFESSIONAL EXPERIENCE'),
                 const SizedBox(height: 16),
@@ -131,22 +152,22 @@ class ResumeView extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 _buildBulletPoint(
-                  'Spearheaded the end-to-end development of 10+ enterprise-grade Flutter applications, reducing time-to-market by 30%.',
+                  'Led end-to-end development of 10+ enterprise Flutter applications, consistently delivering high-fidelity user experiences and reducing delivery cycles.',
                 ),
                 _buildBulletPoint(
-                  'Architected and deployed scalable backend microservices using Node.js and NestJS, supporting 10k+ concurrent users.',
+                  'Developed and integrated robust backend services using Node.js and NestJS to support high-scale app features and real-time synchronization.',
                 ),
                 _buildBulletPoint(
-                  'Integrated high-security payment gateways, biometric authentication, and real-time socket-based features.',
+                  'Implemented secure payment gateways, biometric authentication, and low-latency socket communication for real-time user interactions.',
                 ),
                 _buildBulletPoint(
-                  'Mentored a team of 4 junior developers, conducting code reviews and enforcing clean architecture principles.',
+                  'Mentored junior developers through technical guidance and code reviews, fostering adoption of clean architecture and best practices.',
                 ),
                 _buildBulletPoint(
-                  'Optimized app performance, achieving a 99.9% crash-free rate and consistently high frame rates on low-end devices.',
+                  'Optimized cross-platform performance to achieve 99.9% crash-free rates and fluid 60FPS experiences across low-end and flagship devices.',
                 ),
                 _buildBulletPoint(
-                  'Collaborated directly with clients to translate business requirements into technical specifications and actionable sprints.',
+                  'Partnered with stakeholders to transform business requirements into precise technical specifications and execution-ready agile sprints.',
                 ),
                 const SizedBox(height: 32),
 
@@ -505,10 +526,19 @@ class ResumeView extends StatelessWidget {
                 _buildPdfSectionHeader('PROFESSIONAL SUMMARY'),
                 pw.SizedBox(height: 8),
                 pw.Text(
-                  'Highly motivated Software Engineer with 3+ years of experience in designing, developing, and delivering enterprise-grade cross-platform applications for Android, iOS, Windows, macOS, and Web. Specialized in Flutter and full-stack development with strong expertise in building scalable, secure, and maintainable systems. Proven ability to manage complete product lifecycles in Agile environments.',
+                  'Expert Software Engineer with 3+ years of experience specializing in high-fidelity Flutter development and End-to-End AI-Agentic Architecture. I redefine the software lifecycle by orchestrating autonomous workflows—leveraging Antigravity, Cursor, and Firebase Studio for rapid development, while steering product strategy with Claude 3.5 and OpenAI o1.',
                   style: const pw.TextStyle(fontSize: 11, lineSpacing: 1.5),
                   textAlign: pw.TextAlign.justify,
                 ),
+                pw.SizedBox(height: 20),
+
+                // AI Lifecycle
+                _buildPdfSectionHeader('END-TO-END AI PRODUCT LIFECYCLE'),
+                pw.SizedBox(height: 8),
+                _buildPdfSkillRow('Strategy', 'Claude 3.5 Sonnet, OpenAI o1, Perplexity'),
+                _buildPdfSkillRow('Gen UI', 'v0.dev, Stitch (Flutter), Midjourney'),
+                _buildPdfSkillRow('Agentic Dev', 'Antigravity (Orchestration), Cursor, Firebase Studio'),
+                _buildPdfSkillRow('Ops/Auto', 'n8n (Workflows), Custom MCP Servers'),
                 pw.SizedBox(height: 20),
 
                 // Skills
@@ -547,22 +577,22 @@ class ResumeView extends StatelessWidget {
                 ),
                 pw.SizedBox(height: 6),
                 _buildPdfBullet(
-                  'Spearheaded the end-to-end development of 10+ enterprise-grade Flutter applications, reducing time-to-market by 30%.',
+                  'Led end-to-end development of 10+ enterprise Flutter applications, consistently delivering high-fidelity user experiences and reducing delivery cycles.',
                 ),
                 _buildPdfBullet(
-                  'Architected and deployed scalable backend microservices using Node.js and NestJS, supporting 10k+ concurrent users.',
+                  'Developed and integrated robust backend services using Node.js and NestJS to support high-scale app features and real-time synchronization.',
                 ),
                 _buildPdfBullet(
-                  'Integrated high-security payment gateways, biometric authentication, and real-time socket-based features.',
+                  'Implemented secure payment gateways, biometric authentication, and low-latency socket communication for real-time user interactions.',
                 ),
                 _buildPdfBullet(
-                  'Mentored a team of 4 junior developers, conducting code reviews and enforcing clean architecture principles.',
+                  'Mentored junior developers through technical guidance and code reviews, fostering adoption of clean architecture and best practices.',
                 ),
                 _buildPdfBullet(
-                  'Optimized app performance, achieving a 99.9% crash-free rate and consistently high frame rates on low-end devices.',
+                  'Optimized cross-platform performance to achieve 99.9% crash-free rates and fluid 60FPS experiences across low-end and flagship devices.',
                 ),
                 _buildPdfBullet(
-                  'Collaborated directly with clients to translate business requirements into technical specifications and actionable sprints.',
+                  'Partnered with stakeholders to transform business requirements into precise technical specifications and execution-ready agile sprints.',
                 ),
                 pw.SizedBox(height: 20),
 
