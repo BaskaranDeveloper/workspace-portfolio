@@ -25,7 +25,7 @@ final List<Track> elitePlaylist = [
     artist: 'Cyber Synth',
     album: 'Retrowave 2026',
     coverUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&h=400&fit=crop',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    audioUrl: 'https://actions.google.com/sounds/v1/science_fiction/apprehensive_background_hum.ogg',
     duration: Duration(minutes: 6, seconds: 12),
   ),
   const Track(
@@ -34,7 +34,7 @@ final List<Track> elitePlaylist = [
     artist: 'Lofi Dev',
     album: 'Deep Focus',
     coverUrl: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=400&h=400&fit=crop',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    audioUrl: 'https://actions.google.com/sounds/v1/water/woodstream.ogg',
     duration: Duration(minutes: 7, seconds: 5),
   ),
   const Track(
@@ -42,8 +42,8 @@ final List<Track> elitePlaylist = [
     title: 'Midnight Commit',
     artist: 'The Architects',
     album: 'Enterprise Flows',
-    coverUrl: 'https://images.unsplash.com/photo-1550684376-efdb6e01c2f4?q=80&w=400&h=400&fit=crop',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    coverUrl: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=400&h=400&fit=crop',
+    audioUrl: 'https://actions.google.com/sounds/v1/weather/rain_on_roof.ogg',
     duration: Duration(minutes: 5, seconds: 44),
   ),
   const Track(
@@ -51,8 +51,8 @@ final List<Track> elitePlaylist = [
     title: 'Deployment Success',
     artist: 'Orchestral Code',
     album: 'Symphony of CI/CD',
-    coverUrl: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=400&h=400&fit=crop',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+    coverUrl: 'https://picsum.photos/seed/code/400/400',
+    audioUrl: 'https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg',
     duration: Duration(minutes: 5, seconds: 2),
   )
 ];
