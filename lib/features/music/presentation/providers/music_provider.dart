@@ -30,27 +30,30 @@ class MusicState {
   }
 }
 
-class MusicNotifier extends StateNotifier<MusicState> {
-  final AudioPlayer _player = AudioPlayer();
+class MusicNotifier extends Notifier<MusicState> {
+  late final AudioPlayer _player;
   final List<Track> _playlist = elitePlaylist;
 
-  MusicNotifier() : super(const MusicState()) {
-    _init();
-  }
+  @override
+  MusicState build() {
+    _player = AudioPlayer();
+    
+    ref.onDispose(() {
+      _player.dispose();
+    });
 
-  void _init() {
     _player.onPositionChanged.listen((pos) {
-      if (!mounted) return;
       state = state.copyWith(position: pos);
     });
 
     _player.onPlayerComplete.listen((_) {
-      if (!mounted) return;
       playNext();
     });
     
     // Set default volume
-    _player.setVolume(state.volume);
+    _player.setVolume(0.8);
+    
+    return const MusicState(volume: 0.8);
   }
 
   Future<void> playTrack(Track track) async {
@@ -102,14 +105,8 @@ class MusicNotifier extends StateNotifier<MusicState> {
       playTrack(_playlist.last); // loop to end
     }
   }
-
-  @override
-  void dispose() {
-    _player.dispose();
-    super.dispose();
-  }
 }
 
-final musicProvider = StateNotifierProvider<MusicNotifier, MusicState>((ref) {
+final musicProvider = NotifierProvider<MusicNotifier, MusicState>(() {
   return MusicNotifier();
 });
