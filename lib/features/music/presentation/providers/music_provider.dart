@@ -1,6 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../domain/track_model.dart';
+import '../../domain/track_model.dart';
 
 class MusicState {
   final Track? currentTrack;
