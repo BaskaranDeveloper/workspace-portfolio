@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart';
 import '../../domain/track_model.dart';
 
 class MusicState {
@@ -50,15 +51,20 @@ class MusicNotifier extends Notifier<MusicState> {
       playNext();
     });
     
-    // Set default volume
-    _player.setVolume(0.8);
+    // Removed synchronous setVolume on startup for web compatibility.
+    // Web audio nodes often crash if properties are set before a track is played.
     
     return const MusicState(volume: 0.8);
   }
 
   Future<void> playTrack(Track track) async {
     state = state.copyWith(currentTrack: track, isPlaying: true, position: Duration.zero);
-    await _player.play(UrlSource(track.audioUrl));
+    try {
+      await _player.play(UrlSource(track.audioUrl));
+    } catch (e) {
+      debugPrint('Audio playback error: $e');
+      state = state.copyWith(isPlaying: false);
+    }
   }
 
   Future<void> togglePlayPause() async {
@@ -67,23 +73,36 @@ class MusicNotifier extends Notifier<MusicState> {
       return;
     }
 
-    if (state.isPlaying) {
-      await _player.pause();
+    try {
+      if (state.isPlaying) {
+        await _player.pause();
+        state = state.copyWith(isPlaying: false);
+      } else {
+        await _player.resume();
+        state = state.copyWith(isPlaying: true);
+      }
+    } catch (e) {
+      debugPrint('Audio toggle error: $e');
       state = state.copyWith(isPlaying: false);
-    } else {
-      await _player.resume();
-      state = state.copyWith(isPlaying: true);
     }
   }
 
   Future<void> seek(Duration position) async {
-    await _player.seek(position);
-    state = state.copyWith(position: position);
+    try {
+      await _player.seek(position);
+      state = state.copyWith(position: position);
+    } catch (e) {
+      debugPrint('Audio seek error: $e');
+    }
   }
 
   Future<void> setVolume(double volume) async {
-    await _player.setVolume(volume);
-    state = state.copyWith(volume: volume);
+    try {
+      await _player.setVolume(volume);
+      state = state.copyWith(volume: volume);
+    } catch (e) {
+      debugPrint('Audio volume error: $e');
+    }
   }
 
   void playNext() {
