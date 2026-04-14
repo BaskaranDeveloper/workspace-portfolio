@@ -1,198 +1,221 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
+import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
+import 'package:workspace/features/experience/presentation/experience_view.dart';
 
 class MobileExperience extends StatelessWidget {
   const MobileExperience({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Sharing the same data structure as the main view
+    final List<ExperienceModel> experienceData = [
+    ExperienceModel(
+      role: 'Senior Software Engineer',
+      grade: 'EXECUTIVE',
+      company: 'Trirope Technologies Pvt. Ltd.',
+      duration: 'AUG 2022 — PRESENT',
+      location: 'Chennai • India',
+      isCurrent: true,
+      accentColor: AppColors.terminalBlue,
+      achievements: [
+        'Led end-to-end development of 10+ enterprise Flutter applications.',
+        'Developed robust backend services using Node.js and NestJS.',
+        'Implemented secure payment gateways and biometric auth.',
+        'Mentored junior developers in Clean Architecture.',
+        'Optimized performance achieving 99.9% crash-free rates.',
+      ],
+      techStack: ['Flutter', 'Node.js', 'NestJS', 'Redis', 'AWS'],
+    ),
+    ExperienceModel(
+      role: 'B.E. Computer Science Engineering',
+      grade: 'ACADEMIC',
+      company: 'Dhanalakshmi Srinivasan Institute',
+      duration: '2017 — 2021',
+      location: 'Tamil Nadu • India',
+      isCurrent: false,
+      accentColor: Colors.purpleAccent,
+      achievements: [
+        'Specialized in mobile application development.',
+        'Research in Ethical Hacking and Network Security.',
+        'Maintained CGPA of 7.69.',
+      ],
+      techStack: ['Dart', 'Java', 'C++', 'SQL', 'Algorithms'],
+    ),
+    ExperienceModel(
+      role: 'Higher Secondary Education',
+      grade: 'FOUNDATION',
+      company: 'State Board of Tamil Nadu',
+      duration: '2015 — 2017',
+      location: 'Tamil Nadu • India',
+      isCurrent: false,
+      accentColor: Colors.amberAccent,
+      achievements: [
+        'Focused on Mathematics and Computer Science.',
+        'Strong foundation in software fundamentals.',
+        'Graduated with 67.33% (808/1200) score.',
+      ],
+      techStack: ['Physics', 'Mathematics', 'C Programming'],
+    ),
+  ];
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
-      appBar: AppBar(
-        title: const Text('Experience'),
-        backgroundColor: AppColors.backgroundPrimary,
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Professional Journey',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      backgroundColor: Colors.black, // Dark background for mobile depth
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Colors.black,
+            expandedHeight: 120,
+            floating: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                'EXPERIENCE',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.8),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 4,
+                ),
+              ),
+              centerTitle: true,
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return _MobileExperienceEntry(
+                    model: experienceData[index],
+                    isLast: index == experienceData.length - 1,
+                  );
+                },
+                childCount: experienceData.length,
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              'A timeline of my professional growth.',
-              style: TextStyle(
-                color: AppColors.textPrimary.withValues(alpha: 0.6),
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 32),
-            _buildTimelineItem(
-              title: 'Senior Software Engineer\nFlutter & Full-Stack',
-              company: 'Trirope Technologies',
-              duration: 'August 2022 – Present',
-              location: 'Chennai, Tamil Nadu',
-              isCurrent: true,
-              skills: ['Flutter', 'Node.js', 'NestJS', 'FastAPI', 'AWS'],
-              points: [
-                'Lead 10+ cross-platform apps.',
-                'Architected scalable systems.',
-                'Built secure backend services.',
-                'Mentored junior developers.',
-              ],
-            ),
-            const SizedBox(height: 32),
-            _buildTimelineItem(
-              title: 'B.E. Computer Science',
-              company: 'Anna University',
-              duration: '2017 – 2021',
-              location: 'Tamil Nadu, India',
-              isCurrent: false,
-              skills: ['C++', 'Java', 'Algorithms'],
-              points: [
-                'Specialized in mobile dev.',
-                'Completed ethical hacking cert.',
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildTimelineItem({
-    required String title,
-    required String company,
-    required String duration,
-    required String location,
-    required List<String> points,
-    required List<String> skills,
-    required bool isCurrent,
-  }) {
-    return Row(
+class _MobileExperienceEntry extends StatelessWidget {
+  final ExperienceModel model;
+  final bool isLast;
+
+  const _MobileExperienceEntry({required this.model, this.isLast = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Timeline Line
-        Column(
+        Row(
           children: [
             Container(
               width: 12,
               height: 12,
               decoration: BoxDecoration(
-                color: isCurrent ? AppColors.terminalBlue : Colors.transparent,
-                border: Border.all(color: AppColors.terminalBlue, width: 2),
                 shape: BoxShape.circle,
+                color: model.accentColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: model.accentColor.withValues(alpha: 0.3),
+                    blurRadius: 8,
+                    spreadRadius: 2,
+                  ),
+                ],
               ),
             ),
-            Container(
-              width: 2,
-              height: 300, // Fixed height or constrained by parent?
-              // To make it dynamic in a Row, we typically use IntrinsicHeight or Stack.
-              // For simplicity in mobile view, we can let the line extend.
-              // Here I'll just use a Container with a long height or strictly follow content.
-              // A better way for simple lists is just a left border on the content container.
-              color: AppColors.terminalBlue.withValues(alpha: 0.3),
+            const SizedBox(width: 16),
+            Text(
+              model.duration,
+              style: TextStyle(
+                color: model.accentColor,
+                fontSize: 10,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1,
+              ),
             ),
           ],
         ),
-        const SizedBox(width: 16),
-
-        // Content
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        IntrinsicHeight(
+          child: Row(
             children: [
-              Text(
-                duration,
-                style: const TextStyle(
-                  color: AppColors.terminalBlue,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Container(
+                  width: 1,
+                  color: model.accentColor.withValues(alpha: 0.1),
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                company,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                location,
-                style: TextStyle(
-                  color: AppColors.textPrimary.withValues(alpha: 0.5),
-                  fontSize: 13,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: skills
-                    .map(
-                      (s) => Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
+              const SizedBox(width: 22),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: LiquidGlass(
+                    intensity: 0.7,
+                    borderRadius: 16,
+                    padding: const EdgeInsets.all(24),
+                    accentColor: model.accentColor,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          model.grade,
+                          style: TextStyle(
+                            color: model.accentColor,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 2,
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: AppColors.terminalBlue.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          s,
+                        const SizedBox(height: 8),
+                        Text(
+                          model.role,
                           style: const TextStyle(
-                            color: AppColors.terminalBlue,
-                            fontSize: 10,
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        Text(
+                          model.company,
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.6),
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(height: 12),
-              ...points.map(
-                (p) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        '• ',
-                        style: TextStyle(color: AppColors.terminalBlue),
-                      ),
-                      Expanded(
-                        child: Text(
-                          p,
-                          style: TextStyle(
-                            color: AppColors.textPrimary.withValues(alpha: 0.7),
-                            fontSize: 14,
-                            height: 1.4,
+                        const SizedBox(height: 20),
+                        ...model.achievements.map((a) => Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(top: 6),
+                                child: Icon(LucideIcons.checkCircle2, size: 10, color: AppColors.terminalBlue),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  a,
+                                  style: TextStyle(
+                                    color: Colors.white.withValues(alpha: 0.6),
+                                    fontSize: 12,
+                                    height: 1.4,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ],
+                        )),
+                      ],
+                    ),
                   ),
                 ),
               ),

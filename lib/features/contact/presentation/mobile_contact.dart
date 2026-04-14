@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
+import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class MobileContact extends StatefulWidget {
+class MobileContact extends StatelessWidget {
   const MobileContact({super.key});
-
-  @override
-  State<MobileContact> createState() => _MobileContactState();
-}
-
-class _MobileContactState extends State<MobileContact> {
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _messageController = TextEditingController();
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _messageController.dispose();
-    super.dispose();
-  }
 
   void _launchUrl(String url) async {
     final uri = Uri.parse(url);
@@ -32,225 +17,227 @@ class _MobileContactState extends State<MobileContact> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
-      appBar: AppBar(
-        title: const Text('Contact'),
-        backgroundColor: AppColors.backgroundPrimary,
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Get in Touch',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "Let's build something amazing together.",
-              style: TextStyle(
-                color: AppColors.textPrimary.withValues(alpha: 0.6),
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 32),
-
-            // Social Links
-            _buildSocialCard(
-              icon: Icons.email_outlined,
-              title: 'Email',
-              value: 'baskarandeveloper1423@gmail.com',
-              color: Colors.redAccent,
-              onTap: () => _launchUrl('mailto:baskarandeveloper1423@gmail.com'),
-            ),
-            const SizedBox(height: 16),
-            _buildSocialCard(
-              icon: Icons.phone_outlined,
-              title: 'Phone',
-              value: '+91 8778831267',
-              color: Colors.green,
-              onTap: () => _launchUrl('tel:+918778831267'),
-            ),
-            const SizedBox(height: 16),
-            _buildSocialCard(
-              icon: Icons.code,
-              title: 'GitHub',
-              value: 'github.com/BaskaranDeveloper',
-              color: Colors.white,
-              onTap: () => _launchUrl('https://github.com/BaskaranDeveloper'),
-            ),
-            const SizedBox(height: 16),
-            _buildSocialCard(
-              icon: Icons.link,
-              title: 'LinkedIn',
-              value: 'linkedin.com/in/baskaran-m',
-              color: Colors.blueAccent,
-              onTap: () =>
-                  _launchUrl('https://www.linkedin.com/in/baskaran1428'),
-            ),
-
-            const SizedBox(height: 48),
-
-            // Contact Form
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppColors.widgetBackground.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: AppColors.widgetBorder.withValues(alpha: 0.5),
+      backgroundColor: Colors.black,
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Colors.black,
+            expandedHeight: 120,
+            floating: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                'COMMAND CENTER',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.8),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 4,
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Send a Message',
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  _buildTextField('Name', _nameController),
-                  const SizedBox(height: 16),
-                  _buildTextField('Email', _emailController),
-                  const SizedBox(height: 16),
-                  _buildTextField('Message', _messageController, maxLines: 4),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Message sent (simulated)!'),
-                          ),
-                        );
-                        _nameController.clear();
-                        _emailController.clear();
-                        _messageController.clear();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.terminalBlue,
-                        foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Send Message',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              centerTitle: true,
             ),
-            const SizedBox(height: 40),
-          ],
-        ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                _buildSocialSection(),
+                const SizedBox(height: 48),
+                _buildFormSection(context),
+              ]),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildSocialCard({
-    required IconData icon,
-    required String title,
-    required String value,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.widgetBackground.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.widgetBorder.withValues(alpha: 0.3),
-          ),
+  Widget _buildSocialSection() {
+    return Column(
+      children: [
+        _MobileSocialNode(
+          icon: LucideIcons.mail,
+          label: 'EMAIL_SECURE',
+          value: 'baskarandeveloper1423@gmail.com',
+          accentColor: Colors.blueAccent,
+          onTap: () => _launchUrl('mailto:baskarandeveloper1423@gmail.com'),
         ),
+        const SizedBox(height: 16),
+        _MobileSocialNode(
+          icon: LucideIcons.linkedin,
+          label: 'LINKEDIN_PROF',
+          value: 'baskaran-m',
+          accentColor: const Color(0xFF0077B5),
+          onTap: () => _launchUrl('https://linkedin.com/in/baskaran-m'),
+        ),
+        const SizedBox(height: 16),
+        _MobileSocialNode(
+          icon: LucideIcons.github,
+          label: 'GITHUB_REPOS',
+          value: 'BaskaranDeveloper',
+          accentColor: Colors.purpleAccent,
+          onTap: () => _launchUrl('https://github.com/BaskaranDeveloper'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFormSection(BuildContext context) {
+    return LiquidGlass(
+      intensity: 0.8,
+      borderRadius: 16,
+      padding: const EdgeInsets.all(24),
+      accentColor: AppColors.terminalBlue,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(LucideIcons.terminal, color: AppColors.terminalBlue, size: 14),
+              const SizedBox(width: 8),
+              Text(
+                'MESSAGE_TERMINAL',
+                style: TextStyle(
+                  color: AppColors.terminalBlue,
+                  fontSize: 8,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 2,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
+          _MobileField(label: 'IDENTIFIER', hint: 'Your Name'),
+          const SizedBox(height: 24),
+          _MobileField(label: 'COORDINATES', hint: 'Email'),
+          const SizedBox(height: 24),
+          _MobileField(label: 'DATA', hint: 'Message', maxLines: 4),
+          const SizedBox(height: 32),
+          SizedBox(
+            width: double.infinity,
+            height: 54,
+            child: ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Transmission Successful.')),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.terminalBlue,
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                'SEND TRANSMISSION',
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MobileSocialNode extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color accentColor;
+  final VoidCallback onTap;
+
+  const _MobileSocialNode({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.accentColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LiquidGlass(
+      intensity: 0.7,
+      borderRadius: 12,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      accentColor: accentColor,
+      child: InkWell(
+        onTap: onTap,
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: color, size: 20),
-            ),
-            const SizedBox(width: 16),
+            Icon(icon, color: accentColor, size: 18),
+            const SizedBox(width: 20),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    label,
                     style: TextStyle(
-                      color: AppColors.textPrimary.withValues(alpha: 0.6),
-                      fontSize: 12,
+                      color: accentColor.withValues(alpha: 0.6),
+                      fontSize: 8,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 2,
                     ),
                   ),
                   Text(
                     value,
-                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
                       fontSize: 14,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
             ),
+            Icon(LucideIcons.arrowUpRight, size: 12, color: Colors.white24),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildTextField(
-    String label,
-    TextEditingController controller, {
-    int maxLines = 1,
-  }) {
+class _MobileField extends StatelessWidget {
+  final String label;
+  final String hint;
+  final int maxLines;
+
+  const _MobileField({required this.label, required this.hint, this.maxLines = 1});
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: TextStyle(
-            color: AppColors.textPrimary.withValues(alpha: 0.7),
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+          style: const TextStyle(
+            color: Colors.white38,
+            fontSize: 8,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1,
           ),
         ),
         const SizedBox(height: 8),
         TextField(
-          controller: controller,
           maxLines: maxLines,
-          style: const TextStyle(color: AppColors.textPrimary),
+          style: const TextStyle(color: Colors.white, fontSize: 14),
           decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: const TextStyle(color: Colors.white12, fontSize: 14),
             filled: true,
-            fillColor: Colors.black.withValues(alpha: 0.2),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+            fillColor: Colors.white.withValues(alpha: 0.05),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: AppColors.terminalBlue),
             ),
             contentPadding: const EdgeInsets.all(16),

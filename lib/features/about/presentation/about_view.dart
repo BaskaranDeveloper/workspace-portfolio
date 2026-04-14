@@ -146,7 +146,7 @@ class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMix
           ),
         ),
         Text(
-          'FULL-STACK ARCHITECT • FLUTTER SPEC-01',
+          'SENIOR SOFTWARE ENGINEER • FLUTTER & FULL-STACK',
           style: TextStyle(
             fontSize: 10 * scale,
             fontWeight: FontWeight.bold,
@@ -176,9 +176,9 @@ class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMix
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHUDTimelineItem('2022-NOW', 'SR. SOFTWARE ENGINEER', 'TRIROPE TECHNOLOGIES', 'Scale: 10k+ / Uptime: 99.9%'),
+                  _buildHUDTimelineItem('2022-NOW', 'SR. SOFTWARE ENGINEER', 'TRIROPE TECHNOLOGIES', 'Scale: 10+ Apps / Uptime: 99.9%'),
                   const SizedBox(height: 24),
-                  _buildHUDTimelineItem('2021-22', 'JUNIOR DEVELOPER', 'STARTUP ECO-SYSTEM', 'Core: Dart/Node.js Integration'),
+                  _buildHUDTimelineItem('2017-21', 'B.E. COMPUTER SCIENCE', 'DSIT TAMIL NADU', 'Core: Mobile & System Architectures'),
                   const Spacer(),
                   _buildMetaLabel('[SECURITY: LEVEL-04]', Colors.white24),
                 ],
@@ -253,7 +253,7 @@ class _AboutViewState extends State<AboutView> with SingleTickerProviderStateMix
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('B.E. COMPUTER SCIENCE', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, letterSpacing: 1)),
-                  const Text('Anna Univ. DSIT-17-21', style: TextStyle(color: Colors.blueAccent, fontSize: 11, fontWeight: FontWeight.bold)),
+                  const Text('DSIT TAMIL NADU • 17-21', style: TextStyle(color: Colors.blueAccent, fontSize: 11, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   _buildMetaLabel('CGPA: 7.69', Colors.greenAccent),
                   const Spacer(),
