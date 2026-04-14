@@ -24,6 +24,7 @@ import 'package:workspace/features/settings/presentation/settings_view.dart';
 import 'package:workspace/features/terminal/presentation/terminal_view.dart';
 
 import 'package:workspace/features/terminal/presentation/mobile_terminal.dart';
+import 'package:workspace/features/music/presentation/music_view.dart';
 
 class InMemoryRegistry implements AppRegistry {
   final List<SystemApp> _apps = [
@@ -141,9 +142,9 @@ class InMemoryRegistry implements AppRegistry {
       title: 'Music',
       icon: LucideIcons.music,
       themeColor: Colors.pink,
-      showInDock: false,
-      desktopBuilder: (context) => const Center(child: Text("Music Coming Soon")),
-      mobileBuilder: (context) => const Center(child: Text("Music Coming Soon")),
+      showInDock: true,
+      desktopBuilder: (context) => const MusicView(),
+      mobileBuilder: (context) => const MusicView(), // Can use same for now or adapt later
     ),
     SystemApp(
       id: 'safari',
