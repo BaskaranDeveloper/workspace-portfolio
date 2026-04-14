@@ -18,129 +18,129 @@ class _ProjectsViewState extends State<ProjectsView>
   final List<Map<String, dynamic>> _allProjects = [
     {
       'id': '01',
-      'title': 'PSG LOTTO PLATFORM',
+      'title': 'ENTERPRISE LOTTO CORE',
       'role': 'LEAD ARCHITECT',
       'desc':
-          'Enterprise-grade multi-game lottery platform handling 10k+ concurrent users with real-time draw systems and digital wallets. This platform manages complex multi-game logic with extreme precision.',
-      'tech': ['Flutter', 'Node.js', 'Redis', 'Socket.io', 'NestJS'],
+          'Architected a high-concurrency lottery engine supporting 2D, 4D, 6D, and complex combination series. Implemented real-time draw synchronization and high-stakes digital wallet management for enterprise-scale deployment.',
+      'tech': ['Flutter', 'Riverpod', 'Socket.io', 'Redis', 'Cryptography'],
       'icon': LucideIcons.clover,
-      'metrics': 'CONCURRENT_10K+ • UPTIME_99.9%',
+      'metrics': 'CONCURRENCY_10K+ • SYNC_REALTIME',
       'color': Colors.purpleAccent,
       'features': [
-        'Scalable Multi-game Engine',
+        'Multi-Series Game Logic',
         'Secure Digital Wallets',
         'Real-time Draw Sockets',
-        'Admin Analytics Dashboard',
+        'Combination Algorithms',
       ],
-      'impact': 'Reduced Time-to-Market by 30%',
+      'impact': 'Zero-Latency Draw Execution',
     },
     {
       'id': '02',
-      'title': 'VIRAKESARI MEDIA',
+      'title': 'VIRAKESARI MEDIA ECOSYSTEM',
       'role': 'SR. DEVELOPER',
       'desc':
-          'High-performance news ecosystem with real-time CMS integration. Focused on high-speed content delivery and seamless WebView integration for thousands of daily active readers.',
-      'tech': ['Flutter Webview', 'REST API', 'FCM', 'SQLite'],
+          'Full-stack cross-platform news delivery system with a dedicated Admin Panel for real-time reporting. Integrated Firebase for instant data synchronization and media-rich push notification payloads for thousands of daily readers.',
+      'tech': ['Flutter', 'Firebase Auth', 'Firestore', 'FCM', 'Node.js'],
       'icon': LucideIcons.newspaper,
-      'metrics': 'DAILY_ACTIVES_50K+ • STABILITY_99.9%',
+      'metrics': 'DAILY_ACTIVES_50K+ • UPTIME_99.9%',
       'color': Colors.deepPurpleAccent,
       'features': [
-        'Real-time News Feed',
-        'Optimized WebView Layer',
+        'Real-time CMS Integration',
+        'Firebase Data Pipeline',
         'Rich Push Notifications',
-        'Offline Caching Architecture',
+        'Dedicated Admin Dashboard',
       ],
-      'impact': '99.9% Crash-Free Rate Achieved',
+      'impact': '99.9% Crash-Free Stability',
     },
     {
       'id': '03',
-      'title': 'PRASHANTH IVF',
-      'role': 'FULL-STACK',
+      'title': 'CLINICAL WORKFLOW OS',
+      'role': 'FULL-STACK ENGINEER',
       'desc':
-          'Enterprise Healthcare ERP (White Label) for hospital patient records, appointment management, and secure cross-clinic data synchronization.',
-      'tech': ['Next.js', 'NestJS', 'PostgreSQL', 'Flutter'],
+          'End-to-end whitelabel hospital ERP system architected from scratch for Android and iOS. Implemented HIPAA-aligned patient record synchronization and complex appointment scheduling logic for clinical environments.',
+      'tech': ['Flutter', 'Clean Architecture', 'REST API', 'FCM', 'Whitelabel'],
       'icon': LucideIcons.activity,
-      'metrics': 'HIPAA_READY • EHR_CORE',
+      'metrics': 'HIPAA_ALIGNED • EHR_SYNC',
       'color': Colors.indigoAccent,
       'features': [
-        'Patient Record Management',
+        'Patient Management Flow',
         'Appointment Scheduling',
-        'Automated Notifications',
-        'Clinic Data Sync',
+        'Clinical Data Sync',
+        'App Store Lifecycle',
       ],
-      'impact': 'Enterprise Ready Deployment',
+      'impact': 'Successful Store Deployment',
     },
     {
       'id': '04',
-      'title': 'IMS / POS SYSTEM',
+      'title': 'RETAIL IMS / POS CORE',
       'role': 'MODULE LEAD',
       'desc':
-          'Robust Inventory Management and Point of Sale system featuring thermal printing support, multi-store tracking, and offline-first synchronization.',
-      'tech': ['Flutter Desktop', 'ObjectBox', 'Dart', 'Printer Integration'],
+          'Robust Windows-based Point of Sale system built on Clean Architecture principles. Engineered for whitelabeling with advanced thermal printing integration and multi-store inventory synchronization.',
+      'tech': ['Flutter Desktop', 'ObjectBox', 'Clean Architecture', 'Hardware IO'],
       'icon': LucideIcons.shoppingCart,
-      'metrics': 'RETAIL_OS • OFFLINE_SYNC',
+      'metrics': 'RETAIL_OS • HARDWARE_IO',
       'color': Colors.purple,
       'features': [
-        'Advanced Billing Module',
-        'Inventory Tracking',
-        'Multi-Store Reports',
+        'Advanced Billing Engine',
         'Thermal Print Drivers',
+        'Multi-Store Inventory',
+        'Whitelabel Architecture',
       ],
-      'impact': 'Cross-Platform Core Ready',
+      'impact': 'Low-Latency Retail Sync',
     },
     {
       'id': '05',
-      'title': 'KAVERI MATRIMONY',
+      'title': 'MATRIMONY_SERVICE_IOS',
       'role': 'SR. FLUTTER DEV',
       'desc':
-          'High-fidelity profile management and matchmaking platform for the regional market, featuring complex search filters and real-time chat.',
-      'tech': ['Flutter', 'Firebase', 'Node.js', 'Cloud Messaging'],
+          'High-fidelity matrimony service optimized specifically for iOS. Focused on minimal, premium UI aesthetics and complex matchmaking algorithms for deep profile discovery and real-time chat interactions.',
+      'tech': ['Flutter', 'iOS Core Graphics', 'Deep Matchmaking', 'Chat SDK'],
       'icon': LucideIcons.users,
-      'metrics': 'MATCH_FLOW • SECURE_CHAT',
+      'metrics': 'iOS_ELITE_UI • MATCH_ALGO',
       'color': Colors.pinkAccent,
       'features': [
-        'Advanced Matchmaking Logic',
-        'Profile Trust Verification',
-        'Real-time Chat Systems',
-        'Subscription Framework',
+        'Advanced Search Filters',
+        'Premium Match Algorithms',
+        'Real-time Chat Engine',
+        'iOS UI Optimization',
       ],
-      'impact': 'Market Ready Release',
+      'impact': '60FPS Interaction Fidelity',
     },
     {
       'id': '06',
-      'title': 'PKG ASTRO',
+      'title': 'PLG ASTRO OPTIMIZATION',
       'role': 'PERFORMANCE LEAD',
       'desc':
-          'Astrological utility platform optimized for high scalability. Refined the UI and backend logic to provide millisecond-accurate data processing.',
-      'tech': ['Flutter', 'FastAPI', 'Redis', 'Advanced UI'],
+          'Specialized astrological utility platform with focus on iOS-specific rendering and data calculation optimization. Reduced app-level latency by 40% through rigorous memory management and profiling.',
+      'tech': ['Flutter', 'iOS Profiling', 'Asset Optimization', 'Memory Mgmt'],
       'icon': LucideIcons.sparkles,
-      'metrics': 'LATENCY_SUB_50MS • ULTRA_SCALE',
+      'metrics': 'LATENCY_REDUCTION_40% • iOS_ONLY',
       'color': Colors.amberAccent,
       'features': [
-        'High-Speed Calculations',
-        'Smooth Motion UI',
-        'Dynamic Report Engine',
-        'Scalable Microservices',
+        'Precise Data Calculations',
+        'iOS Benchmark Profiling',
+        'Optimized Asset Loading',
+        'Refined Performance UI',
       ],
-      'impact': 'Achieved 2x Performance Boost',
+      'impact': '40% App Latency Reduction',
     },
     {
       'id': '07',
-      'title': 'PINAS LOTTO',
-      'role': 'ARCHITECTURE',
+      'title': 'PINAS LOTTO 2.0',
+      'role': 'NETWORK ARCHITECT',
       'desc':
-          'International lottery implementation specializing in 2D/3D and 6-Digit game formats for the Philippine market.',
-      'tech': ['Flutter', 'Node.js', 'Encryption', 'Sockets'],
+          'Advanced lottery architecture revamp with a focus on high-reliability push notification handling (FCM) and scalable regional game logic for international markets.',
+      'tech': ['Flutter', 'FCM Architecture', 'Regional Logic', 'Socket Sync'],
       'icon': LucideIcons.dice5,
-      'metrics': 'MARKET_GROWTH • SECURE_DRAW',
+      'metrics': 'FCM_RELIABILITY • SCALE_READY',
       'color': Colors.orangeAccent,
       'features': [
-        'Regional Game Variant Logic',
-        'High-Security Draw Engine',
-        'Multi-Language Support',
-        'Regional Payment Hooks',
+        'Reliable FCM Pipeline',
+        'Regional Game Engine',
+        'Zero-Delay Draw Sync',
+        'Secure Drawing System',
       ],
-      'impact': 'Successful Global Deployment',
+      'impact': 'Zero Notification Delay',
     },
   ];
 
@@ -198,12 +198,22 @@ class _ProjectsViewState extends State<ProjectsView>
                                         0.6,
                                         curve: Curves.easeOutCubic,
                                       ),
-                                      child: _ParallaxProjectConsole(
-                                        h: h,
-                                        w: w,
-                                        project:
-                                            _allProjects[_activeProjectIndex],
-                                        scale: scale,
+                                      child: Expanded(
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.center,
+                                          child: SizedBox(
+                                            height: h * 0.8,
+                                            width: w * 0.6,
+                                            child: _ParallaxProjectConsole(
+                                              h: h,
+                                              w: w,
+                                              project:
+                                                  _allProjects[_activeProjectIndex],
+                                              scale: scale,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -483,157 +493,160 @@ class _ParallaxProjectConsoleState extends State<_ParallaxProjectConsole> {
                   ),
                 ),
 
-                SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
+                Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 60 * s,
                     vertical: 40 * s,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(16 * s),
-                            decoration: BoxDecoration(
-                              color: accentColor.withValues(alpha: 0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              p['icon'],
-                              color: accentColor,
-                              size: 32 * s,
-                            ),
-                          ),
-                          SizedBox(width: 24 * s),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'TECHNICAL_IMPACT',
-                                style: TextStyle(
-                                  fontSize: 10 * s,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white24,
-                                  letterSpacing: 2,
-                                ),
-                              ),
-                              Text(
-                                p['impact'],
-                                style: TextStyle(
-                                  fontSize: 16 * s,
-                                  color: accentColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 40 * s),
-                      Text(
-                        p['title'],
-                        style: TextStyle(
-                          fontSize: 56 * s,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -2,
-                          height: 1.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        p['metrics'],
-                        style: TextStyle(
-                          fontSize: 10 * s,
-                          color: Colors.white38,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
-                        ),
-                      ),
-                      SizedBox(height: 24 * s),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 700),
-                        child: Text(
-                          p['desc'],
-                          style: TextStyle(
-                            fontSize: 16 * s,
-                            color: Colors.white.withValues(alpha: 0.6),
-                            height: 1.6,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 48 * s),
-
-                      // FEATURES SECTION
-                      Text(
-                        'SYSTEM_CORE_FEATURES',
-                        style: TextStyle(
-                          fontSize: 11 * s,
-                          fontWeight: FontWeight.w900,
-                          color: accentColor.withValues(alpha: 0.5),
-                          letterSpacing: 3,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 5,
-                              crossAxisSpacing: 24,
-                              mainAxisSpacing: 24,
-                            ),
-                        itemCount: (p['features'] as List).length,
-                        itemBuilder: (context, i) {
-                          return Row(
-                            children: [
-                              Icon(
-                                LucideIcons.checkCircle2,
-                                size: 14 * s,
-                                color: accentColor,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  p['features'][i],
-                                  style: TextStyle(
-                                    fontSize: 13 * s,
-                                    color: Colors.white70,
-                                    fontWeight: FontWeight.w500,
+                  child: Center(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.topLeft,
+                      child: SizedBox(
+                        width: 800,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(16 * s),
+                                  decoration: BoxDecoration(
+                                    color: accentColor.withValues(alpha: 0.1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    p['icon'],
+                                    color: accentColor,
+                                    size: 32 * s,
                                   ),
                                 ),
+                                SizedBox(width: 24 * s),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'TECHNICAL_IMPACT',
+                                      style: TextStyle(
+                                        fontSize: 10 * s,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white24,
+                                        letterSpacing: 2,
+                                      ),
+                                    ),
+                                    Text(
+                                      p['impact'],
+                                      style: TextStyle(
+                                        fontSize: 16 * s,
+                                        color: accentColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 40 * s),
+                            Text(
+                              p['title'],
+                              style: TextStyle(
+                                fontSize: 48 * s,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -2,
+                                height: 1.0,
+                                color: Colors.white,
                               ),
-                            ],
-                          );
-                        },
-                      ),
-
-                      SizedBox(height: 48 * s),
-
-                      // TECHNOLOGY STACK
-                      Text(
-                        'TECHNOLOGY_STACK',
-                        style: TextStyle(
-                          fontSize: 11 * s,
-                          fontWeight: FontWeight.w900,
-                          color: accentColor.withValues(alpha: 0.5),
-                          letterSpacing: 3,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              p['metrics'],
+                              style: TextStyle(
+                                fontSize: 10 * s,
+                                color: Colors.white38,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                            SizedBox(height: 24 * s),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 800),
+                              child: Text(
+                                p['desc'],
+                                style: TextStyle(
+                                  fontSize: 15 * s,
+                                  color: Colors.white.withValues(alpha: 0.6),
+                                  height: 1.5,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 40 * s),
+                            Text(
+                              'SYSTEM_CORE_FEATURES',
+                              style: TextStyle(
+                                fontSize: 11 * s,
+                                fontWeight: FontWeight.w900,
+                                color: accentColor.withValues(alpha: 0.5),
+                                letterSpacing: 3,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 6,
+                                crossAxisSpacing: 24,
+                                mainAxisSpacing: 16,
+                              ),
+                              itemCount: (p['features'] as List).length,
+                              itemBuilder: (context, i) {
+                                return Row(
+                                  children: [
+                                    Icon(
+                                      LucideIcons.checkCircle2,
+                                      size: 14 * s,
+                                      color: accentColor,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        p['features'][i],
+                                        style: TextStyle(
+                                          fontSize: 12 * s,
+                                          color: Colors.white.withValues(alpha: 0.8),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                            SizedBox(height: 40 * s),
+                            Text(
+                              'TECHNOLOGY_STACK',
+                              style: TextStyle(
+                                fontSize: 11 * s,
+                                fontWeight: FontWeight.w900,
+                                color: accentColor.withValues(alpha: 0.5),
+                                letterSpacing: 3,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
+                              children: (p['tech'] as List<String>)
+                                  .map((t) => _buildHUDTag(t, accentColor, s))
+                                  .toList(),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 24),
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: 12,
-                        children: (p['tech'] as List<String>)
-                            .map((t) => _buildHUDTag(t, accentColor, s))
-                            .toList(),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],
