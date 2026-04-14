@@ -91,7 +91,7 @@ class _MusicViewState extends ConsumerState<MusicView> {
                     ],
                     image: const DecorationImage(
                       image: NetworkImage(
-                          'https://images.unsplash.com/photo-1614850715649-1d0106293cb1?q=80&w=400&h=400&fit=crop'),
+                          'https://picsum.photos/seed/playlist/400/400'),
                       fit: BoxFit.cover,
                     ),
                   ),
