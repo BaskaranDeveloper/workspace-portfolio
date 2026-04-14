@@ -97,74 +97,81 @@ class _MusicViewState extends ConsumerState<MusicView> {
                   ),
                 ),
                 const SizedBox(width: 32),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Playlist',
-                      style: TextStyle(
-                        color: Colors.white54,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Playlist',
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Elite Portfolio VIBES',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 48,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: -1,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Curated for coding and deep focus. 4 songs, 24 minutes.',
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.7),
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            ref.read(musicProvider.notifier).togglePlayPause();
-                          },
-                          icon: Icon(
-                            ref.watch(musicProvider).isPlaying ? LucideIcons.pause : LucideIcons.play,
-                            color: Colors.black,
+                      const SizedBox(height: 8),
+                      const FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Elite Portfolio VIBES',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 48,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: -1,
                           ),
-                          label: Text(
-                            ref.watch(musicProvider).isPlaying ? 'Pause' : 'Play',
-                            style: const TextStyle(
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Curated for coding and deep focus. 4 songs, 24 minutes.',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.7),
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 16,
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              ref.read(musicProvider.notifier).togglePlayPause();
+                            },
+                            icon: Icon(
+                              ref.watch(musicProvider).isPlaying ? LucideIcons.pause : LucideIcons.play,
                               color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                            ),
+                            label: Text(
+                              ref.watch(musicProvider).isPlaying ? 'Pause' : 'Play',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.pinkAccent,
+                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
                             ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.pinkAccent,
-                            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(LucideIcons.shuffle, color: Colors.white70),
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.white.withValues(alpha: 0.1),
+                              padding: const EdgeInsets.all(16),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(LucideIcons.shuffle, color: Colors.white70),
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withValues(alpha: 0.1),
-                            padding: const EdgeInsets.all(16),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
