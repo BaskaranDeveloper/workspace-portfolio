@@ -45,7 +45,7 @@ class MobileResume extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Senior Software Engineer\nFlutter & Full-Stack Developer',
+                    'Flutter Developer',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -80,7 +80,7 @@ class MobileResume extends StatelessWidget {
             _buildSectionHeader('PROFESSIONAL SUMMARY'),
             const SizedBox(height: 12),
             Text(
-              'Highly motivated Software Engineer with 3+ years of experience in designing, developing, and delivering enterprise-grade cross-platform applications. Specialized in Flutter and full-stack development.',
+              'Flutter Developer with 3+ years of experience building scalable cross-platform mobile applications using Flutter and Firebase. Experienced in developing production-grade applications focused on clean architecture, responsive UI, performance optimization, and smooth user experiences across Android and iOS platforms.\n\nDelivered 10+ applications across healthcare, media, lottery, matrimony, and inventory management domains. Strong experience with Firebase ecosystem, REST API integration, authentication systems, push notifications, payment integrations, and real-time application features.\n\nActively leverage modern AI-assisted development workflows using tools such as ChatGPT, Claude, Gemini, Cursor, and Antigravity to improve development productivity, accelerate debugging, optimize implementation workflows, and enhance product delivery efficiency.',
               style: TextStyle(
                 fontSize: 14,
                 height: 1.5,
@@ -90,31 +90,45 @@ class MobileResume extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
+            // Core Skills
+            _buildSectionHeader('CORE SKILLS'),
+            const SizedBox(height: 12),
+            Text(
+              'Flutter • Firebase • Dart • REST APIs • Clean Architecture • State Management (Riverpod/Provider) • Push Notifications • Payment Gateway Integration • Real-Time Features • Performance Optimization • Git • Agile Development • Cross-Platform Development • UI Optimization • AI-Assisted Development Workflows',
+              style: TextStyle(
+                fontSize: 14,
+                height: 1.5,
+                color: AppColors.textPrimary.withValues(alpha: 0.8),
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.justify,
+            ),
+            const SizedBox(height: 24),
+
             // Technical Skills
             _buildSectionHeader('TECHNICAL SKILLS'),
             const SizedBox(height: 12),
-            _buildSkillRow(
-              'Programming',
-              'Dart (Strong), JS, TS, Python, Java',
-            ),
-            _buildSkillRow('Mobile/Web', 'Flutter, React.js, Next.js'),
-            _buildSkillRow('Backend', 'Node.js, NestJS, FastAPI, REST'),
-            _buildSkillRow('Database', 'Firebase, MySQL, PostgreSQL'),
+            _buildSkillRow('Languages', 'Dart, JavaScript, TypeScript, Python, Java (Core)'),
+            _buildSkillRow('Mobile/Web', 'Flutter, React.js, Next.js, HTML, CSS'),
+            _buildSkillRow('Backend', 'Firebase, REST APIs, JWT Authentication'),
+            _buildSkillRow('Database', 'Firebase, PostgreSQL, MySQL'),
+            _buildSkillRow('Tools', 'Git, GitHub, Bitbucket, Jira, Figma, Cursor, Antigravity'),
             const SizedBox(height: 24),
 
             // Experience
             _buildSectionHeader('PROFESSIONAL EXPERIENCE'),
             const SizedBox(height: 12),
             _buildJobHeader(
-              'Senior Software Engineer',
-              'Trirope Technologies',
+              'Software Engineer | Flutter Developer',
+              'Trirope Technologies Pvt. Ltd.',
               'Aug 2022 – Present',
             ),
             const SizedBox(height: 8),
-            _buildBulletPoint('Lead 10+ cross-platform apps using Flutter.'),
-            _buildBulletPoint('Architected scalable systems.'),
-            _buildBulletPoint('Built secure backend services (Node/NestJS).'),
-            _buildBulletPoint('Integrated payments, notifications, analytics.'),
+            _buildBulletPoint('Developed and maintained 10+ production-grade Flutter applications.'),
+            _buildBulletPoint('Integrated Firebase services, REST APIs, and real-time features.'),
+            _buildBulletPoint('Implemented biometric auth, push notifications, and low-latency sockets.'),
+            _buildBulletPoint('Optimized performance and applied clean architecture practices.'),
+            _buildBulletPoint('Utilized AI-assisted engineering workflows for productivity.'),
             const SizedBox(height: 24),
 
             // Education
@@ -122,7 +136,7 @@ class MobileResume extends StatelessWidget {
             const SizedBox(height: 12),
             _buildJobHeader(
               'B.E. Computer Science',
-              'Dhanalakshmi Srinivasan',
+              'Dhanalakshmi Srinivasan Institute of Technology',
               '2017 – 2021',
             ),
             const Text(

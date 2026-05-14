@@ -54,7 +54,7 @@ class ResumeView extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       SelectableText(
-                        'Senior Software Engineer | Flutter & Full-Stack Developer',
+                        'Flutter Developer',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black87,
@@ -85,7 +85,7 @@ class ResumeView extends StatelessWidget {
                 _buildSectionHeader('PROFESSIONAL SUMMARY'),
                 const SizedBox(height: 16),
                 SelectableText(
-                  'Expert Software Engineer with 3+ years of experience specializing in high-fidelity Flutter development and End-to-End AI-Agentic Architecture. I redefine the software lifecycle by orchestrating autonomous workflows—leveraging Antigravity, Cursor, and Firebase Studio for rapid development, while steering product strategy with Claude 3.5 and OpenAI o1. Proven ability to build high-impact, enterprise-ready applications with extreme technical precision and modern automation.',
+                  'Flutter Developer with 3+ years of experience building scalable cross-platform mobile applications using Flutter and Firebase. Experienced in developing production-grade applications focused on clean architecture, responsive UI, performance optimization, and smooth user experiences across Android and iOS platforms.\n\nDelivered 10+ applications across healthcare, media, lottery, matrimony, and inventory management domains. Strong experience with Firebase ecosystem, REST API integration, authentication systems, push notifications, payment integrations, and real-time application features.\n\nActively leverage modern AI-assisted development workflows using tools such as ChatGPT, Claude, Gemini, Cursor, and Antigravity to improve development productivity, accelerate debugging, optimize implementation workflows, and enhance product delivery efficiency.',
                   style: TextStyle(
                     fontSize: 15,
                     height: 1.6,
@@ -95,109 +95,62 @@ class ResumeView extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
 
-                // Technical Skills
-                _buildSectionHeader('TECHNICAL SKILLS'),
+                // Core Skills
+                _buildSectionHeader('CORE SKILLS'),
                 const SizedBox(height: 16),
-                _buildSkillRow(
-                  'Programming',
-                  'Dart (Strong), JavaScript, TypeScript, Python, Java (Core), C',
-                ),
-                _buildSkillRow(
-                  'Mobile & Frontend',
-                  'Flutter, React.js, Next.js, HTML, CSS',
-                ),
-                _buildSkillRow(
-                  'Backend & APIs',
-                  'Node.js, Express.js, NestJS, FastAPI, REST APIs, JWT',
-                ),
-                _buildSkillRow('Databases', 'Firebase, MySQL, PostgreSQL'),
-                _buildSkillRow(
-                  'Platforms',
-                  'Android, iOS, Windows, macOS, Web',
-                ),
-                _buildSkillRow(
-                  'Tools',
-                  'Git, GitHub, Bitbucket, Jira, SourceTree, Figma, Photoshop, Blender',
+                SelectableText(
+                  'Flutter • Firebase • Dart • REST APIs • Clean Architecture • State Management (Riverpod/Provider) • Push Notifications • Payment Gateway Integration • Real-Time Features • Performance Optimization • Git • Agile Development • Cross-Platform Development • UI Optimization • AI-Assisted Development Workflows',
+                  style: TextStyle(
+                    fontSize: 15,
+                    height: 1.6,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 32),
 
-                // AI Product Lifecycle
-                _buildSectionHeader('END-TO-END AI PRODUCT LIFECYCLE'),
+                // Technical Skills
+                _buildSectionHeader('TECHNICAL SKILLS'),
                 const SizedBox(height: 16),
-                _buildSkillRow(
-                  'Strategy & Reasoning',
-                  'Claude 3.5 Sonnet (Logic/PRD), OpenAI o1 (Architecture), Perplexity (Research)',
-                ),
-                _buildSkillRow(
-                  'Generative UI',
-                  'v0.dev (Web UI), Stitch (Flutter/Mobile UI), Midjourney (Gen-Assets)',
-                ),
-                _buildSkillRow(
-                  'Autonomous Dev',
-                  'Antigravity (Agentic Orchestration), Cursor (AI IDE), Firebase Studio',
-                ),
-                _buildSkillRow(
-                  'Automation & Ops',
-                  'n8n (Workflows), Custom MCP Servers (Context Sync)',
-                ),
+                _buildSkillRow('Languages', 'Dart, JavaScript, TypeScript, Python, Java (Core)'),
+                _buildSkillRow('Mobile & Frontend', 'Flutter, React.js, Next.js, HTML, CSS'),
+                _buildSkillRow('Backend & APIs', 'Firebase, REST APIs, JWT Authentication, Basic Node.js & NestJS Knowledge'),
+                _buildSkillRow('Databases', 'Firebase, PostgreSQL, MySQL'),
+                _buildSkillRow('Tools', 'Git, GitHub, Bitbucket, Jira, Figma, SourceTree, Cursor, ChatGPT, Claude, Gemini, Antigravity'),
                 const SizedBox(height: 32),
 
                 // Professional Experience
                 _buildSectionHeader('PROFESSIONAL EXPERIENCE'),
                 const SizedBox(height: 16),
                 _buildJobHeader(
-                  'Software Engineer | Flutter & Full-Stack Developer',
+                  'Software Engineer | Flutter Developer',
                   'Trirope Technologies Pvt. Ltd.',
                   'August 2022 – Present',
                 ),
                 const SizedBox(height: 12),
-                _buildBulletPoint(
-                  'Led end-to-end development of 10+ enterprise Flutter applications, consistently delivering high-fidelity user experiences and reducing delivery cycles.',
-                ),
-                _buildBulletPoint(
-                  'Developed and integrated robust backend services using Node.js and NestJS to support high-scale app features and real-time synchronization.',
-                ),
-                _buildBulletPoint(
-                  'Implemented secure payment gateways, biometric authentication, and low-latency socket communication for real-time user interactions.',
-                ),
-                _buildBulletPoint(
-                  'Mentored junior developers through technical guidance and code reviews, fostering adoption of clean architecture and best practices.',
-                ),
-                _buildBulletPoint(
-                  'Optimized cross-platform performance to achieve 99.9% crash-free rates and fluid 60FPS experiences across low-end and flagship devices.',
-                ),
-                _buildBulletPoint(
-                  'Partnered with stakeholders to transform business requirements into precise technical specifications and execution-ready agile sprints.',
-                ),
+                _buildBulletPoint('Developed and maintained 10+ production-grade Flutter applications across Android and iOS platforms.'),
+                _buildBulletPoint('Integrated Firebase services, REST APIs, authentication systems, payment gateways, and real-time features.'),
+                _buildBulletPoint('Implemented biometric authentication, push notifications, and low-latency socket communication.'),
+                _buildBulletPoint('Optimized application performance and improved UI responsiveness across low-end and flagship devices.'),
+                _buildBulletPoint('Applied clean architecture and modular development practices for scalable and maintainable codebases.'),
+                _buildBulletPoint('Collaborated with developers, QA teams, and stakeholders throughout agile development cycles.'),
+                _buildBulletPoint('Utilized AI-assisted engineering workflows for faster debugging, feature implementation, code optimization, and productivity improvements.'),
+                _buildBulletPoint('Participated in debugging, feature planning, testing, release management, and production support activities.'),
                 const SizedBox(height: 32),
 
                 // Key Projects
                 _buildSectionHeader('KEY PROJECTS'),
                 const SizedBox(height: 16),
-                _buildProjectItem(
-                  'Enterprise Lottery Platform',
-                  'Developed scalable multi-game platform with secure payments, authentication, and admin dashboards.',
+                SelectableText(
+                  'Projects developed and maintained for enterprise and consumer-focused clients using Flutter and Firebase ecosystem.',
+                  style: TextStyle(fontSize: 15, color: Colors.black87),
                 ),
-                _buildProjectItem(
-                  'Healthcare Management System',
-                  'Built hospital application for appointments, patient records, and notifications.',
-                ),
-                _buildProjectItem(
-                  'Media & News Platform',
-                  'Developed real-time news application with WebView integration and performance optimization.',
-                ),
-                _buildProjectItem(
-                  'Matrimony Platform',
-                  'Implemented profile management, matchmaking, chat, and subscription features.',
-                ),
-                _buildProjectItem(
-                  'POS & Inventory System (IMS)',
-                  'Designed billing, inventory tracking, and reporting modules.',
-                ),
-                _buildProjectItem(
-                  'Astrology Application (PKG Astro)',
-                  'Enhanced application performance and improved scalability.',
-                ),
+                const SizedBox(height: 12),
+                _buildProjectItem('Enterprise Lottery Platform', 'Developed scalable multi-game Flutter applications with secure authentication, payment integration, and admin features.'),
+                _buildProjectItem('Healthcare Management System', 'Built healthcare applications for appointments, patient records, and notification management.'),
+                _buildProjectItem('Media & News Platform', 'Developed real-time news platform with WebView integration and optimized application performance.'),
+                _buildProjectItem('Matrimony Platform', 'Implemented profile management, matchmaking, subscriptions, and chat functionality.'),
+                _buildProjectItem('POS & Inventory System', 'Designed billing systems, inventory tracking modules, and reporting features.'),
                 const SizedBox(height: 32),
 
                 // Education
@@ -290,21 +243,31 @@ class ResumeView extends StatelessWidget {
                 const SizedBox(height: 12),
                 _buildBulletPoint('Ethical Hacking Certification – 2022'),
                 _buildBulletPoint(
-                  'Flutter Development Certification – Completed',
+                  'Flutter Development Certification',
                 ),
                 const SizedBox(height: 32),
 
                 // Professional Strengths
-                _buildSectionHeader('PROFESSIONAL STRENGTHS'),
+                _buildSectionHeader('STRENGTHS'),
                 const SizedBox(height: 12),
                 SelectableText(
-                  'Strong Problem-Solving Skills, Enterprise Application Development, Agile Practices, Client Communication, Ownership & Accountability, Continuous Learning',
+                  'Problem-Solving • Clean Architecture • Flutter Development • Firebase Integration • Performance Optimization • Agile Collaboration • Ownership & Accountability • Fast Learning',
                   style: TextStyle(
                     fontSize: 15,
                     height: 1.6,
                     color: Colors.black87,
                   ),
                 ),
+                const SizedBox(height: 32),
+
+                // Additional Value
+                _buildSectionHeader('ADDITIONAL VALUE'),
+                const SizedBox(height: 12),
+                _buildBulletPoint('Experience working on enterprise-scale Flutter applications.'),
+                _buildBulletPoint('Strong understanding of scalable mobile UI development and reusable architecture.'),
+                _buildBulletPoint('Familiar with backend concepts and API integration workflows.'),
+                _buildBulletPoint('Comfortable adapting modern AI tools to improve engineering productivity and delivery speed.'),
+                _buildBulletPoint('Continuously learning advanced software engineering practices and scalable application development.'),
               ],
             ),
           ),

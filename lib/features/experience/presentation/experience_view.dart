@@ -16,21 +16,21 @@ class _ExperienceViewState extends State<ExperienceView>
 
   final List<ExperienceModel> _experienceData = [
     ExperienceModel(
-      role: 'Senior Software Engineer',
+      role: 'Software Engineer | Flutter Developer',
       grade: 'EXECUTIVE',
       company: 'Trirope Technologies Pvt. Ltd.',
       duration: 'AUG 2022 — PRESENT',
-      location: 'Chennai • India',
+      location: 'Tamil Nadu • India',
       isCurrent: true,
       accentColor: AppColors.terminalBlue,
       achievements: [
-        'Led end-to-end development of 10+ enterprise Flutter applications, reducing delivery cycles.',
-        'Developed robust backend services using Node.js and NestJS for high-scale app features.',
-        'Implemented secure payment gateways, biometric auth, and low-latency socket synchronization.',
-        'Mentored junior developers fostering adoption of Clean Architecture and technical best practices.',
-        'Optimized performance achieving 99.9% crash-free rates and fluid 60FPS across wide device fleet.',
+        'Developed and maintained 10+ production-grade Flutter applications.',
+        'Integrated Firebase services, REST APIs, and real-time features.',
+        'Implemented biometric auth, push notifications, and low-latency sockets.',
+        'Optimized application performance and applied clean architecture.',
+        'Utilized AI-assisted engineering workflows for productivity.',
       ],
-      techStack: ['Flutter', 'Node.js', 'NestJS', 'Redis', 'Socket.io', 'AWS'],
+      techStack: ['Flutter', 'Firebase', 'Dart', 'REST API', 'Git', 'AI Workflows'],
     ),
     ExperienceModel(
       role: 'B.E. Computer Science Engineering',

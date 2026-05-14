@@ -31,7 +31,7 @@ class MobileAboutView extends StatelessWidget {
             _buildSectionTitle('PROFESSIONAL SUMMARY'),
             const SizedBox(height: 12),
             const Text(
-              'Highly motivated Software Engineer with 3+ years of experience in designing, developing, and delivering enterprise-grade cross-platform applications for Android, iOS, Windows, macOS, and Web. Specialized in Flutter and full-stack development with strong expertise in building scalable, secure, and maintainable systems.',
+              'Flutter Developer with 3+ years of experience building scalable cross-platform mobile applications using Flutter and Firebase. Experienced in developing production-grade applications focused on clean architecture, responsive UI, performance optimization, and smooth user experiences across Android and iOS platforms.\n\nDelivered 10+ applications across healthcare, media, lottery, matrimony, and inventory management domains. Strong experience with Firebase ecosystem, REST API integration, authentication systems, push notifications, payment integrations, and real-time application features.\n\nActively leverage modern AI-assisted development workflows using tools such as ChatGPT, Claude, Gemini, Cursor, and Antigravity to improve development productivity, accelerate debugging, optimize implementation workflows, and enhance product delivery efficiency.',
               style: TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 15,
@@ -44,14 +44,15 @@ class MobileAboutView extends StatelessWidget {
             _buildSectionTitle('PROFESSIONAL EXPERIENCE'),
             const SizedBox(height: 16),
             _buildExperienceItem(
-              role: 'Software Engineer',
-              company: 'Trirope Technologies',
+              role: 'Software Engineer | Flutter Developer',
+              company: 'Trirope Technologies Pvt. Ltd.',
               duration: 'Aug 2022 – Present',
               points: [
-                'Designed and developed high-performance cross-platform apps.',
-                'Delivered 10+ production-ready apps.',
-                'Built modular, scalable system architecture.',
-                'Developed secure backend services (Node.js/FastAPI).',
+                'Developed and maintained 10+ production-grade Flutter applications.',
+                'Integrated Firebase services, REST APIs, and real-time features.',
+                'Implemented biometric auth, push notifications, and low-latency sockets.',
+                'Optimized application performance and applied clean architecture.',
+                'Utilized AI-assisted engineering workflows for productivity.',
               ],
             ),
             const SizedBox(height: 32),
@@ -59,19 +60,20 @@ class MobileAboutView extends StatelessWidget {
             // Skills Section
             _buildSectionTitle('TECHNICAL SKILLS'),
             const SizedBox(height: 16),
-            _buildSkillSection('Programming', [
+            _buildSkillSection('Languages', [
               'Dart',
               'JavaScript',
+              'TypeScript',
               'Python',
               'Java',
             ]),
             _buildSkillSection('Mobile & Web', [
               'Flutter',
-              'React',
+              'React.js',
               'Next.js',
               'HTML/CSS',
             ]),
-            _buildSkillSection('Backend', ['Node.js', 'NestJS', 'FastAPI']),
+            _buildSkillSection('Backend & Tools', ['Firebase', 'REST API', 'Git', 'AI Workflows']),
 
             const SizedBox(height: 32),
 
@@ -87,7 +89,7 @@ class MobileAboutView extends StatelessWidget {
               ),
             ),
             const Text(
-              'Anna University | 2017 – 2021',
+              'Dhanalakshmi Srinivasan Institute of Technology | 2017 – 2021',
               style: TextStyle(color: AppColors.terminalBlue, fontSize: 13),
             ),
 
@@ -120,7 +122,7 @@ class MobileAboutView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Senior Software Engineer\nFlutter & Full-Stack Developer',
+          'Flutter Developer',
           style: TextStyle(
             color: AppColors.terminalBlue,
             fontSize: 16,
