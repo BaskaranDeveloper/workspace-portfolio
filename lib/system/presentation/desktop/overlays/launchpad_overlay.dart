@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:workspace/system/domain/entities/system_app.dart';
 import 'package:workspace/system/presentation/dock/widgets/dock_item.dart';

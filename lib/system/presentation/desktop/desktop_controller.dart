@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:workspace/system/presentation/desktop/models/desktop_item.dart';
 import 'package:workspace/system/presentation/desktop/models/menu_item_data.dart';
 

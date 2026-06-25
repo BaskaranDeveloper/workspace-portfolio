@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
 
 class ProjectsView extends StatefulWidget {

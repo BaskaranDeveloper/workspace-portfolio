@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ControlCenter extends StatefulWidget {
   const ControlCenter({super.key});

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:workspace/system/presentation/utils/full_screen_manager.dart';
 import 'package:workspace/system/presentation/desktop/widgets/status_indicators/battery_indicator.dart';

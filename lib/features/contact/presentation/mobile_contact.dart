@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
 import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -65,7 +66,7 @@ class MobileContact extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _MobileSocialNode(
-          icon: LucideIcons.linkedin,
+          icon: FontAwesomeIcons.linkedin,
           label: 'LINKEDIN_PROF',
           value: 'baskaran-m',
           accentColor: const Color(0xFF0077B5),
@@ -73,7 +74,7 @@ class MobileContact extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _MobileSocialNode(
-          icon: LucideIcons.github,
+          icon: FontAwesomeIcons.github,
           label: 'GITHUB_REPOS',
           value: 'BaskaranDeveloper',
           accentColor: Colors.purpleAccent,

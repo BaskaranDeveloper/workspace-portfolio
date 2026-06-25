@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:workspace/shared_ui/theme/app_colors.dart';
 import 'package:workspace/shared_ui/widgets/liquid_glass.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -140,7 +141,7 @@ class _ContactViewState extends State<ContactView>
           controller: _entranceController,
           index: 1,
           child: _SocialNode(
-            icon: LucideIcons.linkedin,
+            icon: FontAwesomeIcons.linkedin,
             title: 'PROFESSIONAL_LINK',
             value: 'linkedin.com/in/baskaran-m',
             accentColor: const Color(0xFF0077B5),
@@ -152,7 +153,7 @@ class _ContactViewState extends State<ContactView>
           controller: _entranceController,
           index: 2,
           child: _SocialNode(
-            icon: LucideIcons.github,
+            icon: FontAwesomeIcons.github,
             title: 'REPOSITORY_ACCESS',
             value: 'github.com/BaskaranDeveloper',
             accentColor: Colors.purpleAccent,
