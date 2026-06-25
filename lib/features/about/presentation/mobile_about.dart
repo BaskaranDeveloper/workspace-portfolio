@@ -31,7 +31,7 @@ class MobileAboutView extends StatelessWidget {
             _buildSectionTitle('PROFESSIONAL SUMMARY'),
             const SizedBox(height: 12),
             const Text(
-              'Flutter Developer with 3+ years of experience building scalable cross-platform mobile applications using Flutter and Firebase. Experienced in developing production-grade applications focused on clean architecture, responsive UI, performance optimization, and smooth user experiences across Android and iOS platforms.\n\nDelivered 10+ applications across healthcare, media, lottery, matrimony, and inventory management domains. Strong experience with Firebase ecosystem, REST API integration, authentication systems, push notifications, payment integrations, and real-time application features.\n\nActively leverage modern AI-assisted development workflows using tools such as ChatGPT, Claude, Gemini, Cursor, and Antigravity to improve development productivity, accelerate debugging, optimize implementation workflows, and enhance product delivery efficiency.',
+              'Tech Lead with 4 years of experience designing, developing, and delivering production-grade cross-platform applications using Flutter and Firebase.\n\nExperienced in building scalable applications for Android, iOS, Web, Windows, and macOS, with expertise in clean architecture, state management, REST API integration, Firebase ecosystem, authentication, payment gateway integration, push notifications, WebSocket communication, and mobile performance optimization.\n\nRecently promoted to Tech Lead, contributing to technical leadership, architecture discussions, code reviews, developer mentoring, sprint planning, and successful delivery of enterprise applications.\n\nPassionate about AI-augmented software engineering, leveraging modern AI tools including Claude Code, ChatGPT, Gemini, Cursor, Codex, Antigravity, Stitch, and Firebase Studio to accelerate development, improve software quality, automate repetitive tasks, and enhance engineering productivity.',
               style: TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 15,
@@ -44,15 +44,24 @@ class MobileAboutView extends StatelessWidget {
             _buildSectionTitle('PROFESSIONAL EXPERIENCE'),
             const SizedBox(height: 16),
             _buildExperienceItem(
+              role: 'Tech Lead',
+              company: 'Trirope Technologies Pvt. Ltd.',
+              duration: 'May 2026 – Present',
+              points: [
+                'Lead the design and development of enterprise-grade Flutter applications.',
+                'Drive technical discussions, architecture reviews, and engineering best practices.',
+                'Review code and mentor developers to maintain high engineering standards.',
+              ],
+            ),
+            const SizedBox(height: 16),
+            _buildExperienceItem(
               role: 'Software Engineer | Flutter Developer',
               company: 'Trirope Technologies Pvt. Ltd.',
-              duration: 'Aug 2022 – Present',
+              duration: 'August 2022 – May 2026',
               points: [
                 'Developed and maintained 10+ production-grade Flutter applications.',
-                'Integrated Firebase services, REST APIs, and real-time features.',
-                'Implemented biometric auth, push notifications, and low-latency sockets.',
-                'Optimized application performance and applied clean architecture.',
-                'Utilized AI-assisted engineering workflows for productivity.',
+                'Built scalable cross-platform applications using Flutter and Firebase.',
+                'Integrated REST APIs, Firebase Authentication, Cloud Firestore, Cloud Messaging, payment gateways, biometric authentication, and WebSocket communication.',
               ],
             ),
             const SizedBox(height: 32),
@@ -65,15 +74,18 @@ class MobileAboutView extends StatelessWidget {
               'JavaScript',
               'TypeScript',
               'Python',
-              'Java',
+              'Java (Core)',
+              'C',
             ]),
             _buildSkillSection('Mobile & Web', [
               'Flutter',
               'React.js',
               'Next.js',
-              'HTML/CSS',
+              'HTML5',
+              'CSS3',
             ]),
-            _buildSkillSection('Backend & Tools', ['Firebase', 'REST API', 'Git', 'AI Workflows']),
+            _buildSkillSection('Firebase & DB', ['Firebase Auth', 'Firestore', 'FCM', 'PostgreSQL', 'MySQL']),
+            _buildSkillSection('Backend & Tools', ['REST API', 'JWT', 'Git', 'AI Workflows']),
 
             const SizedBox(height: 32),
 
@@ -122,7 +134,7 @@ class MobileAboutView extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Flutter Developer',
+          'Tech Lead | Flutter & Firebase Engineer',
           style: TextStyle(
             color: AppColors.terminalBlue,
             fontSize: 16,

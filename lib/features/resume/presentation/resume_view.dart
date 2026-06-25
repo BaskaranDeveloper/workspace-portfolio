@@ -54,7 +54,7 @@ class ResumeView extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       SelectableText(
-                        'Flutter Developer',
+                        'Tech Lead | Flutter & Firebase Engineer',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black87,
@@ -85,7 +85,7 @@ class ResumeView extends StatelessWidget {
                 _buildSectionHeader('PROFESSIONAL SUMMARY'),
                 const SizedBox(height: 16),
                 SelectableText(
-                  'Flutter Developer with 3+ years of experience building scalable cross-platform mobile applications using Flutter and Firebase. Experienced in developing production-grade applications focused on clean architecture, responsive UI, performance optimization, and smooth user experiences across Android and iOS platforms.\n\nDelivered 10+ applications across healthcare, media, lottery, matrimony, and inventory management domains. Strong experience with Firebase ecosystem, REST API integration, authentication systems, push notifications, payment integrations, and real-time application features.\n\nActively leverage modern AI-assisted development workflows using tools such as ChatGPT, Claude, Gemini, Cursor, and Antigravity to improve development productivity, accelerate debugging, optimize implementation workflows, and enhance product delivery efficiency.',
+                  'Tech Lead with 4 years of experience designing, developing, and delivering production-grade cross-platform applications using Flutter and Firebase.\n\nExperienced in building scalable applications for Android, iOS, Web, Windows, and macOS, with expertise in clean architecture, state management, REST API integration, Firebase ecosystem, authentication, payment gateway integration, push notifications, WebSocket communication, and mobile performance optimization.\n\nRecently promoted to Tech Lead, contributing to technical leadership, architecture discussions, code reviews, developer mentoring, sprint planning, and successful delivery of enterprise applications.\n\nPassionate about AI-augmented software engineering, leveraging modern AI tools including Claude Code, ChatGPT, Gemini, Cursor, Codex, Antigravity, Stitch, and Firebase Studio to accelerate development, improve software quality, automate repetitive tasks, and enhance engineering productivity.',
                   style: TextStyle(
                     fontSize: 15,
                     height: 1.6,
@@ -112,30 +112,37 @@ class ResumeView extends StatelessWidget {
                 // Technical Skills
                 _buildSectionHeader('TECHNICAL SKILLS'),
                 const SizedBox(height: 16),
-                _buildSkillRow('Languages', 'Dart, JavaScript, TypeScript, Python, Java (Core)'),
-                _buildSkillRow('Mobile & Frontend', 'Flutter, React.js, Next.js, HTML, CSS'),
-                _buildSkillRow('Backend & APIs', 'Firebase, REST APIs, JWT Authentication, Basic Node.js & NestJS Knowledge'),
-                _buildSkillRow('Databases', 'Firebase, PostgreSQL, MySQL'),
-                _buildSkillRow('Tools', 'Git, GitHub, Bitbucket, Jira, Figma, SourceTree, Cursor, ChatGPT, Claude, Gemini, Antigravity'),
+                _buildSkillRow('Languages', 'Dart, JavaScript, TypeScript, Python, Java (Core), C'),
+                _buildSkillRow('Mobile & Web', 'Flutter, React.js, Next.js, HTML5, CSS3'),
+                _buildSkillRow('Firebase', 'Firebase Auth, Firestore, Realtime DB, FCM, Crashlytics, Storage'),
+                _buildSkillRow('Backend & DB', 'REST APIs, JWT, PostgreSQL, MySQL'),
+                _buildSkillRow('Tools', 'Git, GitHub, Jira, Figma, Cursor, Antigravity, Claude Code'),
                 const SizedBox(height: 32),
 
                 // Professional Experience
                 _buildSectionHeader('PROFESSIONAL EXPERIENCE'),
                 const SizedBox(height: 16),
                 _buildJobHeader(
-                  'Software Engineer | Flutter Developer',
+                  'Tech Lead',
                   'Trirope Technologies Pvt. Ltd.',
-                  'August 2022 – Present',
+                  'May 2026 – Present',
                 ),
                 const SizedBox(height: 12),
-                _buildBulletPoint('Developed and maintained 10+ production-grade Flutter applications across Android and iOS platforms.'),
-                _buildBulletPoint('Integrated Firebase services, REST APIs, authentication systems, payment gateways, and real-time features.'),
-                _buildBulletPoint('Implemented biometric authentication, push notifications, and low-latency socket communication.'),
-                _buildBulletPoint('Optimized application performance and improved UI responsiveness across low-end and flagship devices.'),
-                _buildBulletPoint('Applied clean architecture and modular development practices for scalable and maintainable codebases.'),
-                _buildBulletPoint('Collaborated with developers, QA teams, and stakeholders throughout agile development cycles.'),
-                _buildBulletPoint('Utilized AI-assisted engineering workflows for faster debugging, feature implementation, code optimization, and productivity improvements.'),
-                _buildBulletPoint('Participated in debugging, feature planning, testing, release management, and production support activities.'),
+                _buildBulletPoint('Lead the design and development of enterprise-grade Flutter applications.'),
+                _buildBulletPoint('Drive technical discussions, architecture reviews, and engineering best practices.'),
+                _buildBulletPoint('Review code and mentor developers to maintain high engineering standards.'),
+                _buildBulletPoint('Improve engineering productivity using AI-assisted development workflows.'),
+                const SizedBox(height: 16),
+                _buildJobHeader(
+                  'Software Engineer | Flutter Developer',
+                  'Trirope Technologies Pvt. Ltd.',
+                  'August 2022 – May 2026',
+                ),
+                const SizedBox(height: 12),
+                _buildBulletPoint('Developed and maintained 10+ production-grade Flutter applications across Android, iOS, Web, Windows, and macOS.'),
+                _buildBulletPoint('Built scalable cross-platform applications using Flutter and Firebase.'),
+                _buildBulletPoint('Integrated REST APIs, Firebase Authentication, Cloud Firestore, Cloud Messaging, payment gateways, biometric authentication, and WebSocket communication.'),
+                _buildBulletPoint('Optimized application performance and responsiveness across multiple platforms.'),
                 const SizedBox(height: 32),
 
                 // Key Projects
@@ -456,7 +463,7 @@ class ResumeView extends StatelessWidget {
                       ),
                       pw.SizedBox(height: 6),
                       pw.Text(
-                        'Senior Software Engineer | Flutter & Full-Stack Developer',
+                        'Tech Lead | Flutter & Firebase Engineer',
                         style: pw.TextStyle(
                           fontSize: 14,
                           fontWeight: pw.FontWeight.bold,
@@ -489,7 +496,7 @@ class ResumeView extends StatelessWidget {
                 _buildPdfSectionHeader('PROFESSIONAL SUMMARY'),
                 pw.SizedBox(height: 8),
                 pw.Text(
-                  'Expert Software Engineer with 3+ years of experience specializing in high-fidelity Flutter development and End-to-End AI-Agentic Architecture. I redefine the software lifecycle by orchestrating autonomous workflows—leveraging Antigravity, Cursor, and Firebase Studio for rapid development, while steering product strategy with Claude 3.5 and OpenAI o1.',
+                  'Tech Lead with 4 years of experience designing, developing, and delivering production-grade cross-platform applications using Flutter and Firebase.\n\nExperienced in building scalable applications for Android, iOS, Web, Windows, and macOS, with expertise in clean architecture, state management, REST API integration, Firebase ecosystem, authentication, payment gateway integration, push notifications, WebSocket communication, and mobile performance optimization.\n\nRecently promoted to Tech Lead, contributing to technical leadership, architecture discussions, code reviews, developer mentoring, sprint planning, and successful delivery of enterprise applications.',
                   style: const pw.TextStyle(fontSize: 11, lineSpacing: 1.5),
                   textAlign: pw.TextAlign.justify,
                 ),
@@ -534,29 +541,24 @@ class ResumeView extends StatelessWidget {
                 _buildPdfSectionHeader('PROFESSIONAL EXPERIENCE'),
                 pw.SizedBox(height: 8),
                 _buildPdfJobHeader(
-                  'Software Engineer | Flutter & Full-Stack Developer',
+                  'Tech Lead',
                   'Trirope Technologies Pvt. Ltd.',
-                  'August 2022 – Present',
+                  'May 2026 – Present',
                 ),
                 pw.SizedBox(height: 6),
-                _buildPdfBullet(
-                  'Led end-to-end development of 10+ enterprise Flutter applications, consistently delivering high-fidelity user experiences and reducing delivery cycles.',
+                _buildPdfBullet('Lead the design and development of enterprise-grade Flutter applications.'),
+                _buildPdfBullet('Drive technical discussions, architecture reviews, and engineering best practices.'),
+                _buildPdfBullet('Review code and mentor developers to maintain high engineering standards.'),
+                pw.SizedBox(height: 12),
+                _buildPdfJobHeader(
+                  'Software Engineer | Flutter Developer',
+                  'Trirope Technologies Pvt. Ltd.',
+                  'August 2022 – May 2026',
                 ),
-                _buildPdfBullet(
-                  'Developed and integrated robust backend services using Node.js and NestJS to support high-scale app features and real-time synchronization.',
-                ),
-                _buildPdfBullet(
-                  'Implemented secure payment gateways, biometric authentication, and low-latency socket communication for real-time user interactions.',
-                ),
-                _buildPdfBullet(
-                  'Mentored junior developers through technical guidance and code reviews, fostering adoption of clean architecture and best practices.',
-                ),
-                _buildPdfBullet(
-                  'Optimized cross-platform performance to achieve 99.9% crash-free rates and fluid 60FPS experiences across low-end and flagship devices.',
-                ),
-                _buildPdfBullet(
-                  'Partnered with stakeholders to transform business requirements into precise technical specifications and execution-ready agile sprints.',
-                ),
+                pw.SizedBox(height: 6),
+                _buildPdfBullet('Developed and maintained 10+ production-grade Flutter applications across Android, iOS, Web, Windows, and macOS.'),
+                _buildPdfBullet('Built scalable cross-platform applications using Flutter and Firebase.'),
+                _buildPdfBullet('Integrated REST APIs, Firebase Authentication, Cloud Firestore, Cloud Messaging, payment gateways, biometric authentication, and WebSocket communication.'),
                 pw.SizedBox(height: 20),
 
                 // Key Projects
